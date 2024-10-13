@@ -122,14 +122,3 @@ apollo {
         }
     }
 }
-
-
-//apollo {
-//    schemaFile.set(rootProject.file("shared/src/commonMain/graphql/schema.json"))
-//    rootPackageName.set("com.myapp.android.graphql")
-//
-//    generateKotlinModels.set(true)
-//
-//    graphqlSourceDirectorySet.srcDirs("shared/src/commonMain/graphql/mobile-graphql")
-//    graphqlSourceDirectorySet.exclude("**/*.md")
-//}
