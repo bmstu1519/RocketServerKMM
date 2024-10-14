@@ -88,7 +88,7 @@ class LoginScreen : Screen {
 }
 
 private suspend fun login(email: String): Boolean {
-    val response = ProvideApolloClient().apolloClient.mutation(LoginMutation(email = email)).execute()
+    val response = ProvideApolloClientSingleton.apolloClient.mutation(LoginMutation(email = email)).execute()
     val data = response.data
     return if (data != null) {
         if (data.login?.token != null) {
