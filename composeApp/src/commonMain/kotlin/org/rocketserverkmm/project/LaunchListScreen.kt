@@ -42,7 +42,7 @@ class LaunchListScreen : Screen {
         var response: ApolloResponse<LaunchListQuery.Data>? by remember { mutableStateOf(null) }
         var launchList by remember { mutableStateOf(emptyList<LaunchListQuery.Launch>()) }
         LaunchedEffect(cursor) {
-            response = ProvideApolloClient().apolloClient.query(LaunchListQuery(Optional.present(cursor))).execute()
+            response = ProvideApolloClientSingleton.apolloClient.query(LaunchListQuery(Optional.present(cursor))).execute()
             launchList = launchList + response?.data?.launches?.launches?.filterNotNull().orEmpty()
         }
 

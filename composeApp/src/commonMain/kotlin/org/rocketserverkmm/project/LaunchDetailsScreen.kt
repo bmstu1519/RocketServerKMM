@@ -47,7 +47,7 @@ data class LaunchDetailsScreen(val launchId: String) : Screen {
         val navigator = LocalNavigator.currentOrThrow
         var state by remember { mutableStateOf<LaunchDetailsState>(LaunchDetailsState.Loading) }
         LaunchedEffect(Unit) {
-            val response = ProvideApolloClient().apolloClient.query(LaunchDetailsQuery(launchId)).execute()
+            val response = ProvideApolloClientSingleton.apolloClient.query(LaunchDetailsQuery(launchId)).execute()
             state = when {
                 response.errors.orEmpty().isNotEmpty() -> {
                     // GraphQL error
@@ -167,7 +167,7 @@ private suspend fun onBookButtonClick(
     } else {
         BookTripMutation(id = launchId)
     }
-    val response = ProvideApolloClient().apolloClient.mutation(mutation).execute()
+    val response = ProvideApolloClientSingleton.apolloClient.mutation(mutation).execute()
     return if (response.data != null) {
         true
     } else {
