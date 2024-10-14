@@ -36,12 +36,3 @@ class AuthorizationInterceptor : ApolloInterceptor {
         return chain.proceed(newRequest)
     }
 }
-
-//class AuthorizationKtorInterceptor2(private val tokenProvider: () -> String?) : HttpClientInterceptor {
-//    override suspend fun intercept(context: HttpRequestBuilder) {
-//        val token = tokenProvider.invoke()
-//        if (token != null) {
-//            context.headers.append("Authorization", "Bearer $token")
-//        }
-//    }
-//}
