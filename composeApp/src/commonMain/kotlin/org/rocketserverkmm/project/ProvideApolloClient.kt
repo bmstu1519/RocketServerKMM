@@ -7,6 +7,7 @@ import com.apollographql.apollo.api.Operation
 import com.apollographql.apollo.interceptor.ApolloInterceptor
 import com.apollographql.apollo.interceptor.ApolloInterceptorChain
 import com.apollographql.apollo.network.http.HttpNetworkTransport
+import io.ktor.client.request.HttpRequestBuilder
 import kotlinx.coroutines.flow.Flow
 
 class ProvideApolloClient {
@@ -16,11 +17,9 @@ class ProvideApolloClient {
                 .serverUrl("https://apollo-fullstack-tutorial.herokuapp.com/graphql")
                 .build()
         )
-        .addInterceptor(AuthorizationInterceptor())
         .addHttpHeader("Accept","application/json")
         .addHttpHeader("Content-Type","application/json")
         .build()
-
 }
 
 class AuthorizationInterceptor : ApolloInterceptor {
@@ -37,3 +36,12 @@ class AuthorizationInterceptor : ApolloInterceptor {
         return chain.proceed(newRequest)
     }
 }
+
+//class AuthorizationKtorInterceptor2(private val tokenProvider: () -> String?) : HttpClientInterceptor {
+//    override suspend fun intercept(context: HttpRequestBuilder) {
+//        val token = tokenProvider.invoke()
+//        if (token != null) {
+//            context.headers.append("Authorization", "Bearer $token")
+//        }
+//    }
+//}
