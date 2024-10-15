@@ -8,11 +8,13 @@ import com.apollographql.apollo.exception.ApolloNetworkException
 import com.apollographql.apollo.network.http.HttpEngine
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.plugins.HttpSend
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.plugins.logging.SIMPLE
+import io.ktor.client.request.HttpRequestPipeline
 import io.ktor.client.request.header
 import io.ktor.client.request.request
 import io.ktor.client.request.setBody
@@ -22,7 +24,6 @@ import okio.Buffer
 import kotlin.coroutines.cancellation.CancellationException
 
 object ProvideKtorClientSingleton {
-    private val token = KVaultSettingsProviderSingleton.getInstance().getToken(KEY_TOKEN)
     private val ktorClient = getEngine().createHttpClient {
 
         install(Logging) {
@@ -33,11 +34,20 @@ object ProvideKtorClientSingleton {
         defaultRequest {
             header(HttpHeaders.Accept, "application/json")
             header(HttpHeaders.ContentType, "application/json")
-            header(HttpHeaders.Authorization, token)
+        }
+    }.apply {
+        requestPipeline.intercept(HttpRequestPipeline.Before) {
+            val token = getToken()
+            if (!token.isNullOrEmpty()) {
+                context.headers[HttpHeaders.Authorization] = token
+            }
         }
     }
-    fun getInstance() : HttpEngine = HttpKtorClientEngine(ktorClient)
+
+    fun getInstance(): HttpEngine = HttpKtorClientEngine(ktorClient)
 }
+
+private fun getToken(): String? = KVaultSettingsProviderSingleton.getInstance().getToken(KEY_TOKEN)
 
 class HttpKtorClientEngine(private val client: HttpClient) : HttpEngine {
     override suspend fun execute(request: HttpRequest): HttpResponse {
@@ -62,7 +72,8 @@ class HttpKtorClientEngine(private val client: HttpClient) : HttpEngine {
             val responseBufferedSource = Buffer().write(responseByteArray)
             return HttpResponse.Builder(statusCode = response.status.value)
                 .body(responseBufferedSource)
-                .addHeaders(response.headers.flattenEntries().map { HttpHeader(it.first, it.second) })
+                .addHeaders(
+                    response.headers.flattenEntries().map { HttpHeader(it.first, it.second) })
                 .build()
         } catch (e: CancellationException) {
             throw e
