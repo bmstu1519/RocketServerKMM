@@ -32,6 +32,7 @@ import com.apollographql.apollo.exception.ApolloNetworkException
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import rocketserverkmm.composeapp.generated.resources.Res
+import rocketserverkmm.composeapp.generated.resources.baseline_error_24
 import rocketserverkmm.composeapp.generated.resources.ic_placeholder
 
 private sealed interface LaunchDetailsState {
@@ -92,7 +93,7 @@ private fun LaunchDetails(
                 modifier = Modifier.size(160.dp, 160.dp),
                 model = data.launch?.mission?.missionPatch,
                 placeholder = painterResource(Res.drawable.ic_placeholder),
-                error = painterResource(Res.drawable.ic_placeholder),
+                error = painterResource(Res.drawable.baseline_error_24),
                 contentDescription = "Mission patch"
             )
 
