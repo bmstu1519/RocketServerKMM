@@ -15,7 +15,7 @@ compose-plugin = "1.6.11"
 junit = "4.13.2"
 kotlin = "2.0.20"
 apollo = "4.0.0"
-coil = "3.0.0-alpha06"
+coil = "3.0.0-rc01"
 ktor = "2.3.12"
 coroutines = "1.9.0"
 voyager = "1.0.0"
@@ -37,6 +37,8 @@ androidx-lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", nam
 androidx-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
 apollo-runtime = { module = "com.apollographql.apollo:apollo-runtime", name = "apollo-runtime", version.ref = "apollo"}
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
+coil-compose-core = { module = "io.coil-kt.coil3:coil-compose-core", version.ref = "coil" }
+coil-network = { module = "io.coil-kt.coil3:coil-network-ktor2", version.ref = "coil" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 #ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
 ktor-client-serialization = { module = "io.ktor:ktor-client-serialization", version.ref = "ktor" }
