@@ -30,6 +30,7 @@ import com.apollographql.apollo.api.ApolloResponse
 import com.apollographql.apollo.api.Optional
 import org.jetbrains.compose.resources.painterResource
 import rocketserverkmm.composeapp.generated.resources.Res
+import rocketserverkmm.composeapp.generated.resources.baseline_error_24
 import rocketserverkmm.composeapp.generated.resources.ic_placeholder
 
 class LaunchListScreen : Screen {
@@ -82,7 +83,7 @@ private fun LaunchItem(launch: LaunchListQuery.Launch, navigator: Navigator) {
                 modifier = Modifier.size(68.dp, 68.dp),
                 model = launch.mission?.missionPatch,
                 placeholder = painterResource(Res.drawable.ic_placeholder),
-                error = painterResource(Res.drawable.ic_placeholder),
+                error = painterResource(Res.drawable.baseline_error_24),
                 contentDescription = "Mission patch"
             )
         }

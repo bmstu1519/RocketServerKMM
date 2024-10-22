@@ -36,7 +36,6 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
-
             implementation(libs.ktor.client.okhttp)
         }
         commonMain.dependencies {
@@ -52,7 +51,9 @@ kotlin {
 
             implementation(libs.apollo.runtime)
 
+            implementation(libs.coil.compose.core)
             implementation(libs.coil.compose)
+            implementation(libs.coil.network)
 
             implementation(libs.voyager.navigator)
             implementation(libs.voyager.transitions)
