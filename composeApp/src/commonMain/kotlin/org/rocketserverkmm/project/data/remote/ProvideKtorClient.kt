@@ -1,4 +1,4 @@
-package org.rocketserverkmm.project
+package org.rocketserverkmm.project.data.remote
 
 import com.apollographql.apollo.api.http.HttpHeader
 import com.apollographql.apollo.api.http.HttpMethod
@@ -8,7 +8,6 @@ import com.apollographql.apollo.exception.ApolloNetworkException
 import com.apollographql.apollo.network.http.HttpEngine
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
-import io.ktor.client.plugins.HttpSend
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
@@ -21,6 +20,9 @@ import io.ktor.client.request.setBody
 import io.ktor.http.HttpHeaders
 import io.ktor.util.flattenEntries
 import okio.Buffer
+import org.rocketserverkmm.project.KEY_TOKEN
+import org.rocketserverkmm.project.data.local.KVaultSettingsProviderSingleton
+import org.rocketserverkmm.project.getEngine
 import kotlin.coroutines.cancellation.CancellationException
 
 object ProvideKtorClientSingleton {

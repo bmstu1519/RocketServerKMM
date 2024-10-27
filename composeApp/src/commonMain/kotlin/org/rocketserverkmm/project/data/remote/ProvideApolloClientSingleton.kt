@@ -1,4 +1,4 @@
-package org.rocketserverkmm.project
+package org.rocketserverkmm.project.data.remote
 
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.network.http.HttpNetworkTransport

@@ -1,4 +1,4 @@
-package org.rocketserverkmm.project
+package org.rocketserverkmm.project.presentation.screens
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,6 +31,12 @@ import coil3.compose.AsyncImage
 import com.apollographql.apollo.exception.ApolloNetworkException
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
+import org.rocketserverkmm.project.BookTripMutation
+import org.rocketserverkmm.project.CancelTripMutation
+import org.rocketserverkmm.project.KEY_TOKEN
+import org.rocketserverkmm.project.data.local.KVaultSettingsProviderSingleton
+import org.rocketserverkmm.project.LaunchDetailsQuery
+import org.rocketserverkmm.project.data.remote.ProvideApolloClientSingleton
 import rocketserverkmm.composeapp.generated.resources.Res
 import rocketserverkmm.composeapp.generated.resources.baseline_error_24
 import rocketserverkmm.composeapp.generated.resources.ic_placeholder

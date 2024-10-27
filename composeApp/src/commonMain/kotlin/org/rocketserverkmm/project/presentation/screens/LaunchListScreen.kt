@@ -1,5 +1,5 @@
 
-package org.rocketserverkmm.project
+package org.rocketserverkmm.project.presentation.screens
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -29,6 +29,8 @@ import coil3.compose.AsyncImage
 import com.apollographql.apollo.api.ApolloResponse
 import com.apollographql.apollo.api.Optional
 import org.jetbrains.compose.resources.painterResource
+import org.rocketserverkmm.project.LaunchListQuery
+import org.rocketserverkmm.project.data.remote.ProvideApolloClientSingleton
 import rocketserverkmm.composeapp.generated.resources.Res
 import rocketserverkmm.composeapp.generated.resources.baseline_error_24
 import rocketserverkmm.composeapp.generated.resources.ic_placeholder
