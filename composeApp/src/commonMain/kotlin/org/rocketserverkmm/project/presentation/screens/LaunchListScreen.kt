@@ -30,7 +30,7 @@ import com.apollographql.apollo.api.ApolloResponse
 import com.apollographql.apollo.api.Optional
 import org.jetbrains.compose.resources.painterResource
 import org.rocketserverkmm.project.LaunchListQuery
-import org.rocketserverkmm.project.data.remote.ProvideApolloClientSingleton
+import org.rocketserverkmm.project.dependencies.DependencyProvider
 import rocketserverkmm.composeapp.generated.resources.Res
 import rocketserverkmm.composeapp.generated.resources.baseline_error_24
 import rocketserverkmm.composeapp.generated.resources.ic_placeholder
@@ -45,7 +45,7 @@ class LaunchListScreen : Screen {
         var response: ApolloResponse<LaunchListQuery.Data>? by remember { mutableStateOf(null) }
         var launchList by remember { mutableStateOf(emptyList<LaunchListQuery.Launch>()) }
         LaunchedEffect(cursor) {
-            response = ProvideApolloClientSingleton.apolloClient.query(LaunchListQuery(Optional.present(cursor))).execute()
+            response = DependencyProvider.apolloClient.query(LaunchListQuery(Optional.present(cursor))).execute()
             launchList = launchList + response?.data?.launches?.launches?.filterNotNull().orEmpty()
         }
 
