@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package org.rocketserverkmm.project
+package org.rocketserverkmm.project.presentation.screens
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -30,6 +30,10 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.rocketserverkmm.project.KEY_TOKEN
+import org.rocketserverkmm.project.data.local.KVaultSettingsProviderSingleton
+import org.rocketserverkmm.project.LoginMutation
+import org.rocketserverkmm.project.dependencies.DependencyProvider
 
 class LoginScreen : Screen {
     @Composable
@@ -88,7 +92,7 @@ class LoginScreen : Screen {
 }
 
 private suspend fun login(email: String): Boolean {
-    val response = ProvideApolloClientSingleton.apolloClient.mutation(LoginMutation(email = email)).execute()
+    val response = DependencyProvider.apolloClient.mutation(LoginMutation(email = email)).execute()
     val data = response.data
     return if (data != null) {
         if (data.login?.token != null) {

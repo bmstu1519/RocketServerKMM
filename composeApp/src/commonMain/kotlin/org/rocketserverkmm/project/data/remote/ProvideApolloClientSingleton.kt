@@ -1,8 +1,9 @@
-package org.rocketserverkmm.project
+package org.rocketserverkmm.project.data.remote
 
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.network.http.HttpNetworkTransport
 import kotlinx.coroutines.delay
+import org.rocketserverkmm.project.dependencies.DependencyProvider
 
 object ProvideApolloClientSingleton {
     internal val apolloClient: ApolloClient by lazy {
@@ -10,7 +11,7 @@ object ProvideApolloClientSingleton {
             .networkTransport(
                 HttpNetworkTransport.Builder()
                     .serverUrl("https://apollo-fullstack-tutorial.herokuapp.com/graphql")
-                    .httpEngine(ProvideKtorClientSingleton.getInstance())
+                    .httpEngine(DependencyProvider.ktorClient)
                     .build()
             )
             .webSocketServerUrl("wss://apollo-fullstack-tutorial.herokuapp.com/graphql")

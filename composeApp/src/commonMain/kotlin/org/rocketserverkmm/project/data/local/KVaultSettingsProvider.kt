@@ -1,6 +1,7 @@
-package org.rocketserverkmm.project
+package org.rocketserverkmm.project.data.local
 
 import com.liftric.kvault.KVault
+import org.rocketserverkmm.project.getKVaultInstance
 
 interface SettingsProvider {
     fun setToken(key: String, value: String): Boolean

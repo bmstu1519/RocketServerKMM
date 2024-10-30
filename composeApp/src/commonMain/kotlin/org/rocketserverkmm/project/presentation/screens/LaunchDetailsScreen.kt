@@ -1,4 +1,4 @@
-package org.rocketserverkmm.project
+package org.rocketserverkmm.project.presentation.screens
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,6 +31,12 @@ import coil3.compose.AsyncImage
 import com.apollographql.apollo.exception.ApolloNetworkException
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
+import org.rocketserverkmm.project.BookTripMutation
+import org.rocketserverkmm.project.CancelTripMutation
+import org.rocketserverkmm.project.KEY_TOKEN
+import org.rocketserverkmm.project.data.local.KVaultSettingsProviderSingleton
+import org.rocketserverkmm.project.LaunchDetailsQuery
+import org.rocketserverkmm.project.dependencies.DependencyProvider
 import rocketserverkmm.composeapp.generated.resources.Res
 import rocketserverkmm.composeapp.generated.resources.baseline_error_24
 import rocketserverkmm.composeapp.generated.resources.ic_placeholder
@@ -48,7 +54,7 @@ data class LaunchDetailsScreen(val launchId: String) : Screen {
         val navigator = LocalNavigator.currentOrThrow
         var state by remember { mutableStateOf<LaunchDetailsState>(LaunchDetailsState.Loading) }
         LaunchedEffect(Unit) {
-            val response = ProvideApolloClientSingleton.apolloClient.query(LaunchDetailsQuery(launchId)).execute()
+            val response = DependencyProvider.apolloClient.query(LaunchDetailsQuery(launchId)).execute()
             state = when {
                 response.errors.orEmpty().isNotEmpty() -> {
                     // GraphQL error
@@ -168,7 +174,7 @@ private suspend fun onBookButtonClick(
     } else {
         BookTripMutation(id = launchId)
     }
-    val response = ProvideApolloClientSingleton.apolloClient.mutation(mutation).execute()
+    val response = DependencyProvider.apolloClient.mutation(mutation).execute()
     return if (response.data != null) {
         true
     } else {
