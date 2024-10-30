@@ -29,13 +29,13 @@ class LaunchListViewModel(
 
     fun actionToDestination(action: LaunchListAction) {
         when (action) {
-            is LaunchListAction.Load -> load()
-            is LaunchListAction.Refresh -> refresh()
+            is LaunchListAction.Load -> loadItems()
+            is LaunchListAction.LoadMore -> loadItems()
             is LaunchListAction.NavigateToDetails -> navigateToDetails(action.launchId)
         }
     }
 
-    private fun load() {
+    private fun loadItems() {
         if (_state.value.isLoading) return
 
         viewModelScope.launch {
@@ -43,12 +43,6 @@ class LaunchListViewModel(
             val result = getLaunchesUseCase(currentCursor)
             handleResult(result)
         }
-    }
-
-    private fun refresh() {
-        currentCursor = null
-        _state.update { it.copy(launches = emptyList(), error = null) }
-        load()
     }
 
     private fun navigateToDetails(launchId: String) {

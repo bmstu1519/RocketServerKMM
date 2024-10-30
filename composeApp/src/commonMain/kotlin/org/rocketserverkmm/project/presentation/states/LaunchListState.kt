@@ -11,7 +11,7 @@ data class LaunchListState(
 
 sealed class LaunchListAction {
     data object Load : LaunchListAction()
-    data object Refresh : LaunchListAction()
+    data object LoadMore : LaunchListAction()
     data class NavigateToDetails(val launchId: String) : LaunchListAction()
 }
 
