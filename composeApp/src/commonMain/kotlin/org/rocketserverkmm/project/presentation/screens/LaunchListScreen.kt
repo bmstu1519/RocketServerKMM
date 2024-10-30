@@ -1,63 +1,71 @@
-
 package org.rocketserverkmm.project.presentation.screens
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
+import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import coil3.compose.AsyncImage
-import com.apollographql.apollo.api.ApolloResponse
-import com.apollographql.apollo.api.Optional
 import org.jetbrains.compose.resources.painterResource
-import org.rocketserverkmm.project.LaunchListQuery
 import org.rocketserverkmm.project.dependencies.DependencyProvider
+import org.rocketserverkmm.project.dependencies.ViewModelFactory
+import org.rocketserverkmm.project.domain.models.LaunchDTO
+import org.rocketserverkmm.project.presentation.states.LaunchListAction
+import org.rocketserverkmm.project.presentation.states.LaunchListDestination
+import org.rocketserverkmm.project.presentation.viewmodels.LaunchListViewModel
 import rocketserverkmm.composeapp.generated.resources.Res
 import rocketserverkmm.composeapp.generated.resources.baseline_error_24
 import rocketserverkmm.composeapp.generated.resources.ic_placeholder
 
 class LaunchListScreen : Screen {
-
     @Composable
     override fun Content() {
+        val viewModelFactory = ViewModelFactory(DependencyProvider)
+        val viewModel: LaunchListViewModel = viewModel(
+            factory = viewModelFactory,
+            viewModelStoreOwner = LocalViewModelStoreOwner.current
+                ?: error("No ViewModelStoreOwner provided")
+        )
 
+        val state by viewModel.state.collectAsState()
         val navigator = LocalNavigator.currentOrThrow
-        var cursor: String? by remember { mutableStateOf(null) }
-        var response: ApolloResponse<LaunchListQuery.Data>? by remember { mutableStateOf(null) }
-        var launchList by remember { mutableStateOf(emptyList<LaunchListQuery.Launch>()) }
-        LaunchedEffect(cursor) {
-            response = DependencyProvider.apolloClient.query(LaunchListQuery(Optional.present(cursor))).execute()
-            launchList = launchList + response?.data?.launches?.launches?.filterNotNull().orEmpty()
+
+        LaunchedEffect(Unit) {
+            viewModel.actionToDestination(LaunchListAction.Load)
         }
 
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
-            items(launchList) { launch ->
-                LaunchItem(launch = launch, navigator)
+        LazyColumn {
+            items(state.launches) { launch ->
+                LaunchItems(launch) {
+                    viewModel.actionToDestination(
+                        LaunchListAction.NavigateToDetails(
+                            launch.id
+                        )
+                    )
+                }
             }
+        }
 
-            item {
-                if (response?.data?.launches?.hasMore == true) {
-                    LoadingItem()
-                    cursor = response?.data?.launches?.cursor
+        LaunchedEffect(Unit) {
+            viewModel.destination.collect { destination ->
+                when (destination) {
+                    is LaunchListDestination.LaunchDetails -> navigator.push(
+                        LaunchDetailsScreen(
+                            destination.launchId
+                        )
+                    )
                 }
             }
         }
@@ -65,41 +73,22 @@ class LaunchListScreen : Screen {
 }
 
 @Composable
-private fun LaunchItem(launch: LaunchListQuery.Launch, navigator: Navigator) {
-
+private fun LaunchItems(
+    launch: LaunchDTO,
+    onItemClick: () -> Unit
+) {
     ListItem(
-        modifier = Modifier.clickable {
-            navigator.push(LaunchDetailsScreen(launchId = launch.id))
-        },
-        headlineContent = {
-            // Mission name
-            Text(text = launch.mission?.name ?: "")
-        },
-        supportingContent = {
-            // Site
-            Text(text = launch.site ?: "")
-        },
+        modifier = Modifier.clickable(onClick = onItemClick),
+        headlineContent = { Text(text = launch.missionName.orEmpty()) },
+        supportingContent = { Text(text = launch.site.orEmpty()) },
         leadingContent = {
-            // Mission patch
             AsyncImage(
-                modifier = Modifier.size(68.dp, 68.dp),
-                model = launch.mission?.missionPatch,
+                modifier = Modifier.size(68.dp),
+                model = launch.missionPatchUrl,
                 placeholder = painterResource(Res.drawable.ic_placeholder),
                 error = painterResource(Res.drawable.baseline_error_24),
                 contentDescription = "Mission patch"
             )
         }
     )
-}
-
-@Composable
-private fun LoadingItem() {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-    ) {
-        CircularProgressIndicator()
-    }
 }

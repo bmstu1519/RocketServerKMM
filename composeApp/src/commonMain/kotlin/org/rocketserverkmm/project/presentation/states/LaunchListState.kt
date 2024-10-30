@@ -8,3 +8,13 @@ data class LaunchListState(
     val hasMore: Boolean = false,
     val error: String? = null
 )
+
+sealed class LaunchListAction {
+    data object Load : LaunchListAction()
+    data object Refresh : LaunchListAction()
+    data class NavigateToDetails(val launchId: String) : LaunchListAction()
+}
+
+sealed class LaunchListDestination {
+    data class LaunchDetails(val launchId: String) : LaunchListDestination()
+}
