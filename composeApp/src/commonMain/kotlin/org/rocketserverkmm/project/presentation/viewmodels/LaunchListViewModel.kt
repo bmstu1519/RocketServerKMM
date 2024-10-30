@@ -8,8 +8,8 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.rocketserverkmm.project.domain.models.LaunchDTO
-import org.rocketserverkmm.project.domain.models.LaunchesResult
+import org.rocketserverkmm.project.domain.models.LaunchList.LaunchDTO
+import org.rocketserverkmm.project.domain.models.LaunchList.LaunchesResult
 import org.rocketserverkmm.project.domain.usecases.GetLaunchesUseCase
 import org.rocketserverkmm.project.presentation.states.LaunchListAction
 import org.rocketserverkmm.project.presentation.states.LaunchListDestination

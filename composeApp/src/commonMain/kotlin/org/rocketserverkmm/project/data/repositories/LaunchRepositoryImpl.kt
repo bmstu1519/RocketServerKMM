@@ -3,8 +3,8 @@ package org.rocketserverkmm.project.data.repositories
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Optional
 import org.rocketserverkmm.project.LaunchListQuery
-import org.rocketserverkmm.project.domain.models.LaunchesResult
-import org.rocketserverkmm.project.domain.models.toDomain
+import org.rocketserverkmm.project.domain.models.LaunchList.LaunchesResult
+import org.rocketserverkmm.project.domain.models.LaunchList.toDomain
 import org.rocketserverkmm.project.domain.repositories.LaunchRepository
 
 class LaunchRepositoryImpl(
