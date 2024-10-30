@@ -1,4 +1,4 @@
-package org.rocketserverkmm.project.domain.models
+package org.rocketserverkmm.project.domain.models.LaunchList
 
 import org.rocketserverkmm.project.LaunchListQuery
 
