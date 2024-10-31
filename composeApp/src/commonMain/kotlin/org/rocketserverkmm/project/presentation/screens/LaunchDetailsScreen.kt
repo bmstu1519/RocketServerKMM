@@ -34,7 +34,6 @@ import org.jetbrains.compose.resources.painterResource
 import org.rocketserverkmm.project.BookTripMutation
 import org.rocketserverkmm.project.CancelTripMutation
 import org.rocketserverkmm.project.KEY_TOKEN
-import org.rocketserverkmm.project.data.local.KVaultSettingsProviderSingleton
 import org.rocketserverkmm.project.LaunchDetailsQuery
 import org.rocketserverkmm.project.dependencies.DependencyProvider
 import rocketserverkmm.composeapp.generated.resources.Res
@@ -165,7 +164,7 @@ private suspend fun onBookButtonClick(
     isBooked: Boolean,
     navigator: Navigator
 ): Boolean {
-    if (KVaultSettingsProviderSingleton.getInstance().getToken(KEY_TOKEN) == null) {
+    if (DependencyProvider.getKeyVaultClient().getToken(KEY_TOKEN) == null) {
         navigator.push(LoginScreen())
         return false
     }
