@@ -21,7 +21,7 @@ import io.ktor.http.HttpHeaders
 import io.ktor.util.flattenEntries
 import okio.Buffer
 import org.rocketserverkmm.project.KEY_TOKEN
-import org.rocketserverkmm.project.data.local.KVaultSettingsProviderSingleton
+import org.rocketserverkmm.project.dependencies.DependencyProvider
 import org.rocketserverkmm.project.getEngine
 import kotlin.coroutines.cancellation.CancellationException
 
@@ -49,7 +49,7 @@ object ProvideKtorClientSingleton {
     fun getInstance(): HttpEngine = HttpKtorClientEngine(ktorClient)
 }
 
-private fun getToken(): String? = KVaultSettingsProviderSingleton.getInstance().getToken(KEY_TOKEN)
+private fun getToken(): String? = DependencyProvider.getKeyVaultClient().getToken(KEY_TOKEN)
 
 class HttpKtorClientEngine(private val client: HttpClient) : HttpEngine {
     override suspend fun execute(request: HttpRequest): HttpResponse {
