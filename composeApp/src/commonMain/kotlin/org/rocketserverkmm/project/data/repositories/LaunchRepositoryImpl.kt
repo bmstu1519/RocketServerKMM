@@ -5,6 +5,7 @@ import com.apollographql.apollo.api.Optional
 import org.rocketserverkmm.project.LaunchListQuery
 import org.rocketserverkmm.project.domain.models.LaunchList.LaunchesResult
 import org.rocketserverkmm.project.domain.models.LaunchList.toDomain
+import org.rocketserverkmm.project.domain.models.login.LoginResult
 import org.rocketserverkmm.project.domain.repositories.LaunchRepository
 
 class LaunchRepositoryImpl(
@@ -20,5 +21,9 @@ class LaunchRepositoryImpl(
                 cursor = launches.cursor
             )
         } ?: LaunchesResult(emptyList(), false, null)
+    }
+
+    override suspend fun login(email: String): LoginResult {
+        TODO("Not yet implemented")
     }
 }
