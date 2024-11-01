@@ -8,110 +8,127 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
+import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import org.jetbrains.compose.ui.tooling.preview.Preview
-import org.rocketserverkmm.project.KEY_TOKEN
-import org.rocketserverkmm.project.data.local.KVaultSettingsProviderSingleton
-import org.rocketserverkmm.project.LoginMutation
 import org.rocketserverkmm.project.dependencies.DependencyProvider
+import org.rocketserverkmm.project.dependencies.ViewModelFactory
+import org.rocketserverkmm.project.presentation.states.ButtonState
+import org.rocketserverkmm.project.presentation.states.LoginAction
+import org.rocketserverkmm.project.presentation.states.LoginDestination
+import org.rocketserverkmm.project.presentation.viewmodels.LoginViewModel
 
 class LoginScreen : Screen {
     @Composable
     override fun Content() {
+        val viewModelFactory = ViewModelFactory(DependencyProvider)
+        val viewModel: LoginViewModel = viewModel(
+            factory = viewModelFactory,
+            viewModelStoreOwner = LocalViewModelStoreOwner.current
+                ?: error("No ViewModelStoreOwner provided")
+        )
+
+        val state by viewModel.state.collectAsState()
         val navigator = LocalNavigator.currentOrThrow
+        var email by remember { mutableStateOf("") }
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp)
         ) {
-            // Title
+
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.headlineMedium,
-                text = "Login"
+                text = state.titleText
             )
 
-            // Email
-            var email by remember { mutableStateOf("") }
             OutlinedTextField(
                 modifier = Modifier
                     .padding(top = 16.dp)
                     .fillMaxWidth(),
-                label = { Text("Email") },
+                label = { Text(state.labelText) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 value = email,
                 onValueChange = { email = it }
             )
 
-            // Submit button
-            var loading by remember { mutableStateOf(false) }
-            val scope = rememberCoroutineScope()
             Button(
                 modifier = Modifier
                     .padding(top = 32.dp)
                     .fillMaxWidth(),
-                enabled = !loading,
+
                 onClick = {
-                    loading = true
-                    scope.launch {
-                        val ok = login(email)
-                        loading = false
-                        navigator.pop()
+                    viewModel.actionToDestination(LoginAction.ClickSubmit(email))
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = when(state.buttonState) {
+                        ButtonState.Error -> Color(0xFFFFABAB)
+                        ButtonState.Loading -> MaterialTheme.colorScheme.primary
+                        ButtonState.Success -> Color(0xFFA5D6A7)
+                        null -> MaterialTheme.colorScheme.primary
                     }
-                }
+                )
             ) {
-                if (loading) {
-                    Loading()
-                } else {
-                    Text(text = "Submit")
+                when(state.buttonState){
+                    ButtonState.Loading -> Loading()
+                    ButtonState.Success -> Icon(
+                        imageVector = Icons.Default.Check,
+                        contentDescription = "Success",
+                        tint = Color.White
+                    )
+                    ButtonState.Error -> Icon(
+                        imageVector = Icons.Default.Warning,
+                        contentDescription = "Error",
+                        tint = Color.White
+                    )
+                    null -> Text(text = state.buttonText)
+                }
+            }
+
+            LaunchedEffect(Unit) {
+                viewModel.destination.collect { destination ->
+                    when (destination) {
+                        LoginDestination.GoBack -> navigator.pop()
+                    }
                 }
             }
         }
     }
 }
 
-private suspend fun login(email: String): Boolean {
-    val response = DependencyProvider.apolloClient.mutation(LoginMutation(email = email)).execute()
-    val data = response.data
-    return if (data != null) {
-        if (data.login?.token != null) {
-            KVaultSettingsProviderSingleton.getInstance().setToken(KEY_TOKEN, data.login.token)
-            true
-        } else {
-            println("Login: Failed to login: no token returned by the backend")
-            false
-        }
-    } else {
-        if (response.exception != null) {
-            println("Login: Failed to login $response.exception")
-            false
-        } else {
-            println("Login: Failed to login: ${response.errors!![0].message}")
-            false
-        }
-    }
-}
+
 
 @Composable
 private fun Loading() {
@@ -120,10 +137,4 @@ private fun Loading() {
         color = LocalContentColor.current,
         strokeWidth = 2.dp,
     )
-}
-
-@Preview(/*showBackground = true*/)
-@Composable
-private fun LoginPreview() {
-    LoginScreen()
 }
