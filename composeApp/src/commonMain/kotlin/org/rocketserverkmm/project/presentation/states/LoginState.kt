@@ -1,13 +1,15 @@
 package org.rocketserverkmm.project.presentation.states
 
 data class LoginState(
-    val buttonText: String? = null,
+    val buttonState: ButtonState? = null,
+    val titleText: String = "Login",
+    val labelText: String = "Email",
+    val buttonText: String = "Submit",
     val error: String? = null
 )
 
 sealed class LoginAction {
-    data class InputEmail(val email: String) : LoginAction()
-    data object ClickSubmit : LoginAction()
+    data class ClickSubmit(val email: String) : LoginAction()
 }
 
 sealed class LoginDestination {

@@ -1,10 +1,9 @@
 package org.rocketserverkmm.project.domain.models.login
 
-data class LoginResult(
-    val login: LoginDto? = null,
-    val error: String? = null
-)
+import org.rocketserverkmm.project.presentation.states.ButtonState
 
-data class LoginDto(
-    val token: String
+data class LoginResult(
+    val buttonState: ButtonState? = null,
+    val token: String? = null,
+    val error: String? = null
 )
