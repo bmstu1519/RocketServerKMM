@@ -6,9 +6,9 @@ import org.rocketserverkmm.project.LaunchListQuery
 import org.rocketserverkmm.project.LoginMutation
 import org.rocketserverkmm.project.domain.models.LaunchList.LaunchesResult
 import org.rocketserverkmm.project.domain.models.LaunchList.toDomain
-import org.rocketserverkmm.project.domain.models.login.LoginDto
 import org.rocketserverkmm.project.domain.models.login.LoginResult
 import org.rocketserverkmm.project.domain.repositories.LaunchRepository
+import org.rocketserverkmm.project.presentation.states.ButtonState
 
 class LaunchRepositoryImpl(
     private val apolloClient: ApolloClient
@@ -31,12 +31,20 @@ class LaunchRepositoryImpl(
             mutationResult.login?.let { login ->
                 login.token?.let {
                     LoginResult(
-                        login = LoginDto(
-                            token = login.token
-                        )
+                        buttonState = ButtonState.Success,
+                        token = login.token
                     )
-                } ?: LoginResult(error = "Login: Failed to login: no token returned by the backend")
-            } ?: LoginResult(error = "Login: Failed to login: ${response.errors!![0].message}")
-        } ?: LoginResult(error = "Login: Failed to login ${response.exception}")
+                } ?: LoginResult(
+                    buttonState = ButtonState.Error,
+                    error = "Login: Failed to login: no token returned by the backend"
+                )
+            } ?: LoginResult(
+                buttonState = ButtonState.Error,
+                error = "Login: Failed to login: ${response.errors!![0].message}"
+            )
+        } ?: LoginResult(
+            buttonState = ButtonState.Error,
+            error = "Login: Failed to login ${response.exception}"
+        )
     }
 }
