@@ -36,15 +36,33 @@ class LoginViewModel(
 
     fun actionToDestination(action: LoginAction) {
         when (action) {
-            is LoginAction.ClickSubmit -> saveToken(action.email)
+            is LoginAction.ClickSubmit -> validateInputEmail(action.inputEmail)
         }
     }
 
-    private fun saveToken(email: String) {
+    private fun validateInputEmail(inputEmail: String?) {
         viewModelScope.launch {
-            updateState(
-                buttonState = ButtonState.Loading,
-            )
+            when(inputEmail){
+                null -> {
+                    handleResult(LoginResult(buttonState = ButtonState.Error))
+                    delay(2000)
+                    resetButtonState()
+                }
+                else -> {
+                    if (matchPattern(inputEmail)) {
+                        handleResult(LoginResult(buttonState = ButtonState.Loading))
+                        saveToken(inputEmail)
+                    } else {
+                        handleResult(LoginResult(buttonState = ButtonState.Error))
+                        delay(2000)
+                        resetButtonState()
+                    }
+                }
+            }
+        }
+    }
+
+    private suspend fun saveToken(email: String) {
             val result = getLoginUseCase.login(email)
             when (result.buttonState) {
                 ButtonState.Success -> {
@@ -68,25 +86,13 @@ class LoginViewModel(
                     /* nothing to do */
                 }
             }
-        }
     }
 
     private suspend fun resetButtonState() {
         updateState(buttonState = null)
     }
 
-    private suspend fun validateInputEmail(inputEmail: String?) : LoginResult {
-//        if (inputEmail == null) {
-//            return LoginResult(
-//                buttonState = B
-//            )
-//        }
-        TODO()
-    }
-
-    private fun matchPattern(inputEmail: String) : String {
-        TODO()
-    }
+    private fun matchPattern(inputEmail: String) : Boolean = Constants.EMAIL_REGEX.matches(inputEmail)
 
     private fun goBack() {
         viewModelScope.launch {

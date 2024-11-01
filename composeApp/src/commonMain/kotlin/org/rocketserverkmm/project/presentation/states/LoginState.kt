@@ -9,7 +9,7 @@ data class LoginState(
 )
 
 sealed class LoginAction {
-    data class ClickSubmit(val email: String) : LoginAction()
+    data class ClickSubmit(val inputEmail: String?) : LoginAction()
 }
 
 sealed class LoginDestination {

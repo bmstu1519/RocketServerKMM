@@ -5,3 +5,7 @@ sealed class ButtonState {
     data object Success: ButtonState()
     data object Error: ButtonState()
 }
+
+//sealed class SubmitButtonState{
+//
+//}
