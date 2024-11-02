@@ -26,7 +26,7 @@ import coil3.compose.AsyncImage
 import org.jetbrains.compose.resources.painterResource
 import org.rocketserverkmm.project.dependencies.DependencyProvider
 import org.rocketserverkmm.project.dependencies.ViewModelFactory
-import org.rocketserverkmm.project.domain.models.LaunchList.LaunchDTO
+import org.rocketserverkmm.project.domain.models.launchList.LaunchDTO
 import org.rocketserverkmm.project.presentation.states.LaunchListAction
 import org.rocketserverkmm.project.presentation.states.LaunchListDestination
 import org.rocketserverkmm.project.presentation.viewmodels.LaunchListViewModel
