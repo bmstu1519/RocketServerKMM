@@ -1,6 +1,6 @@
 package org.rocketserverkmm.project.domain.repositories
 
-import org.rocketserverkmm.project.domain.models.LaunchList.LaunchesResult
+import org.rocketserverkmm.project.domain.models.launchList.LaunchesResult
 import org.rocketserverkmm.project.domain.models.login.LoginResult
 
 interface LaunchRepository {
