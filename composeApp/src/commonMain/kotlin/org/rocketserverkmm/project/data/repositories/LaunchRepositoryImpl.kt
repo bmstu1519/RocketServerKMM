@@ -4,6 +4,8 @@ import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Optional
 import org.rocketserverkmm.project.LaunchListQuery
 import org.rocketserverkmm.project.LoginMutation
+import org.rocketserverkmm.project.domain.models.launchDetails.BookTripMutationResult
+import org.rocketserverkmm.project.domain.models.launchDetails.LaunchDetailsResult
 import org.rocketserverkmm.project.domain.models.launchList.LaunchesResult
 import org.rocketserverkmm.project.domain.models.launchList.toDomain
 import org.rocketserverkmm.project.domain.models.login.LoginResult
@@ -46,5 +48,13 @@ class LaunchRepositoryImpl(
             buttonState = ButtonState.Error,
             error = "Login: Failed to login ${response.exception}"
         )
+    }
+
+    override suspend fun getLaunchDetails(launchId: String): LaunchDetailsResult {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getTripMutation(launchId: String): BookTripMutationResult {
+        TODO("Not yet implemented")
     }
 }
