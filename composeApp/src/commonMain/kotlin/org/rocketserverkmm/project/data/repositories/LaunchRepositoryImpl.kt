@@ -2,10 +2,15 @@ package org.rocketserverkmm.project.data.repositories
 
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Optional
+import com.apollographql.apollo.exception.ApolloNetworkException
+import org.rocketserverkmm.project.LaunchDetailsQuery
 import org.rocketserverkmm.project.LaunchListQuery
 import org.rocketserverkmm.project.LoginMutation
+import org.rocketserverkmm.project.dependencies.DependencyProvider
 import org.rocketserverkmm.project.domain.models.launchDetails.BookTripMutationResult
 import org.rocketserverkmm.project.domain.models.launchDetails.LaunchDetailsResult
+import org.rocketserverkmm.project.domain.models.launchDetails.MissionDTO
+import org.rocketserverkmm.project.domain.models.launchDetails.RocketDTO
 import org.rocketserverkmm.project.domain.models.launchList.LaunchesResult
 import org.rocketserverkmm.project.domain.models.launchList.toDomain
 import org.rocketserverkmm.project.domain.models.login.LoginResult
@@ -50,8 +55,18 @@ class LaunchRepositoryImpl(
         )
     }
 
-    override suspend fun getLaunchDetails(launchId: String): LaunchDetailsResult {
-        TODO("Not yet implemented")
+    override suspend fun getLaunchDetails(launchId: String): Result<LaunchDetailsResult> {
+        return runCatching {
+            val response = DependencyProvider.apolloClient.query(LaunchDetailsQuery(launchId)).execute()
+
+            LaunchDetailsResult(
+                id = response.data?.launch?.id,
+                site = response.data?.launch?.site,
+                mission = MissionDTO(response.data?.launch?.mission),
+                rocket = RocketDTO(response.data?.launch?.rocket),
+                isBooked = response.data?.launch?.isBooked,
+            )
+        }
     }
 
     override suspend fun getTripMutation(launchId: String): BookTripMutationResult {
