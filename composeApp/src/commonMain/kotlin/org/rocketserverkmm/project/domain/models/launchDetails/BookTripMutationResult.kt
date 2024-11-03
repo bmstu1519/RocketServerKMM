@@ -18,22 +18,3 @@ sealed class MutationDto(
         override val message: String?,
     ) : MutationDto(success, message)
 }
-
-//public data class Data(
-//    public val bookTrips: BookTrips,
-//) : Mutation.Data
-//
-//public data class BookTrips(
-//    public val success: Boolean,
-//    public val message: String?,
-//)
-//
-//
-//public data class Data(
-//    public val cancelTrip: CancelTrip,
-//) : Mutation.Data
-//
-//public data class CancelTrip(
-//    public val success: Boolean,
-//    public val message: String?,
-//)
