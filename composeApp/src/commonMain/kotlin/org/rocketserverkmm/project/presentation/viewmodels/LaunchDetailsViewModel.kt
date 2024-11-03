@@ -26,6 +26,8 @@ class LaunchDetailsViewModel(
     private val _destination = MutableSharedFlow<LaunchDetailsDestination>()
     val destination: SharedFlow<LaunchDetailsDestination> = _destination
 
+    private var isCanBooked: Boolean? = null
+
     fun actionToDestination(action: LaunchDetailsAction) {
         when (action) {
             is LaunchDetailsAction.Load -> load(action.launchId)
@@ -38,9 +40,10 @@ class LaunchDetailsViewModel(
             val result = getLaunchDetailsUseCase.getLaunchDetails(launchId)
             result
                 .onSuccess { success ->
+                    isCanBooked = success.isBooked
                     handleResult(
                         _LaunchDetailsState(
-                            isBooked = success.isBooked,
+//                            isBooked = success.isBooked,
                             mission = success.mission,
                             rocket = success.rocket,
                         )
@@ -54,6 +57,10 @@ class LaunchDetailsViewModel(
                     )
                 }
         }
+    }
+
+    private fun clickButton() {
+
     }
 
     private suspend fun handleResult(result: _LaunchDetailsState) {
