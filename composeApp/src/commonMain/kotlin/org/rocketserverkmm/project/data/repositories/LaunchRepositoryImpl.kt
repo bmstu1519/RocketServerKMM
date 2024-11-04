@@ -2,12 +2,12 @@ package org.rocketserverkmm.project.data.repositories
 
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Optional
-import com.apollographql.apollo.exception.ApolloNetworkException
+import org.rocketserverkmm.project.BookTripMutation
+import org.rocketserverkmm.project.CancelTripMutation
 import org.rocketserverkmm.project.LaunchDetailsQuery
 import org.rocketserverkmm.project.LaunchListQuery
 import org.rocketserverkmm.project.LoginMutation
 import org.rocketserverkmm.project.dependencies.DependencyProvider
-import org.rocketserverkmm.project.domain.models.launchDetails.BookTripMutationResult
 import org.rocketserverkmm.project.domain.models.launchDetails.LaunchDetailsResult
 import org.rocketserverkmm.project.domain.models.launchDetails.MissionDTO
 import org.rocketserverkmm.project.domain.models.launchDetails.RocketDTO
@@ -69,7 +69,14 @@ class LaunchRepositoryImpl(
         }
     }
 
-    override suspend fun getTripMutation(launchId: String): BookTripMutationResult {
-        TODO("Not yet implemented")
+    override suspend fun getTripMutation(launchId: String, isBooked: Boolean): Result<Any> {
+        return runCatching {
+            val mutation = if (isBooked) {
+                CancelTripMutation(id = launchId)
+            } else {
+                BookTripMutation(id = launchId)
+            }
+            DependencyProvider.apolloClient.mutation(mutation).execute()
+        }
     }
 }
