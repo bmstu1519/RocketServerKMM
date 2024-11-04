@@ -19,31 +19,31 @@ import org.rocketserverkmm.project.presentation.states.LaunchDetailsState
 
 class LaunchDetailsViewModel(
     private val getLaunchDetailsUseCase: GetLaunchDetailsUseCase
-): ViewModel() {
+) : ViewModel() {
     private val _state = MutableStateFlow(LaunchDetailsState())
     val state: StateFlow<LaunchDetailsState> = _state
 
     private val _destination = MutableSharedFlow<LaunchDetailsDestination>()
     val destination: SharedFlow<LaunchDetailsDestination> = _destination
 
-    private var isCanBooked: Boolean? = null
+    private var _launchId: String = ""
 
     fun actionToDestination(action: LaunchDetailsAction) {
         when (action) {
             is LaunchDetailsAction.Load -> load(action.launchId)
-            LaunchDetailsAction.ClickBookButton -> TODO()
+            LaunchDetailsAction.ClickBookButton -> clickButton()
         }
     }
 
     private fun load(launchId: String) {
         viewModelScope.launch {
+            _launchId = launchId
             val result = getLaunchDetailsUseCase.getLaunchDetails(launchId)
             result
                 .onSuccess { success ->
-                    isCanBooked = success.isBooked
                     handleResult(
                         _LaunchDetailsState(
-//                            isBooked = success.isBooked,
+                            isBooked = success.isBooked,
                             mission = success.mission,
                             rocket = success.rocket,
                         )
@@ -60,7 +60,29 @@ class LaunchDetailsViewModel(
     }
 
     private fun clickButton() {
-
+        viewModelScope.launch {
+            val isBooked = state.value.isBooked
+            isBooked?.let {
+                val result = getLaunchDetailsUseCase.tripMutation(_launchId, isBooked)
+                result
+                    .onSuccess {
+                        handleResult(
+                            _LaunchDetailsState(
+                                isBooked = !isBooked
+                            )
+                        )
+                    }
+                    .onFailure { exception ->
+                        println("LaunchDetails: Failed to book/cancel trip ${exception.message}")
+                        handleResult(
+                            _LaunchDetailsState(
+                                bookedState = ButtonState.Error,
+                                errorMessage = exception.message
+                            )
+                        )
+                    }
+            }
+        }
     }
 
     private suspend fun handleResult(result: _LaunchDetailsState) {
