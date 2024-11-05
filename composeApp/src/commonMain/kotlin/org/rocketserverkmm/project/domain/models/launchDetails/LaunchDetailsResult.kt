@@ -1,7 +1,6 @@
 package org.rocketserverkmm.project.domain.models.launchDetails
 
 import org.rocketserverkmm.project.LaunchDetailsQuery
-import org.rocketserverkmm.project.presentation.states.ButtonState
 
 data class LaunchDetailsResult(
     val id: String? = null,
@@ -9,14 +8,6 @@ data class LaunchDetailsResult(
     val mission: MissionDTO? = null,
     val rocket: RocketDTO? = null,
     val isBooked: Boolean? = null,
-)
-
-data class _LaunchDetailsState(
-    val bookedState: ButtonState? = null,
-    val isBooked: Boolean? = null,
-    val mission: MissionDTO? = null,
-    val rocket: RocketDTO? = null,
-    val errorMessage: String? = null,
 )
 
 data class MissionDTO(
