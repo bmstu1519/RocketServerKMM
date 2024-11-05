@@ -3,6 +3,7 @@ package org.rocketserverkmm.project.dependencies
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
+import org.rocketserverkmm.project.presentation.viewmodels.LaunchDetailsViewModel
 import org.rocketserverkmm.project.presentation.viewmodels.LaunchListViewModel
 import org.rocketserverkmm.project.presentation.viewmodels.LoginViewModel
 import kotlin.reflect.KClass
@@ -18,6 +19,9 @@ class ViewModelFactory(
             }
             LoginViewModel::class -> {
                 LoginViewModel(dependencyProvider.getLoginUseCase()) as T
+            }
+            LaunchDetailsViewModel::class -> {
+                LaunchDetailsViewModel(dependencyProvider.getLaunchDetailsUseCase()) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class")
         }

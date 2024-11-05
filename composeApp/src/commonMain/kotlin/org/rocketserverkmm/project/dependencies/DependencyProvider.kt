@@ -7,6 +7,7 @@ import org.rocketserverkmm.project.data.repositories.KeyVaultRepositoryImpl
 import org.rocketserverkmm.project.data.repositories.LaunchRepositoryImpl
 import org.rocketserverkmm.project.domain.repositories.KeyVaultRepository
 import org.rocketserverkmm.project.domain.repositories.LaunchRepository
+import org.rocketserverkmm.project.domain.usecases.GetLaunchDetailsUseCase
 import org.rocketserverkmm.project.domain.usecases.GetLaunchesUseCase
 import org.rocketserverkmm.project.domain.usecases.GetLoginUseCase
 
@@ -22,7 +23,13 @@ object DependencyProvider {
 
     //useCases
     fun getLaunchUseCase(): GetLaunchesUseCase = GetLaunchesUseCase(launchRepository())
-    fun getLoginUseCase(): GetLoginUseCase = GetLoginUseCase(launchRepository(), getKeyVaultClient())
+
+    fun getLoginUseCase(): GetLoginUseCase =
+        GetLoginUseCase(launchRepository(), getKeyVaultClient())
+
+    fun getLaunchDetailsUseCase(): GetLaunchDetailsUseCase = GetLaunchDetailsUseCase(
+        launchRepository(), getKeyVaultClient()
+    )
 
     //use clients
     fun getKeyVaultClient(): KeyVaultRepository = KeyVaultRepositoryImpl(kVaultClient)
