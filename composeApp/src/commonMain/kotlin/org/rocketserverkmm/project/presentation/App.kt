@@ -2,19 +2,25 @@ package org.rocketserverkmm.project.presentation
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.Navigator
 import coil3.ImageLoader
 import coil3.PlatformContext
@@ -65,10 +71,24 @@ fun App() {
 
         Scaffold(
             topBar = {
-                TopAppBar(title = { Text("RocketServerKMM") },)
+                Surface(
+                    shape = RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp),
+                    color = MaterialTheme.colorScheme.primary,
+                ) {
+                    TopAppBar(
+                        title = { Text("RocketServerKMM") },
+                        colors = TopAppBarDefaults.topAppBarColors(
+                            containerColor = Color.Transparent,
+                            titleContentColor = Color.Black,
+                            navigationIconContentColor = Color.Black,
+                            actionIconContentColor = MaterialTheme.colorScheme.primary,
+                        ),
+                    )
+                }
             },
+
             snackbarHost = { SnackbarHost(snackbarHostState) },
-            ) { paddingValues ->
+        ) { paddingValues ->
             Box(Modifier.padding(paddingValues)) {
                 Navigator(
                     LaunchListScreen()
