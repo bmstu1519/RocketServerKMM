@@ -1,6 +1,8 @@
 package org.rocketserverkmm.project.domain.usecases
 
+import kotlinx.coroutines.flow.Flow
 import org.rocketserverkmm.project.KEY_TOKEN
+import org.rocketserverkmm.project.TripsBookedSubscription
 import org.rocketserverkmm.project.domain.models.launchDetails.LaunchDetailsResult
 import org.rocketserverkmm.project.domain.repositories.KeyVaultRepository
 import org.rocketserverkmm.project.domain.repositories.LaunchRepository
@@ -16,4 +18,7 @@ class GetLaunchDetailsUseCase(
 
     suspend fun tripMutation(launchId: String, isBooked: Boolean): Result<Any> =
         repository.getTripMutation(launchId, isBooked)
+
+    suspend fun tripBookedSubscribe(tripsBookedSubscription: TripsBookedSubscription): Result<Flow<String>> =
+        repository.subscribeToTripBooking(tripsBookedSubscription)
 }

@@ -2,11 +2,14 @@ package org.rocketserverkmm.project.data.repositories
 
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Optional
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import org.rocketserverkmm.project.BookTripMutation
 import org.rocketserverkmm.project.CancelTripMutation
 import org.rocketserverkmm.project.LaunchDetailsQuery
 import org.rocketserverkmm.project.LaunchListQuery
 import org.rocketserverkmm.project.LoginMutation
+import org.rocketserverkmm.project.TripsBookedSubscription
 import org.rocketserverkmm.project.dependencies.DependencyProvider
 import org.rocketserverkmm.project.domain.models.launchDetails.LaunchDetailsResult
 import org.rocketserverkmm.project.domain.models.launchDetails.MissionDTO
@@ -57,7 +60,8 @@ class LaunchRepositoryImpl(
 
     override suspend fun getLaunchDetails(launchId: String): Result<LaunchDetailsResult> {
         return runCatching {
-            val response = DependencyProvider.apolloClient.query(LaunchDetailsQuery(launchId)).execute()
+            val response =
+                DependencyProvider.apolloClient.query(LaunchDetailsQuery(launchId)).execute()
 
             LaunchDetailsResult(
                 id = response.data?.launch?.id,
@@ -77,6 +81,20 @@ class LaunchRepositoryImpl(
                 BookTripMutation(id = launchId)
             }
             DependencyProvider.apolloClient.mutation(mutation).execute()
+        }
+    }
+
+    override suspend fun subscribeToTripBooking(tripsBookedSubscription: TripsBookedSubscription): Result<Flow<String>> {
+        return kotlin.runCatching {
+            val response = DependencyProvider.apolloClient.subscription(TripsBookedSubscription())
+            response.toFlow()
+                .map {
+                    when (it.data?.tripsBooked) {
+                        null -> "Subscription error"
+                        -1 -> "Trip cancelled"
+                        else -> "Trip booked! 🚀"
+                    }
+                }
         }
     }
 }

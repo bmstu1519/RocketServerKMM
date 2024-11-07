@@ -1,5 +1,7 @@
 package org.rocketserverkmm.project.domain.repositories
 
+import kotlinx.coroutines.flow.Flow
+import org.rocketserverkmm.project.TripsBookedSubscription
 import org.rocketserverkmm.project.domain.models.launchDetails.LaunchDetailsResult
 import org.rocketserverkmm.project.domain.models.launchList.LaunchesResult
 import org.rocketserverkmm.project.domain.models.login.LoginResult
@@ -9,4 +11,5 @@ interface LaunchRepository {
     suspend fun login(email: String): LoginResult
     suspend fun getLaunchDetails(launchId: String): Result<LaunchDetailsResult>
     suspend fun getTripMutation(launchId: String, isBooked: Boolean): Result<Any>
+    suspend fun subscribeToTripBooking(tripsBookedSubscription: TripsBookedSubscription): Result<Flow<String>>
 }
