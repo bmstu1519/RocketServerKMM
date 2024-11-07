@@ -42,31 +42,9 @@ import org.rocketserverkmm.project.theme.RocketReserverKMMTheme
 @Composable
 @Preview
 fun App() {
-
     RocketReserverKMMTheme {
-
         setSingletonImageLoaderFactory { context ->
             getAsyncImageLoader(context)
-        }
-        val snackbarHostState = remember { SnackbarHostState() }
-        val tripBookedFlow = remember {
-            DependencyProvider.apolloClient.subscription(TripsBookedSubscription())
-                .toFlow()
-        }
-        val tripBookedResponse: ApolloResponse<TripsBookedSubscription.Data>? by tripBookedFlow.collectAsState(
-            initial = null
-        )
-        LaunchedEffect(tripBookedResponse) {
-            if (tripBookedResponse == null) return@LaunchedEffect
-            val message = when (tripBookedResponse!!.data?.tripsBooked) {
-                null -> "Subscription error"
-                -1 -> "Trip cancelled"
-                else -> "Trip booked! 🚀"
-            }
-            snackbarHostState.showSnackbar(
-                message = message,
-                duration = SnackbarDuration.Short
-            )
         }
 
         Scaffold(
@@ -85,9 +63,7 @@ fun App() {
                         ),
                     )
                 }
-            },
-
-            snackbarHost = { SnackbarHost(snackbarHostState) },
+            }
         ) { paddingValues ->
             Box(Modifier.padding(paddingValues)) {
                 Navigator(

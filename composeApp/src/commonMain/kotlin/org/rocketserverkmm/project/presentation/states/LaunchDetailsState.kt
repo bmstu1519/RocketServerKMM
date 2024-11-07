@@ -5,8 +5,9 @@ import org.rocketserverkmm.project.domain.models.launchDetails.RocketDTO
 
 data class LaunchDetailsState(
     val isLoading: Boolean? = null,
-    val bookedState: ButtonState? = null,
+    val buttonState: ButtonState? = null,
     val isBooked: Boolean? = null,
+    val subscribeSnackbar: String? = null,
     val mission: MissionDTO? = null,
     val rocket: RocketDTO? = null,
     val site: String? = null,
@@ -16,9 +17,9 @@ data class LaunchDetailsState(
 sealed class LaunchDetailsAction {
     data class Load(val launchId: String): LaunchDetailsAction()
     data object ClickBookButton: LaunchDetailsAction()
+//    data object GetSubscribe: LaunchDetailsAction()
 }
 
 sealed class LaunchDetailsDestination {
     data object GoToLogin: LaunchDetailsDestination()
-    data object Booked: LaunchDetailsDestination()
 }
