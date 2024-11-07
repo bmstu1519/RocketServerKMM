@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
@@ -90,7 +91,7 @@ data class LaunchDetailsScreen(val launchId: String) : Screen {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp)
+                .padding(6.dp)
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 AsyncImage(
@@ -129,7 +130,8 @@ data class LaunchDetailsScreen(val launchId: String) : Screen {
                     .fillMaxWidth(),
                 onClick = {
                     viewModel.actionToDestination(LaunchDetailsAction.ClickBookButton)
-                }
+                },
+                shape = RoundedCornerShape(8.dp)
             ) {
                 when (state.buttonState) {
                     ButtonState.Error -> Icon(

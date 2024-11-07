@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
@@ -26,7 +27,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,8 +38,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import org.rocketserverkmm.project.dependencies.DependencyProvider
 import org.rocketserverkmm.project.dependencies.ViewModelFactory
 import org.rocketserverkmm.project.presentation.states.ButtonState
@@ -64,7 +62,7 @@ class LoginScreen : Screen {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp)
+                .padding(6.dp)
         ) {
 
             Text(
@@ -92,6 +90,7 @@ class LoginScreen : Screen {
                 onClick = {
                     viewModel.actionToDestination(LoginAction.ClickSubmit(email))
                 },
+                shape = RoundedCornerShape(8.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = when(state.buttonState) {
                         ButtonState.Error -> Color(0xFFFFABAB)
