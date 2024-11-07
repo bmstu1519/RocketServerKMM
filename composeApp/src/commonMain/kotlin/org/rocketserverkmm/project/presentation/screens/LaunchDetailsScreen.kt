@@ -15,11 +15,16 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -55,6 +60,7 @@ data class LaunchDetailsScreen(val launchId: String) : Screen {
 
         val state by viewModel.state.collectAsState()
         val navigator = LocalNavigator.currentOrThrow
+        val snackbarHostState = remember { SnackbarHostState() }
 
         LaunchedEffect(Unit) {
             viewModel.actionToDestination(LaunchDetailsAction.Load(launchId))
@@ -63,8 +69,20 @@ data class LaunchDetailsScreen(val launchId: String) : Screen {
         LaunchedEffect(Unit) {
             viewModel.destination.collect { destination ->
                 when (destination) {
-                    LaunchDetailsDestination.Booked -> TODO()
                     LaunchDetailsDestination.GoToLogin -> navigator.push(LoginScreen())
+                }
+            }
+        }
+
+        Scaffold(
+            snackbarHost = { SnackbarHost(snackbarHostState) }
+        ) {
+            LaunchedEffect(state.subscribeSnackbar) {
+                state.subscribeSnackbar?.let { subscribeMessage ->
+                    snackbarHostState.showSnackbar(
+                        message = subscribeMessage,
+                        duration = SnackbarDuration.Short
+                    )
                 }
             }
         }
@@ -113,7 +131,7 @@ data class LaunchDetailsScreen(val launchId: String) : Screen {
                     viewModel.actionToDestination(LaunchDetailsAction.ClickBookButton)
                 }
             ) {
-                when (state.bookedState) {
+                when (state.buttonState) {
                     ButtonState.Error -> Icon(
                         imageVector = Icons.Default.Warning,
                         contentDescription = "Error",

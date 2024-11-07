@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.rocketserverkmm.project.TripsBookedSubscription
 import org.rocketserverkmm.project.domain.usecases.GetLaunchDetailsUseCase
 import org.rocketserverkmm.project.presentation.states.ButtonState
 import org.rocketserverkmm.project.presentation.states.LaunchDetailsAction
@@ -31,12 +32,32 @@ class LaunchDetailsViewModel(
                 isLoading = true
             )
         )
+        viewModelScope.launch {
+            getLaunchDetailsUseCase.tripBookedSubscribe(TripsBookedSubscription())
+                .onSuccess { success ->
+                    success.collect { message ->
+                        handleResult(
+                            LaunchDetailsState(
+                                subscribeSnackbar = message
+                            )
+                        )
+                    }
+                }
+                .onFailure { failed ->
+                    handleResult(
+                        LaunchDetailsState(
+                            errorMessage = failed.message
+                        )
+                    )
+                }
+        }
     }
 
     fun actionToDestination(action: LaunchDetailsAction) {
         when (action) {
             is LaunchDetailsAction.Load -> load(action.launchId)
             LaunchDetailsAction.ClickBookButton -> clickButton()
+//            LaunchDetailsAction.GetSubscribe -> subscribeToBookResult()
         }
     }
 
@@ -77,6 +98,8 @@ class LaunchDetailsViewModel(
                     val result = getLaunchDetailsUseCase.tripMutation(_launchId, isBooked)
                     result
                         .onSuccess {
+//                            actionToDestination(LaunchDetailsAction.GetSubscribe)
+//                            subscribeToBookResult()
                             handleResult(
                                 LaunchDetailsState(
                                     isBooked = !isBooked
@@ -87,7 +110,7 @@ class LaunchDetailsViewModel(
                             println("LaunchDetails: Failed to book/cancel trip ${exception.message}")
                             handleResult(
                                 LaunchDetailsState(
-                                    bookedState = ButtonState.Error,
+                                    buttonState = ButtonState.Error,
                                     errorMessage = exception.message
                                 )
                             )
@@ -100,12 +123,35 @@ class LaunchDetailsViewModel(
         }
     }
 
+//    private fun subscribeToBookResult() {
+//        viewModelScope.launch {
+//            getLaunchDetailsUseCase.tripBookedSubscribe(TripsBookedSubscription())
+//                .onSuccess { success ->
+//                    success.collect { message ->
+//                        handleResult(
+//                            LaunchDetailsState(
+//                                subscribeSnackbar = message
+//                            )
+//                        )
+//                    }
+//                }
+//                .onFailure { failed ->
+//                    handleResult(
+//                        LaunchDetailsState(
+//                            errorMessage = failed.message
+//                        )
+//                    )
+//                }
+//        }
+//    }
+
     private fun handleResult(result: LaunchDetailsState) {
         updateState(
             launchDetailsState = LaunchDetailsState(
                 isLoading = result.isLoading,
-                bookedState = result.bookedState,
+                buttonState = result.buttonState,
                 isBooked = result.isBooked,
+                subscribeSnackbar = result.subscribeSnackbar,
                 mission = result.mission,
                 rocket = result.rocket,
                 site = result.site,
@@ -132,8 +178,9 @@ class LaunchDetailsViewModel(
         _state.update { current ->
             current.copy(
                 isLoading = launchDetailsState?.isLoading ?: current.isLoading,
-                bookedState = launchDetailsState?.bookedState,
+                buttonState = launchDetailsState?.buttonState,
                 isBooked = launchDetailsState?.isBooked ?: current.isBooked,
+                subscribeSnackbar = launchDetailsState?.subscribeSnackbar ?: current.subscribeSnackbar,
                 mission = launchDetailsState?.mission ?: current.mission,
                 rocket = launchDetailsState?.rocket ?: current.rocket,
                 site = launchDetailsState?.site ?: current.site,
