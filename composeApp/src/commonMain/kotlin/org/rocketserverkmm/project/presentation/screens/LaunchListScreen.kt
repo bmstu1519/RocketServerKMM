@@ -110,7 +110,7 @@ private fun LoadingItems() {
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(6.dp)
     ) {
         CircularProgressIndicator()
     }

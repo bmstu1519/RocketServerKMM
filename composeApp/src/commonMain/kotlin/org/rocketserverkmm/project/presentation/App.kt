@@ -57,8 +57,8 @@ fun App() {
                         title = { Text("RocketServerKMM") },
                         colors = TopAppBarDefaults.topAppBarColors(
                             containerColor = Color.Transparent,
-                            titleContentColor = Color.Black,
-                            navigationIconContentColor = Color.Black,
+                            titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
                             actionIconContentColor = MaterialTheme.colorScheme.primary,
                         ),
                     )
