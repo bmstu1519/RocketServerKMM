@@ -80,7 +80,7 @@ class LoginViewModel(
         when (result.buttonState) {
             ButtonState.Success -> {
                 result.token?.let { token ->
-//                        getLoginUseCase.saveToken(token = token)
+                        getLoginUseCase.saveToken(token = token)
                 }
                 handleResult(result)
                 ButtonState.Success.handleStateChange(
