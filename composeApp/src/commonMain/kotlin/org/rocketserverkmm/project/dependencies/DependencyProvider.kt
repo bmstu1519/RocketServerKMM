@@ -1,10 +1,10 @@
 package org.rocketserverkmm.project.dependencies
 
-import org.rocketserverkmm.project.data.local.KVaultClientProviderSingleton
-import org.rocketserverkmm.project.data.remote.ProvideApolloClientSingleton
-import org.rocketserverkmm.project.data.remote.ProvideKtorClientSingleton
-import org.rocketserverkmm.project.data.repositories.KeyVaultRepositoryImpl
-import org.rocketserverkmm.project.data.repositories.LaunchRepositoryImpl
+import org.rocketserverkmm.project.settings.local.KVaultClientProviderSingleton
+import org.rocketserverkmm.project.settings.remote.ProvideApolloClientSingleton
+import org.rocketserverkmm.project.settings.remote.ProvideKtorClientSingleton
+import org.rocketserverkmm.project.repositories.KeyVaultRepositoryImpl
+import org.rocketserverkmm.project.repositories.LaunchRepositoryImpl
 import org.rocketserverkmm.project.domain.repositories.KeyVaultRepository
 import org.rocketserverkmm.project.domain.repositories.LaunchRepository
 import org.rocketserverkmm.project.domain.usecases.GetLaunchDetailsUseCase

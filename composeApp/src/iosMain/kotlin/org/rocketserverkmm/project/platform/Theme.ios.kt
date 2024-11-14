@@ -1,4 +1,4 @@
-package org.rocketserverkmm.project.theme
+package org.rocketserverkmm.project.platform
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect

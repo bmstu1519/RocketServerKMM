@@ -1,7 +1,7 @@
-package org.rocketserverkmm.project.data.local
+package org.rocketserverkmm.project.settings.local
 
 import com.liftric.kvault.KVault
-import org.rocketserverkmm.project.getKVaultInstance
+import org.rocketserverkmm.project.platform.getKVaultInstance
 
 object KVaultClientProviderSingleton {
     private val instance: KVault = getKVaultInstance().kVault

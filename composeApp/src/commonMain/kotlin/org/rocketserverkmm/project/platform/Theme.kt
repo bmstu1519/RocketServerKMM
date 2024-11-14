@@ -1,4 +1,4 @@
-package org.rocketserverkmm.project.theme
+package org.rocketserverkmm.project.platform
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -11,6 +11,12 @@ import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import org.rocketserverkmm.project.settings.theme.Pink40
+import org.rocketserverkmm.project.settings.theme.Pink80
+import org.rocketserverkmm.project.settings.theme.Purple40
+import org.rocketserverkmm.project.settings.theme.Purple80
+import org.rocketserverkmm.project.settings.theme.PurpleGrey40
+import org.rocketserverkmm.project.settings.theme.PurpleGrey80
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,

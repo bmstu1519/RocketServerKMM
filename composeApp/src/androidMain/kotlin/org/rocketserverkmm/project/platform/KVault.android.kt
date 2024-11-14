@@ -1,4 +1,4 @@
-package org.rocketserverkmm.project
+package org.rocketserverkmm.project.platform
 
 import android.content.Context
 import com.liftric.kvault.KVault

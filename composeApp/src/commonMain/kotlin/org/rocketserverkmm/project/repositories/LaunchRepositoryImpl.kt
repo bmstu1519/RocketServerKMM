@@ -1,4 +1,4 @@
-package org.rocketserverkmm.project.data.repositories
+package org.rocketserverkmm.project.repositories
 
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Optional
