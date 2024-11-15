@@ -1,4 +1,4 @@
-package org.rocketserverkmm.project.theme
+package org.rocketserverkmm.project.settings.theme
 
 import androidx.compose.ui.graphics.Color
 

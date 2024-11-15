@@ -1,6 +1,6 @@
 package org.rocketserverkmm.project.domain.usecases
 
-import org.rocketserverkmm.project.KEY_TOKEN
+import org.rocketserverkmm.project.platform.KEY_TOKEN
 import org.rocketserverkmm.project.domain.models.login.LoginResult
 import org.rocketserverkmm.project.domain.repositories.KeyVaultRepository
 import org.rocketserverkmm.project.domain.repositories.LaunchRepository

@@ -1,4 +1,4 @@
-package org.rocketserverkmm.project
+package org.rocketserverkmm.project.platform
 
 import com.liftric.kvault.KVault
 

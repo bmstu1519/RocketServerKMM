@@ -1,4 +1,4 @@
-package org.rocketserverkmm.project.theme
+package org.rocketserverkmm.project.platform
 
 import android.app.Activity
 import androidx.compose.runtime.Composable
