@@ -13,6 +13,8 @@ ktor = "2.3.12"
 coroutines = "1.9.0"
 voyager = "1.0.0"
 kVault = "1.12.0"
+koin-bom = "4.0.0"
+
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
 androidx-lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "androidx-lifecycle" }
@@ -32,6 +34,12 @@ kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-c
 voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", name = "voyager-navigator", version.ref = "voyager" }
 voyager-transitions = { module = "cafe.adriel.voyager:voyager-transitions", name = "voyager-transitions", version.ref = "voyager" }
 kvault = { module = "com.liftric:kvault", version.ref = "kVault" }
+koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koin-bom" }
+koin-core = { module = "io.insert-koin:koin-core" }
+koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin-bom" }
+koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin-bom" }
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin-bom" }
+koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin-bom" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
