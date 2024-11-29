@@ -38,7 +38,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import org.rocketserverkmm.project.dependencies.DependencyProvider
 import org.rocketserverkmm.project.dependencies.ViewModelFactory
 import org.rocketserverkmm.project.presentation.states.ButtonState
 import org.rocketserverkmm.project.presentation.states.LoginAction
@@ -48,7 +47,7 @@ import org.rocketserverkmm.project.presentation.viewmodels.LoginViewModel
 class LoginScreen : Screen {
     @Composable
     override fun Content() {
-        val viewModelFactory = ViewModelFactory(DependencyProvider)
+        val viewModelFactory = ViewModelFactory()
         val viewModel: LoginViewModel = viewModel(
             factory = viewModelFactory,
             viewModelStoreOwner = LocalViewModelStoreOwner.current

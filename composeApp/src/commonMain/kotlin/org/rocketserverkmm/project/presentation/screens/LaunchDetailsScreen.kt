@@ -37,7 +37,6 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import coil3.compose.AsyncImage
 import org.jetbrains.compose.resources.painterResource
-import org.rocketserverkmm.project.dependencies.DependencyProvider
 import org.rocketserverkmm.project.dependencies.ViewModelFactory
 import org.rocketserverkmm.project.presentation.states.ButtonState
 import org.rocketserverkmm.project.presentation.states.LaunchDetailsAction
@@ -52,7 +51,7 @@ data class LaunchDetailsScreen(val launchId: String) : Screen {
 
     @Composable
     override fun Content() {
-        val viewModelFactory = ViewModelFactory(DependencyProvider)
+        val viewModelFactory = ViewModelFactory()
         val viewModel: LaunchDetailsViewModel = viewModel(
             factory = viewModelFactory,
             viewModelStoreOwner = LocalViewModelStoreOwner.current

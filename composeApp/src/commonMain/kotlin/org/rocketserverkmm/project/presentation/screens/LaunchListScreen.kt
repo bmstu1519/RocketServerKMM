@@ -24,7 +24,6 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import coil3.compose.AsyncImage
 import org.jetbrains.compose.resources.painterResource
-import org.rocketserverkmm.project.dependencies.DependencyProvider
 import org.rocketserverkmm.project.dependencies.ViewModelFactory
 import org.rocketserverkmm.project.domain.models.launchList.LaunchDTO
 import org.rocketserverkmm.project.presentation.states.LaunchListAction
@@ -37,7 +36,7 @@ import rocketserverkmm.composeapp.generated.resources.ic_placeholder
 class LaunchListScreen : Screen {
     @Composable
     override fun Content() {
-        val viewModelFactory = ViewModelFactory(DependencyProvider)
+        val viewModelFactory = ViewModelFactory()
         val viewModel: LaunchListViewModel = viewModel(
             factory = viewModelFactory,
             viewModelStoreOwner = LocalViewModelStoreOwner.current
