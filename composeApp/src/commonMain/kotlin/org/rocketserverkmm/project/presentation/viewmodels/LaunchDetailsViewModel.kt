@@ -16,6 +16,7 @@ import org.rocketserverkmm.project.presentation.states.LaunchDetailsDestination
 import org.rocketserverkmm.project.presentation.states.LaunchDetailsState
 
 class LaunchDetailsViewModel(
+    private val launchId: String,
     private val getLaunchDetailsUseCase: GetLaunchDetailsUseCase
 ) : ViewModel() {
     private val _state = MutableStateFlow(LaunchDetailsState())
@@ -24,7 +25,7 @@ class LaunchDetailsViewModel(
     private val _destination = MutableSharedFlow<LaunchDetailsDestination>()
     val destination: SharedFlow<LaunchDetailsDestination> = _destination
 
-    private var _launchId: String = ""
+//    private var _launchId: String = ""
 
     init {
         updateState(
@@ -63,7 +64,7 @@ class LaunchDetailsViewModel(
 
     private fun load(launchId: String) {
         viewModelScope.launch {
-            _launchId = launchId
+//            _launchId = launchId
             val result = getLaunchDetailsUseCase.getLaunchDetails(launchId)
             result
                 .onSuccess { success ->
@@ -95,7 +96,7 @@ class LaunchDetailsViewModel(
             viewModelScope.launch {
                 val isBooked = state.value.isBooked
                 isBooked?.let {
-                    val result = getLaunchDetailsUseCase.tripMutation(_launchId, isBooked)
+                    val result = getLaunchDetailsUseCase.tripMutation(launchId, isBooked)
                     result
                         .onSuccess {
 //                            actionToDestination(LaunchDetailsAction.GetSubscribe)

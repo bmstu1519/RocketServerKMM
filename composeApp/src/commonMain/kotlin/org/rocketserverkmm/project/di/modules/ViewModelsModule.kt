@@ -1,6 +1,7 @@
-package org.rocketserverkmm.project.dependencies.di.modules
+package org.rocketserverkmm.project.di.modules
 
 import org.koin.core.module.dsl.singleOf
+import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -20,8 +21,11 @@ val viewModelsModule = module {
     singleOf(::KeyVaultRepositoryImpl).bind<KeyVaultRepository>()
 
     viewModelOf(::LaunchListViewModel)
-    viewModelOf(::LaunchDetailsViewModel)
     viewModelOf(::LoginViewModel)
+    viewModel { (launchId: String) ->
+        val getLaunchDetailsUseCase: GetLaunchDetailsUseCase = get()
+        LaunchDetailsViewModel(launchId, getLaunchDetailsUseCase)
+    }
 
     factory {
         val launchRepository: LaunchRepository = get()
