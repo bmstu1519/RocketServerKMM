@@ -1,4 +1,4 @@
-package org.rocketserverkmm.project.dependencies.di.modules
+package org.rocketserverkmm.project.di.modules
 
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.network.http.HttpEngine
