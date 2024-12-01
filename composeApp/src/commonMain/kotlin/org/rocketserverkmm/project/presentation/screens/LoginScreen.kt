@@ -33,12 +33,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
-import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import org.rocketserverkmm.project.dependencies.ViewModelFactory
+import org.koin.compose.viewmodel.koinViewModel
 import org.rocketserverkmm.project.presentation.states.ButtonState
 import org.rocketserverkmm.project.presentation.states.LoginAction
 import org.rocketserverkmm.project.presentation.states.LoginDestination
@@ -47,12 +45,7 @@ import org.rocketserverkmm.project.presentation.viewmodels.LoginViewModel
 class LoginScreen : Screen {
     @Composable
     override fun Content() {
-        val viewModelFactory = ViewModelFactory()
-        val viewModel: LoginViewModel = viewModel(
-            factory = viewModelFactory,
-            viewModelStoreOwner = LocalViewModelStoreOwner.current
-                ?: error("No ViewModelStoreOwner provided")
-        )
+        val viewModel: LoginViewModel = koinViewModel<LoginViewModel>()
 
         val state by viewModel.state.collectAsState()
         val navigator = LocalNavigator.currentOrThrow

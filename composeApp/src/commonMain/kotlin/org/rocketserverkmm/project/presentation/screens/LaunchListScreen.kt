@@ -17,14 +17,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
-import androidx.lifecycle.viewmodel.compose.viewModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import coil3.compose.AsyncImage
 import org.jetbrains.compose.resources.painterResource
-import org.rocketserverkmm.project.dependencies.ViewModelFactory
+import org.koin.compose.viewmodel.koinViewModel
 import org.rocketserverkmm.project.domain.models.launchList.LaunchDTO
 import org.rocketserverkmm.project.presentation.states.LaunchListAction
 import org.rocketserverkmm.project.presentation.states.LaunchListDestination
@@ -36,12 +34,7 @@ import rocketserverkmm.composeapp.generated.resources.ic_placeholder
 class LaunchListScreen : Screen {
     @Composable
     override fun Content() {
-        val viewModelFactory = ViewModelFactory()
-        val viewModel: LaunchListViewModel = viewModel(
-            factory = viewModelFactory,
-            viewModelStoreOwner = LocalViewModelStoreOwner.current
-                ?: error("No ViewModelStoreOwner provided")
-        )
+        val viewModel: LaunchListViewModel = koinViewModel<LaunchListViewModel>()
 
         val state by viewModel.state.collectAsState()
         val navigator = LocalNavigator.currentOrThrow
