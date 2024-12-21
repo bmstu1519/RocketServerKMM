@@ -50,9 +50,7 @@ data class LaunchDetailsScreen(val launchId: String) : Screen {
 
     @Composable
     override fun Content() {
-        val viewModel: LaunchDetailsViewModel = koinViewModel<LaunchDetailsViewModel> {
-            parametersOf(launchId)
-        }
+        val viewModel: LaunchDetailsViewModel = koinViewModel<LaunchDetailsViewModel>()
 
         val state by viewModel.state.collectAsState()
         val navigator = LocalNavigator.currentOrThrow

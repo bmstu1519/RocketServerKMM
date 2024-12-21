@@ -22,10 +22,7 @@ val viewModelsModule = module {
 
     viewModelOf(::LaunchListViewModel)
     viewModelOf(::LoginViewModel)
-    viewModel { (launchId: String) ->
-        val getLaunchDetailsUseCase: GetLaunchDetailsUseCase = get()
-        LaunchDetailsViewModel(launchId, getLaunchDetailsUseCase)
-    }
+    viewModelOf(::LaunchDetailsViewModel)
 
     factory {
         val launchRepository: LaunchRepository = get()
