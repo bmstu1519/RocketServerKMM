@@ -22,6 +22,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -37,6 +38,8 @@ import coil3.compose.AsyncImage
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
+import org.koin.mp.KoinPlatform.getKoin
+import org.rocketserverkmm.project.di.modules.LaunchListData
 import org.rocketserverkmm.project.presentation.states.ButtonState
 import org.rocketserverkmm.project.presentation.states.LaunchDetailsAction
 import org.rocketserverkmm.project.presentation.states.LaunchDetailsDestination
@@ -46,10 +49,13 @@ import rocketserverkmm.composeapp.generated.resources.baseline_error_24
 import rocketserverkmm.composeapp.generated.resources.ic_placeholder
 
 
-data class LaunchDetailsScreen(val launchId: String) : Screen {
+class LaunchDetailsScreen : Screen {
 
     @Composable
     override fun Content() {
+        val scope = getKoin().getScope("LaunchListScope")
+        val launchId = remember { scope.get<LaunchListData>().launchId }
+
         val viewModel: LaunchDetailsViewModel = koinViewModel<LaunchDetailsViewModel>()
 
         val state by viewModel.state.collectAsState()
@@ -65,6 +71,15 @@ data class LaunchDetailsScreen(val launchId: String) : Screen {
                 when (destination) {
                     LaunchDetailsDestination.GoToLogin -> navigator.push(LoginScreen())
                 }
+            }
+        }
+
+        DisposableEffect(Unit) {
+            onDispose {
+                if (!scope.closed) {
+                    scope.close()
+                }
+//                scope.close()
             }
         }
 
@@ -143,6 +158,8 @@ data class LaunchDetailsScreen(val launchId: String) : Screen {
                 }
             }
         }
+
+
     }
 }
 
