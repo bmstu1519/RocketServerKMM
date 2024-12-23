@@ -41,10 +41,6 @@ val viewModelsModule = module {
         val keyVaultRepository: KeyVaultRepository = get()
         GetLoginUseCase(launchRepository, keyVaultRepository)
     }
-
-    scope(named("LaunchListScope")) {
-        scoped { LaunchListData() }
-    }
 }
 
 data class LaunchListData(
