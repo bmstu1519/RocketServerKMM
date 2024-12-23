@@ -74,14 +74,13 @@ class LaunchDetailsScreen : Screen {
             }
         }
 
-        DisposableEffect(Unit) {
-            onDispose {
-                if (!scope.closed) {
-                    scope.close()
-                }
-//                scope.close()
-            }
-        }
+//        DisposableEffect(Unit) {
+//            onDispose {
+//                if (navigator.lastItem is LaunchListScreen) {
+//                    scope.close()
+//                }
+//            }
+//        }
 
         Scaffold(
             snackbarHost = { SnackbarHost(snackbarHostState) }

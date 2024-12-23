@@ -11,7 +11,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -25,7 +24,6 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import coil3.compose.AsyncImage
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.getKoin
-import org.koin.compose.scope.rememberKoinScope
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.qualifier.named
 import org.rocketserverkmm.project.di.modules.LaunchListData
@@ -40,7 +38,7 @@ import rocketserverkmm.composeapp.generated.resources.ic_placeholder
 class LaunchListScreen : Screen {
     @Composable
     override fun Content() {
-        val scope = getKoin().createScope("LaunchListScope", named("LaunchListScope"))
+        val scope = getKoin().getOrCreateScope("LaunchListScope", named("LaunchListScope"))
         val launchListData = remember { scope.get<LaunchListData>()  }
         val viewModel: LaunchListViewModel = koinViewModel<LaunchListViewModel>()
 
