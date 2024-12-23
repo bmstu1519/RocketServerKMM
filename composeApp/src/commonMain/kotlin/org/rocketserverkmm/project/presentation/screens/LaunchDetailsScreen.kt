@@ -22,7 +22,6 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -37,8 +36,8 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import coil3.compose.AsyncImage
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
-import org.koin.core.parameter.parametersOf
-import org.koin.mp.KoinPlatform.getKoin
+import org.rocketserverkmm.project.di.LocalScopeManager
+import org.rocketserverkmm.project.di.ScopeFlow
 import org.rocketserverkmm.project.di.modules.LaunchListData
 import org.rocketserverkmm.project.presentation.states.ButtonState
 import org.rocketserverkmm.project.presentation.states.LaunchDetailsAction
@@ -53,8 +52,9 @@ class LaunchDetailsScreen : Screen {
 
     @Composable
     override fun Content() {
-        val scope = getKoin().getScope("LaunchListScope")
-        val launchId = remember { scope.get<LaunchListData>().launchId }
+        val scopeManager = LocalScopeManager.current
+        val scope = remember { scopeManager.getScope(ScopeFlow.LAUNCH_FLOW) }
+        val launchListData = remember { scope.get<LaunchListData>() }
 
         val viewModel: LaunchDetailsViewModel = koinViewModel<LaunchDetailsViewModel>()
 
@@ -63,7 +63,7 @@ class LaunchDetailsScreen : Screen {
         val snackbarHostState = remember { SnackbarHostState() }
 
         LaunchedEffect(Unit) {
-            viewModel.actionToDestination(LaunchDetailsAction.Load(launchId))
+            viewModel.actionToDestination(LaunchDetailsAction.Load(launchListData.launchId))
         }
 
         LaunchedEffect(Unit) {
@@ -73,14 +73,6 @@ class LaunchDetailsScreen : Screen {
                 }
             }
         }
-
-//        DisposableEffect(Unit) {
-//            onDispose {
-//                if (navigator.lastItem is LaunchListScreen) {
-//                    scope.close()
-//                }
-//            }
-//        }
 
         Scaffold(
             snackbarHost = { SnackbarHost(snackbarHostState) }
