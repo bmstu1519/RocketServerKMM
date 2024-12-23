@@ -23,9 +23,9 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import coil3.compose.AsyncImage
 import org.jetbrains.compose.resources.painterResource
-import org.koin.compose.getKoin
 import org.koin.compose.viewmodel.koinViewModel
-import org.koin.core.qualifier.named
+import org.rocketserverkmm.project.di.LocalScopeManager
+import org.rocketserverkmm.project.di.ScopeFlow
 import org.rocketserverkmm.project.di.modules.LaunchListData
 import org.rocketserverkmm.project.domain.models.launchList.LaunchDTO
 import org.rocketserverkmm.project.presentation.states.LaunchListAction
@@ -36,12 +36,14 @@ import rocketserverkmm.composeapp.generated.resources.baseline_error_24
 import rocketserverkmm.composeapp.generated.resources.ic_placeholder
 
 class LaunchListScreen : Screen {
+
     @Composable
     override fun Content() {
-        val scope = getKoin().getOrCreateScope("LaunchListScope", named("LaunchListScope"))
-        val launchListData = remember { scope.get<LaunchListData>()  }
-        val viewModel: LaunchListViewModel = koinViewModel<LaunchListViewModel>()
+        val scopeManager = LocalScopeManager.current
+        val scope = remember { scopeManager.getOrCreateScope(ScopeFlow.LAUNCH_FLOW) }
+        val launchListData = remember { scope.get<LaunchListData>() }
 
+        val viewModel: LaunchListViewModel = koinViewModel<LaunchListViewModel>()
         val state by viewModel.state.collectAsState()
         val navigator = LocalNavigator.currentOrThrow
 
