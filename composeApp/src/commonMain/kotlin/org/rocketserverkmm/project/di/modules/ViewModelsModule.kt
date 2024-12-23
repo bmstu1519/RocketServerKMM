@@ -3,6 +3,7 @@ package org.rocketserverkmm.project.di.modules
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
+import org.koin.core.qualifier.named
 import org.koin.dsl.bind
 import org.koin.dsl.module
 import org.rocketserverkmm.project.domain.repositories.KeyVaultRepository
@@ -40,4 +41,12 @@ val viewModelsModule = module {
         val keyVaultRepository: KeyVaultRepository = get()
         GetLoginUseCase(launchRepository, keyVaultRepository)
     }
+
+    scope(named("LaunchListScope")) {
+        scoped { LaunchListData() }
+    }
 }
+
+data class LaunchListData(
+    var launchId: String = ""
+)

@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -22,7 +23,10 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import coil3.compose.AsyncImage
 import org.jetbrains.compose.resources.painterResource
+import org.koin.compose.getKoin
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.qualifier.named
+import org.rocketserverkmm.project.di.modules.LaunchListData
 import org.rocketserverkmm.project.domain.models.launchList.LaunchDTO
 import org.rocketserverkmm.project.presentation.states.LaunchListAction
 import org.rocketserverkmm.project.presentation.states.LaunchListDestination
@@ -34,6 +38,8 @@ import rocketserverkmm.composeapp.generated.resources.ic_placeholder
 class LaunchListScreen : Screen {
     @Composable
     override fun Content() {
+        val scope = getKoin().getOrCreateScope("LaunchListScope", named("LaunchListScope"))
+        val launchListData = remember { scope.get<LaunchListData>()  }
         val viewModel: LaunchListViewModel = koinViewModel<LaunchListViewModel>()
 
         val state by viewModel.state.collectAsState()
@@ -64,11 +70,12 @@ class LaunchListScreen : Screen {
         LaunchedEffect(Unit) {
             viewModel.destination.collect { destination ->
                 when (destination) {
-                    is LaunchListDestination.LaunchDetails -> navigator.push(
-                        LaunchDetailsScreen(
-                            destination.launchId
+                    is LaunchListDestination.LaunchDetails -> {
+                        launchListData.launchId = destination.launchId
+                        navigator.push(
+                            LaunchDetailsScreen()
                         )
-                    )
+                    }
                 }
             }
         }
