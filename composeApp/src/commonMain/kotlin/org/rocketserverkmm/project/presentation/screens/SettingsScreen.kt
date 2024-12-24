@@ -17,7 +17,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
-import org.rocketserverkmm.project.presentation.states.LaunchDetailsAction
 
 class SettingsScreen : Screen {
     @Composable
