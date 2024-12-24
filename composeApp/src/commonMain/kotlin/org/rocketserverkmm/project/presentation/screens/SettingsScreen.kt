@@ -13,14 +13,21 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
+import org.koin.compose.viewmodel.koinViewModel
+import org.rocketserverkmm.project.presentation.viewmodels.SettingsViewModel
 
 class SettingsScreen : Screen {
     @Composable
     override fun Content() {
+        val viewModel: SettingsViewModel = koinViewModel<SettingsViewModel>()
+        val state by viewModel.state.collectAsState()
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -37,7 +44,7 @@ class SettingsScreen : Screen {
                     text = "Темная тема"
                 )
                 Switch(
-                    checked = true,
+                    checked = state.isDarkTheme,
                     onCheckedChange = { /* обработка смены темы */ }
                 )
             }
