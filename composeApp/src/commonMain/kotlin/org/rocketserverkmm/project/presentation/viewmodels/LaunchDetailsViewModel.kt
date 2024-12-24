@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.rocketserverkmm.project.TripsBookedSubscription
@@ -24,6 +25,9 @@ class LaunchDetailsViewModel(
     private val _destination = MutableSharedFlow<LaunchDetailsDestination>()
     val destination: SharedFlow<LaunchDetailsDestination> = _destination
 
+    private val _snackbarMessage = MutableSharedFlow<String>()
+    val snackbarMessage = _snackbarMessage.asSharedFlow()
+
     private var _launchId: String = ""
 
     init {
@@ -36,11 +40,7 @@ class LaunchDetailsViewModel(
             getLaunchDetailsUseCase.tripBookedSubscribe(TripsBookedSubscription())
                 .onSuccess { success ->
                     success.collect { message ->
-                        handleResult(
-                            LaunchDetailsState(
-                                subscribeSnackbar = message
-                            )
-                        )
+                        _snackbarMessage.emit(message)
                     }
                 }
                 .onFailure { failed ->
@@ -151,7 +151,6 @@ class LaunchDetailsViewModel(
                 isLoading = result.isLoading,
                 buttonState = result.buttonState,
                 isBooked = result.isBooked,
-                subscribeSnackbar = result.subscribeSnackbar,
                 mission = result.mission,
                 rocket = result.rocket,
                 site = result.site,
@@ -180,7 +179,6 @@ class LaunchDetailsViewModel(
                 isLoading = launchDetailsState?.isLoading ?: current.isLoading,
                 buttonState = launchDetailsState?.buttonState,
                 isBooked = launchDetailsState?.isBooked ?: current.isBooked,
-                subscribeSnackbar = launchDetailsState?.subscribeSnackbar ?: current.subscribeSnackbar,
                 mission = launchDetailsState?.mission ?: current.mission,
                 rocket = launchDetailsState?.rocket ?: current.rocket,
                 site = launchDetailsState?.site ?: current.site,

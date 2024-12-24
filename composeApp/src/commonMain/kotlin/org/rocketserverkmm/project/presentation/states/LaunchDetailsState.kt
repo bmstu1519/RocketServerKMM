@@ -7,7 +7,6 @@ data class LaunchDetailsState(
     val isLoading: Boolean? = null,
     val buttonState: ButtonState? = null,
     val isBooked: Boolean? = null,
-    val subscribeSnackbar: String? = null,
     val mission: MissionDTO? = null,
     val rocket: RocketDTO? = null,
     val site: String? = null,

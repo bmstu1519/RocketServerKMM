@@ -77,8 +77,8 @@ class LaunchDetailsScreen : Screen {
         Scaffold(
             snackbarHost = { SnackbarHost(snackbarHostState) }
         ) {
-            LaunchedEffect(state.subscribeSnackbar) {
-                state.subscribeSnackbar?.let { subscribeMessage ->
+            LaunchedEffect(Unit) {
+                viewModel.snackbarMessage.collect { subscribeMessage ->
                     snackbarHostState.showSnackbar(
                         message = subscribeMessage,
                         duration = SnackbarDuration.Short
