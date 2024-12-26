@@ -1,16 +1,17 @@
 package org.rocketserverkmm.project.platform
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import org.koin.compose.viewmodel.koinViewModel
+import org.rocketserverkmm.project.presentation.viewmodels.SettingsViewModel
 import org.rocketserverkmm.project.settings.theme.Pink40
 import org.rocketserverkmm.project.settings.theme.Pink80
 import org.rocketserverkmm.project.settings.theme.Purple40
@@ -46,8 +47,10 @@ internal val LocalThemeIsDark = compositionLocalOf { mutableStateOf(true) }
 internal fun RocketReserverKMMTheme(
     content: @Composable () -> Unit
 ) {
-    val systemIsDark = isSystemInDarkTheme()
-    val isDarkState = remember { mutableStateOf(systemIsDark) }
+    val viewModel: SettingsViewModel = koinViewModel<SettingsViewModel>()
+    val state by viewModel.state.collectAsState()
+
+    val isDarkState = mutableStateOf(state.isDarkTheme)
     CompositionLocalProvider(
         LocalThemeIsDark provides isDarkState
     ) {

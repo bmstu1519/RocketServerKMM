@@ -1,11 +1,13 @@
 package org.rocketserverkmm.project.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import org.rocketserverkmm.project.domain.usecases.GetSettingsUseCase
 import org.rocketserverkmm.project.presentation.states.SettingsAction
 import org.rocketserverkmm.project.presentation.states.SettingsDestination
@@ -23,8 +25,19 @@ class SettingsViewModel(
 
     fun actionToDestination(action: SettingsAction) {
         when (action) {
-            SettingsAction.ChangeTheme -> TODO()
+            SettingsAction.ChangeTheme -> changeTheme()
             SettingsAction.ClickAuthButton -> TODO()
+        }
+    }
+
+    private fun changeTheme() {
+        viewModelScope.launch {
+            val isDark = getSettingsUseCase.changeTheme(_state.value.isDarkTheme)
+            updateState(
+                settingsState = SettingsState(
+                    isDarkTheme = isDark
+                )
+            )
         }
     }
 
