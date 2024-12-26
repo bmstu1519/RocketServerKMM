@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import org.koin.compose.viewmodel.koinViewModel
+import org.rocketserverkmm.project.presentation.states.SettingsAction
 import org.rocketserverkmm.project.presentation.viewmodels.SettingsViewModel
 
 class SettingsScreen : Screen {
@@ -45,7 +46,7 @@ class SettingsScreen : Screen {
                 )
                 Switch(
                     checked = state.isDarkTheme,
-                    onCheckedChange = { /* обработка смены темы */ }
+                    onCheckedChange = { viewModel.actionToDestination(SettingsAction.ChangeTheme) }
                 )
             }
 
