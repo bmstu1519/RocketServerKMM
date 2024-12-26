@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.rocketserverkmm.project.domain.usecases.GetSettingsUseCase
+import org.rocketserverkmm.project.presentation.states.AuthResult
 import org.rocketserverkmm.project.presentation.states.SettingsAction
 import org.rocketserverkmm.project.presentation.states.SettingsDestination
 import org.rocketserverkmm.project.presentation.states.SettingsState
@@ -16,7 +17,6 @@ import org.rocketserverkmm.project.presentation.states.SettingsState
 class SettingsViewModel(
     private val getSettingsUseCase: GetSettingsUseCase
 ) : ViewModel() {
-
     private val _state = MutableStateFlow(SettingsState())
     val state: StateFlow<SettingsState> = _state
 
@@ -26,7 +26,7 @@ class SettingsViewModel(
     fun actionToDestination(action: SettingsAction) {
         when (action) {
             SettingsAction.ChangeTheme -> changeTheme()
-            SettingsAction.ClickAuthButton -> TODO()
+            SettingsAction.ClickAuthButton -> handleAuthClick()
         }
     }
 
@@ -41,13 +41,19 @@ class SettingsViewModel(
         }
     }
 
-    private fun handleResult() {
-        updateState(
-            settingsState = SettingsState(
-                isDarkTheme = TODO(),
-                authButtonText = TODO(),
-            )
-        )
+    private fun handleAuthClick() {
+        viewModelScope.launch {
+            val result = getSettingsUseCase.clickAuth()
+            when (result) {
+                AuthResult.RequiresLogin -> _destination.emit(SettingsDestination.GoToLogin)
+                AuthResult.RequiresLogout -> _destination.emit(SettingsDestination.ShowAlert)
+                is AuthResult.Error -> updateState(
+                    settingsState = SettingsState(
+                        error = result.message
+                    )
+                )
+            }
+        }
     }
 
     private fun updateState(
@@ -55,8 +61,10 @@ class SettingsViewModel(
     ) {
         _state.update { current ->
             current.copy(
+                isLoading = settingsState?.isLoading ?: current.isLoading,
                 isDarkTheme = settingsState?.isDarkTheme ?: current.isDarkTheme,
-                authButtonText = settingsState?.authButtonText ?: current.authButtonText
+                authButtonText = settingsState?.authButtonText ?: current.authButtonText,
+                error = settingsState?.error ?: current.error,
             )
         }
     }

@@ -13,14 +13,18 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import org.koin.compose.viewmodel.koinViewModel
 import org.rocketserverkmm.project.presentation.states.SettingsAction
+import org.rocketserverkmm.project.presentation.states.SettingsDestination
 import org.rocketserverkmm.project.presentation.viewmodels.SettingsViewModel
 
 class SettingsScreen : Screen {
@@ -28,6 +32,7 @@ class SettingsScreen : Screen {
     override fun Content() {
         val viewModel: SettingsViewModel = koinViewModel<SettingsViewModel>()
         val state by viewModel.state.collectAsState()
+        val navigator = LocalNavigator.currentOrThrow
 
         Column(
             modifier = Modifier
@@ -55,10 +60,18 @@ class SettingsScreen : Screen {
             Button(
                 modifier = Modifier
                     .fillMaxWidth(),
-                onClick = { },
+                onClick = { viewModel.actionToDestination(SettingsAction.ClickAuthButton) },
                 shape = RoundedCornerShape(8.dp)
             ) {
                 Text(text = "Выйти из аккаунта")
+            }
+        }
+        LaunchedEffect(Unit) {
+            viewModel.destination.collect { destination ->
+                when(destination) {
+                    SettingsDestination.GoToLogin -> navigator.push(LoginScreen())
+                    SettingsDestination.ShowAlert -> TODO()
+                }
             }
         }
     }
