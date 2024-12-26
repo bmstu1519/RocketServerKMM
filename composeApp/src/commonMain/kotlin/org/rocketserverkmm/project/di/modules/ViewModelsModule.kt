@@ -47,10 +47,8 @@ val viewModelsModule = module {
     }
 
     factory {
-        val launchRepository: LaunchRepository = get()
-        val keyVaultRepository: KeyVaultRepository = get()
         val settingsRepository: SettingsRepository = get()
-        GetSettingsUseCase(launchRepository, keyVaultRepository, settingsRepository)
+        GetSettingsUseCase(settingsRepository)
     }
 }
 
