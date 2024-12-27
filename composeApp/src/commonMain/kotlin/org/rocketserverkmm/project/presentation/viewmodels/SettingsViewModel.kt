@@ -27,6 +27,7 @@ class SettingsViewModel(
         when (action) {
             SettingsAction.ChangeTheme -> changeTheme()
             SettingsAction.ClickAuthButton -> handleAuthClick()
+            SettingsAction.ShowAlert -> showAlert()
         }
     }
 
@@ -46,13 +47,25 @@ class SettingsViewModel(
             val result = getSettingsUseCase.clickAuth()
             when (result) {
                 AuthResult.RequiresLogin -> _destination.emit(SettingsDestination.GoToLogin)
-                AuthResult.RequiresLogout -> _destination.emit(SettingsDestination.ShowAlert)
+                AuthResult.RequiresLogout -> actionToDestination(SettingsAction.ShowAlert)
                 is AuthResult.Error -> updateState(
                     settingsState = SettingsState(
                         error = result.message
                     )
                 )
             }
+        }
+    }
+
+    private fun showAlert(){
+        viewModelScope.launch {
+            val result = getSettingsUseCase.handleAlert()
+            updateState(
+                settingsState = SettingsState(
+                    actionableAlert = result
+                )
+            )
+            _destination.emit(SettingsDestination.ShowAlert)
         }
     }
 
@@ -64,6 +77,7 @@ class SettingsViewModel(
                 isLoading = settingsState?.isLoading ?: current.isLoading,
                 isDarkTheme = settingsState?.isDarkTheme ?: current.isDarkTheme,
                 authButtonText = settingsState?.authButtonText ?: current.authButtonText,
+                actionableAlert = settingsState?.actionableAlert ?: current.actionableAlert,
                 error = settingsState?.error ?: current.error,
             )
         }

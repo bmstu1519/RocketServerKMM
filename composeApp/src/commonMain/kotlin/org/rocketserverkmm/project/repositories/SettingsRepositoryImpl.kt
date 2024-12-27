@@ -3,6 +3,7 @@ package org.rocketserverkmm.project.repositories
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.rocketserverkmm.project.domain.repositories.KeyVaultRepository
 import org.rocketserverkmm.project.domain.repositories.SettingsRepository
+import org.rocketserverkmm.project.presentation.states.ActionableAlert
 import org.rocketserverkmm.project.presentation.states.AuthResult
 
 class SettingsRepositoryImpl(
@@ -26,6 +27,10 @@ class SettingsRepositoryImpl(
             }
     }.getOrElse { exception ->
         AuthResult.Error(exception.message ?: "Unknown error")
+    }
+
+    override fun handleAlert(): ActionableAlert {
+        TODO("Not yet implemented")
     }
 
     companion object {
