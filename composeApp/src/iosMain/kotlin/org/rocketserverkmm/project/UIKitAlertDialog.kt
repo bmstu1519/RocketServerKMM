@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.interop.UIKitView
 import kotlinx.cinterop.ExperimentalForeignApi
+import org.rocketserverkmm.project.presentation.states.ActionableAlert
 import platform.UIKit.UIAlertAction
 import platform.UIKit.UIAlertActionStyleCancel
 import platform.UIKit.UIAlertActionStyleDefault
@@ -15,6 +16,7 @@ import platform.UIKit.UIApplication
 @Composable
 fun UIKitAlertDialog(
     modifier: Modifier = Modifier,
+    alertDialog: ActionableAlert,
     onDismissRequest: () -> Unit
 ) {
 
@@ -25,27 +27,32 @@ fun UIKitAlertDialog(
             val rootViewController = UIApplication.sharedApplication.keyWindow?.rootViewController
 
             val alert = UIAlertController.alertControllerWithTitle(
-                title = "UIKit Alert Dialog",
-                message = "Im UIKit Alert Dialog Shown In Compose UI",
+                title = alertDialog.text,
+                message = alertDialog.text,
                 preferredStyle = UIAlertControllerStyleAlert
             )
 
-            val action =
-                UIAlertAction.actionWithTitle("OK", style = UIAlertActionStyleDefault, handler = {
-                    alert.dismissViewControllerAnimated(flag = true, completion = null)
-                    onDismissRequest()
-                })
+            val submitAction =
+                UIAlertAction.actionWithTitle(
+                    alertDialog.submitButton.buttonText,
+                    style = UIAlertActionStyleDefault,
+                    handler = {
+                        alertDialog.submitButton.action()
+                        alert.dismissViewControllerAnimated(flag = true, completion = null)
+                        onDismissRequest()
+                    })
 
-            val actionCancel = UIAlertAction.actionWithTitle(
-                "Cancel",
+            val cancelAction = UIAlertAction.actionWithTitle(
+                alertDialog.cancelButton.buttonText,
                 style = UIAlertActionStyleCancel,
                 handler = {
+                    alertDialog.cancelButton.action()
                     alert.dismissViewControllerAnimated(flag = true, completion = null)
                     onDismissRequest()
                 })
 
-            alert.addAction(action)
-            alert.addAction(actionCancel)
+            alert.addAction(submitAction)
+            alert.addAction(cancelAction)
             rootViewController?.presentViewController(alert, animated = true, completion = null)
 
             alert.view
