@@ -1,21 +1,24 @@
 package org.rocketserverkmm.project.platform
 
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.AlertDialog
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import org.rocketserverkmm.project.presentation.states.ActionableAlert
 
 @Composable
 actual fun AlertDialog(
     modifier: Modifier,
+    alert: ActionableAlert,
     onDismissRequest: () -> Unit
 ) {
-    ComposeAlertDialog(modifier, onDismissRequest)
+    ComposeAlertDialog(modifier, alert, onDismissRequest)
 }
 
 @Composable
-fun ComposeAlertDialog(modifier: Modifier, onDismissRequest: () -> Unit) {
+fun ComposeAlertDialog(modifier: Modifier, alert: ActionableAlert, onDismissRequest: () -> Unit) {
+
     AlertDialog(
         modifier = modifier,
         onDismissRequest = {
@@ -24,23 +27,29 @@ fun ComposeAlertDialog(modifier: Modifier, onDismissRequest: () -> Unit) {
         },
         confirmButton = {
             TextButton(onClick = {
+                alert.submitButton.action()
                 onDismissRequest()
             }) {
-                Text("Ok")
+                alert.submitButton.buttonText?.let { text ->
+                    Text(text)
+                }
             }
         },
         dismissButton = {
             TextButton(onClick = {
+                alert.cancelButton.action()
                 onDismissRequest()
             }) {
-                Text("Cancel")
+                alert.cancelButton.buttonText?.let { text ->
+                    Text(text)
+                }
             }
         },
         title = {
-            Text(text = "Compose Alert")
+            Text(text = alert.text)
         },
         text = {
-            Text(text = "I am Pure Compose Alert")
+            Text(text = alert.text)
         },
     )
 }

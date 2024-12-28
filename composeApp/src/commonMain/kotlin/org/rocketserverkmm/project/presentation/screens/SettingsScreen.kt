@@ -74,17 +74,21 @@ class SettingsScreen : Screen {
             }
         }
 
-        if(showAlert) {
-            Box(modifier = Modifier.fillMaxSize()) {
-                AlertDialog(
-                    modifier = Modifier.fillMaxWidth().padding(4.dp).align(Alignment.Center),
-                ) {
-                    println("onDismissRequest")
+        state.actionableAlert?.let { actionableAlert ->
+            if(showAlert) {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    AlertDialog(
+                        modifier = Modifier.fillMaxWidth().padding(4.dp).align(Alignment.Center),
+                        alert = actionableAlert,
+                    ) {
+                        println("onDismissRequest")
 //                                showDialog = false
-                    showAlert = false
+                        showAlert = false
+                    }
                 }
             }
         }
+
         LaunchedEffect(Unit) {
             viewModel.destination.collect { destination ->
                 when(destination) {
