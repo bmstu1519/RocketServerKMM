@@ -9,6 +9,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.rocketserverkmm.project.domain.usecases.GetSettingsUseCase
+import org.rocketserverkmm.project.presentation.states.ActionableAlert
+import org.rocketserverkmm.project.presentation.states.ActionableButton
 import org.rocketserverkmm.project.presentation.states.AuthResult
 import org.rocketserverkmm.project.presentation.states.SettingsAction
 import org.rocketserverkmm.project.presentation.states.SettingsDestination
@@ -27,6 +29,20 @@ class SettingsViewModel(
         when (action) {
             SettingsAction.ChangeTheme -> changeTheme()
             SettingsAction.ClickAuthButton -> handleAuthClick()
+            SettingsAction.ShowAlert -> showAlert()
+            SettingsAction.ClickAuthButton.LogIn -> TODO()
+            SettingsAction.ClickAuthButton.LogOut -> handleLogOut()
+        }
+    }
+
+    private fun handleLogOut() {
+        viewModelScope.launch {
+            getSettingsUseCase.logOut()
+//            updateState(
+//                settingsState = SettingsState(
+//                    authorizationState = NON_AUTHORIZED,
+//                )
+//            )
         }
     }
 
@@ -46,7 +62,7 @@ class SettingsViewModel(
             val result = getSettingsUseCase.clickAuth()
             when (result) {
                 AuthResult.RequiresLogin -> _destination.emit(SettingsDestination.GoToLogin)
-                AuthResult.RequiresLogout -> _destination.emit(SettingsDestination.ShowAlert)
+                AuthResult.RequiresLogout -> actionToDestination(SettingsAction.ShowAlert)
                 is AuthResult.Error -> updateState(
                     settingsState = SettingsState(
                         error = result.message
@@ -56,6 +72,29 @@ class SettingsViewModel(
         }
     }
 
+    private fun showAlert(){
+        viewModelScope.launch {
+            updateState(
+                settingsState = SettingsState(
+                    actionableAlert = prepareAlert()
+                )
+            )
+            _destination.emit(SettingsDestination.ShowAlert)
+        }
+    }
+
+    private fun prepareAlert() : ActionableAlert = ActionableAlert(
+        text = "Вы действительно хотите выйти?",
+        submitButton = ActionableButton(
+            buttonText = "Выйти из аккаунта",
+            action = { actionToDestination(SettingsAction.ClickAuthButton.LogOut) },
+        ),
+        cancelButton = ActionableButton(
+            buttonText = "Остаться",
+            action = { },
+        ),
+    )
+
     private fun updateState(
         settingsState: SettingsState? = null,
     ) {
@@ -64,6 +103,7 @@ class SettingsViewModel(
                 isLoading = settingsState?.isLoading ?: current.isLoading,
                 isDarkTheme = settingsState?.isDarkTheme ?: current.isDarkTheme,
                 authButtonText = settingsState?.authButtonText ?: current.authButtonText,
+                actionableAlert = settingsState?.actionableAlert ?: current.actionableAlert,
                 error = settingsState?.error ?: current.error,
             )
         }

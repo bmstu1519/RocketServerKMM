@@ -28,6 +28,12 @@ class SettingsRepositoryImpl(
         AuthResult.Error(exception.message ?: "Unknown error")
     }
 
+    override suspend fun logOut(key: String) {
+        runCatching {
+            kVault.deleteToken(key)
+        }
+    }
+
     companion object {
         private const val THEME_KEY = "THEME_IS_DARK"
     }
