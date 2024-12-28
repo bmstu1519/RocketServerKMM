@@ -3,7 +3,6 @@ package org.rocketserverkmm.project.repositories
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.rocketserverkmm.project.domain.repositories.KeyVaultRepository
 import org.rocketserverkmm.project.domain.repositories.SettingsRepository
-import org.rocketserverkmm.project.platform.KEY_TOKEN
 import org.rocketserverkmm.project.presentation.states.AuthResult
 
 class SettingsRepositoryImpl(
@@ -31,7 +30,6 @@ class SettingsRepositoryImpl(
 
     override suspend fun logOut(key: String) {
         runCatching {
-            KEY_TOKEN
             kVault.deleteToken(key)
         }
     }
