@@ -87,7 +87,7 @@ class SettingsViewModel(
         text = "Вы действительно хотите выйти?",
         submitButton = ActionableButton(
             buttonText = "Выйти из аккаунта",
-            action = { SettingsAction.ClickAuthButton.LogOut },
+            action = { actionToDestination(SettingsAction.ClickAuthButton.LogOut) },
         ),
         cancelButton = ActionableButton(
             buttonText = "Остаться",
