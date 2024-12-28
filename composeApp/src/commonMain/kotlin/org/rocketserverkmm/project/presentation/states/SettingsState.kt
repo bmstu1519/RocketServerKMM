@@ -9,7 +9,10 @@ data class SettingsState(
 )
 
 sealed class SettingsAction {
-    data object ClickAuthButton : SettingsAction()
+    data object ClickAuthButton : SettingsAction() {
+        data object LogIn : SettingsAction()
+        data object LogOut : SettingsAction()
+    }
     data object ShowAlert : SettingsAction()
     data object ChangeTheme : SettingsAction()
 }

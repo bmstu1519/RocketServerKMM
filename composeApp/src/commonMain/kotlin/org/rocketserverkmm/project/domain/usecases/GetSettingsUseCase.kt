@@ -9,6 +9,5 @@ class GetSettingsUseCase(
 ) {
     suspend fun clickAuth(key: String = KEY_TOKEN) = settingsRepository.clickAuth(key)
     suspend fun changeTheme(isDarkTheme: Boolean) = settingsRepository.changeTheme(isDarkTheme)
-    fun handleAlert() : ActionableAlert = settingsRepository.handleAlert()
-
+    suspend fun logOut(key: String = KEY_TOKEN) = settingsRepository.logOut(key)
 }

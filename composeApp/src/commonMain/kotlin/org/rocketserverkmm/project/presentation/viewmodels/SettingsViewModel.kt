@@ -9,6 +9,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.rocketserverkmm.project.domain.usecases.GetSettingsUseCase
+import org.rocketserverkmm.project.presentation.states.ActionableAlert
+import org.rocketserverkmm.project.presentation.states.ActionableButton
 import org.rocketserverkmm.project.presentation.states.AuthResult
 import org.rocketserverkmm.project.presentation.states.SettingsAction
 import org.rocketserverkmm.project.presentation.states.SettingsDestination
@@ -28,6 +30,19 @@ class SettingsViewModel(
             SettingsAction.ChangeTheme -> changeTheme()
             SettingsAction.ClickAuthButton -> handleAuthClick()
             SettingsAction.ShowAlert -> showAlert()
+            SettingsAction.ClickAuthButton.LogIn -> TODO()
+            SettingsAction.ClickAuthButton.LogOut -> handleLogOut()
+        }
+    }
+
+    private fun handleLogOut() {
+        viewModelScope.launch {
+            getSettingsUseCase.logOut()
+//            updateState(
+//                settingsState = SettingsState(
+//                    authorizationState = NON_AUTHORIZED,
+//                )
+//            )
         }
     }
 
@@ -59,15 +74,26 @@ class SettingsViewModel(
 
     private fun showAlert(){
         viewModelScope.launch {
-            val result = getSettingsUseCase.handleAlert()
             updateState(
                 settingsState = SettingsState(
-                    actionableAlert = result
+                    actionableAlert = prepareAlert()
                 )
             )
             _destination.emit(SettingsDestination.ShowAlert)
         }
     }
+
+    private fun prepareAlert() : ActionableAlert = ActionableAlert(
+        text = "Вы действительно хотите выйти?",
+        submitButton = ActionableButton(
+            buttonText = "Выйти из аккаунта",
+            action = { SettingsAction.ClickAuthButton.LogOut },
+        ),
+        cancelButton = ActionableButton(
+            buttonText = "Остаться",
+            action = { },
+        ),
+    )
 
     private fun updateState(
         settingsState: SettingsState? = null,
