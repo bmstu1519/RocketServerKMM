@@ -93,9 +93,7 @@ class SettingsScreen : Screen {
             viewModel.destination.collect { destination ->
                 when(destination) {
                     SettingsDestination.GoToLogin -> navigator.push(LoginScreen())
-                    SettingsDestination.ShowAlert -> {
-                        showAlert = true
-                    }
+                    SettingsDestination.ShowAlert -> showAlert = true
                 }
             }
         }
