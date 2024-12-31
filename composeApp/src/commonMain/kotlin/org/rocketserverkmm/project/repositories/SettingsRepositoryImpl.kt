@@ -4,6 +4,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import org.rocketserverkmm.project.domain.repositories.KeyVaultRepository
 import org.rocketserverkmm.project.domain.repositories.SettingsRepository
 import org.rocketserverkmm.project.presentation.states.AuthResult
+import org.rocketserverkmm.project.presentation.viewmodels.Constants.THEME_KEY
 
 class SettingsRepositoryImpl(
     private val kVault: KeyVaultRepository
@@ -32,9 +33,5 @@ class SettingsRepositoryImpl(
         runCatching {
             kVault.deleteToken(key)
         }
-    }
-
-    companion object {
-        private const val THEME_KEY = "THEME_IS_DARK"
     }
 }
