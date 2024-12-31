@@ -20,8 +20,7 @@ object KVaultProviderFactory {
 }
 
 fun initializeKVault(context: Context) {
-    KVaultProviderFactory.create(context)
-    getKVaultInstance()
+    KVaultProviderFactory.getKVaultInstance() ?: KVaultProviderFactory.create(context)
 }
 
 actual fun getKVaultInstance(): KVaultProvider = KVaultProviderFactory.getKVaultInstance()
