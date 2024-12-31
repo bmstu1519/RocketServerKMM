@@ -29,12 +29,29 @@ class ScopeManager {
                     activeScopes.add(flow)
                 }
             }
+
+            ScopeFlow.FIRST_LOAD_INITIAL_DATA -> {
+                if (!isFlowActive(flow)) {
+                    getKoin().getOrCreateScope(
+                        scopeId = flow.getScopeId(),
+                        qualifier = named(flow.getScopeName())
+                    )
+                    activeScopes.add(flow)
+                }
+            }
         }
     }
 
     fun closeScope(flow: ScopeFlow) {
         when (flow) {
             ScopeFlow.LAUNCH_FLOW -> {
+                if (isFlowActive(flow)) {
+                    getKoin().getScope(flow.getScopeId()).close()
+                    activeScopes.remove(flow)
+                }
+            }
+
+            ScopeFlow.FIRST_LOAD_INITIAL_DATA -> {
                 if (isFlowActive(flow)) {
                     getKoin().getScope(flow.getScopeId()).close()
                     activeScopes.remove(flow)
@@ -64,12 +81,15 @@ val LocalScopeManager = compositionLocalOf<ScopeManager> {
 
 enum class ScopeFlow {
     LAUNCH_FLOW,
+    FIRST_LOAD_INITIAL_DATA
 }
 
 fun ScopeFlow.getScopeId(): String = when (this) {
     ScopeFlow.LAUNCH_FLOW -> "LaunchListScope"
+    ScopeFlow.FIRST_LOAD_INITIAL_DATA -> "FirstLoadDataScope"
 }
 
 fun ScopeFlow.getScopeName(): String = when (this) {
     ScopeFlow.LAUNCH_FLOW -> "LaunchListScope"
+    ScopeFlow.FIRST_LOAD_INITIAL_DATA -> "FirstLoadDataScope"
 }

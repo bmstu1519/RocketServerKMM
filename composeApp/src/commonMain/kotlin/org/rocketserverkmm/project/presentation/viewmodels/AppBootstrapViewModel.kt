@@ -15,7 +15,8 @@ import org.rocketserverkmm.project.presentation.states.AppBootstrapDestination
 import org.rocketserverkmm.project.presentation.states.AppBootstrapState
 
 class AppBootstrapViewModel(
-    private val getAppBootstrapUseCase: GetAppBootstrapUseCase
+    private val getAppBootstrapUseCase: GetAppBootstrapUseCase,
+//    private val data: FirstLoadInitialData
 ) : ViewModel() {
     private val _state = MutableStateFlow(AppBootstrapState(isLoading = true))
     val state: StateFlow<AppBootstrapState> = _state
@@ -49,7 +50,6 @@ class AppBootstrapViewModel(
                     isDarkThemeEnabled = theme ,
                 )
             )
-
         }
     }
 

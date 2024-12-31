@@ -17,13 +17,15 @@ import org.rocketserverkmm.project.presentation.states.SettingsDestination
 import org.rocketserverkmm.project.presentation.states.SettingsState
 
 class SettingsViewModel(
-    private val getSettingsUseCase: GetSettingsUseCase
+    private val getSettingsUseCase: GetSettingsUseCase,
+//    private val data: FirstLoadInitialData
 ) : ViewModel() {
-    private val _state = MutableStateFlow(SettingsState())
+    private val _state = MutableStateFlow(SettingsState(/*isDarkTheme = data.isDarkThemeEnabled*/))
     val state: StateFlow<SettingsState> = _state
 
     private val _destination = MutableSharedFlow<SettingsDestination>()
     val destination: SharedFlow<SettingsDestination> = _destination
+
 
     fun actionToDestination(action: SettingsAction) {
         when (action) {
