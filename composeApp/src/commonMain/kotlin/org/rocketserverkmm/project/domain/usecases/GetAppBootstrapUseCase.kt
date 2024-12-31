@@ -5,7 +5,7 @@ import org.rocketserverkmm.project.platform.KEY_TOKEN
 import org.rocketserverkmm.project.presentation.states.UserAuthState
 import org.rocketserverkmm.project.presentation.viewmodels.Constants.THEME_KEY
 
-class AppBootstrapUseCase(
+class GetAppBootstrapUseCase(
     private val appBootstrapRepository: AppBootstrapRepository
 ) {
     suspend fun getUserAuth(key: String = KEY_TOKEN) : UserAuthState = appBootstrapRepository.getUserAuth(key)

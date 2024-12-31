@@ -8,8 +8,8 @@ class AppBootstrapRepositoryImpl(
     private val kVault: KeyVaultRepository
 ): AppBootstrapRepository {
     override suspend fun getUserAuth(key: String): UserAuthState = runCatching {
-        val isUserAuthorized = kVault.getBoolean(key) ?: false
-        if (isUserAuthorized) {
+        val isUserAuthorized = kVault.getToken(key).isNullOrEmpty()
+        if (!isUserAuthorized) {
             UserAuthState.AUTHORIZED
         } else {
             UserAuthState.NON_AUTHORIZED
@@ -18,5 +18,6 @@ class AppBootstrapRepositoryImpl(
         UserAuthState.NON_AUTHORIZED
     }
 
-    override suspend fun getCurrentTheme(key: String): Boolean = kVault.getBoolean(key) ?: false
+    override suspend fun getCurrentTheme(key: String): Boolean =
+        kVault.getBoolean(key) ?: false
 }

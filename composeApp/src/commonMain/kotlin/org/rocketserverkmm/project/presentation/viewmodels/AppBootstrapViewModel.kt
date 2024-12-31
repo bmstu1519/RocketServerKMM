@@ -2,22 +2,22 @@ package org.rocketserverkmm.project.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.rocketserverkmm.project.domain.usecases.AppBootstrapUseCase
+import org.rocketserverkmm.project.domain.usecases.GetAppBootstrapUseCase
 import org.rocketserverkmm.project.presentation.states.AppBootstrapAction
 import org.rocketserverkmm.project.presentation.states.AppBootstrapDestination
 import org.rocketserverkmm.project.presentation.states.AppBootstrapState
-import org.rocketserverkmm.project.presentation.states.UserAuthState
 
 class AppBootstrapViewModel(
-    private val getAppBootstrapUseCase: AppBootstrapUseCase
+    private val getAppBootstrapUseCase: GetAppBootstrapUseCase
 ) : ViewModel() {
-    private val _state = MutableStateFlow(AppBootstrapState())
+    private val _state = MutableStateFlow(AppBootstrapState(isLoading = true))
     val state: StateFlow<AppBootstrapState> = _state
 
     private val _destination = MutableSharedFlow<AppBootstrapDestination>()
@@ -25,32 +25,31 @@ class AppBootstrapViewModel(
 
     fun actionToDestination(action: AppBootstrapAction) {
         when (action) {
-            AppBootstrapAction.Load -> TODO()
+            AppBootstrapAction.Load -> handleFirstLoad()
+            AppBootstrapAction.LaunchScreen -> launchScreen()
+        }
+    }
+
+    private fun launchScreen() {
+        viewModelScope.launch {
+            _destination.emit(AppBootstrapDestination.LaunchScreen)
         }
     }
 
     private fun handleFirstLoad() {
         viewModelScope.launch {
-            val userAuthState = getAppBootstrapUseCase.getUserAuth()
+            val authDeferred = async { getAppBootstrapUseCase.getUserAuth() }
+            val themeDeferred = async { getAppBootstrapUseCase.getCurrentTheme() }
+            val (authState, theme) = Pair(authDeferred.await(), themeDeferred.await())
 
-            when (userAuthState) {
-                UserAuthState.NON_AUTHORIZED -> updateState(
-                    appBootstrapState = AppBootstrapState(
-                        isUserAuthorized = UserAuthState.NON_AUTHORIZED,
-                        isDarkThemeEnabled = false,
-                    )
+            updateState(
+                AppBootstrapState(
+                    isLoading = false,
+                    isUserAuthorized = authState,
+                    isDarkThemeEnabled = theme ,
                 )
+            )
 
-                UserAuthState.AUTHORIZED -> {
-                    val isDarkThemeEnabled = getAppBootstrapUseCase.getCurrentTheme()
-                    updateState(
-                        appBootstrapState = AppBootstrapState(
-                            isUserAuthorized = UserAuthState.AUTHORIZED,
-                            isDarkThemeEnabled = isDarkThemeEnabled,
-                        )
-                    )
-                }
-            }
         }
     }
 
