@@ -21,7 +21,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,14 +32,12 @@ import cafe.adriel.voyager.navigator.CurrentScreen
 import cafe.adriel.voyager.navigator.Navigator
 import coil3.compose.setSingletonImageLoaderFactory
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import org.koin.compose.viewmodel.koinViewModel
 import org.rocketserverkmm.project.di.LocalScopeManager
+import org.rocketserverkmm.project.di.ScopeFlow
 import org.rocketserverkmm.project.di.ScopeManager
 import org.rocketserverkmm.project.platform.RocketReserverKMMTheme
 import org.rocketserverkmm.project.presentation.screens.LaunchListScreen
 import org.rocketserverkmm.project.presentation.screens.SettingsScreen
-import org.rocketserverkmm.project.presentation.states.AppBootstrapAction
-import org.rocketserverkmm.project.presentation.viewmodels.AppBootstrapViewModel
 import org.rocketserverkmm.project.settings.local.AsyncImageLoaderSingleton
 import org.rocketserverkmm.project.settings.tabSetting.TabItem
 
@@ -50,14 +47,8 @@ import org.rocketserverkmm.project.settings.tabSetting.TabItem
 fun App() {
     val scopeManager = remember { ScopeManager() }
     var selectedTab by remember { mutableStateOf(TabItem.LAUNCHES) }
-    val viewModel: AppBootstrapViewModel = koinViewModel<AppBootstrapViewModel>()
+    val scope = remember { scopeManager.getOrCreateScope(ScopeFlow.FIRST_LOAD_INITIAL_DATA) }
 
-//    val scope = remember { scopeManager.getOrCreateScope(ScopeFlow.FIRST_LOAD_INITIAL_DATA) }
-//    val launchListData = remember { scope.get<FirstLoadInitialData>() }
-
-    LaunchedEffect(Unit){
-        viewModel.actionToDestination(AppBootstrapAction.Load)
-    }
     DisposableEffect(Unit) {
         onDispose {
             scopeManager.closeAllScopes()

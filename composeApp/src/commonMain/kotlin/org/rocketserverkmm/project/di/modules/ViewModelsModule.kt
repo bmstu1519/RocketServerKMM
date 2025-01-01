@@ -33,22 +33,22 @@ val viewModelsModule = module {
     viewModelOf(::LaunchListViewModel)
     viewModelOf(::LoginViewModel)
     viewModelOf(::LaunchDetailsViewModel)
-    viewModelOf(::SettingsViewModel)
-    viewModelOf(::AppBootstrapViewModel)
 
-//    viewModel {
-//        AppBootstrapViewModel(
-//            getAppBootstrapUseCase = get(),
-//            data = getScope("FirstLoadDataScope").get()
-//        )
-//    }
-//
-//    viewModel {
-//        SettingsViewModel(
-//            getSettingsUseCase = get(),
-//            data = getScope("FirstLoadDataScope").get()
-//        )
-//    }
+    single {
+        AppBootstrapViewModel(
+            getAppBootstrapUseCase = get(),
+            data = getScope("FirstLoadDataScope").get()
+        ).apply {
+            initialize()
+        }
+    }
+
+    viewModel {
+        SettingsViewModel(
+            getSettingsUseCase = get(),
+            data = getScope("FirstLoadDataScope").get()
+        )
+    }
 
     factory {
         val launchRepository: LaunchRepository = get()

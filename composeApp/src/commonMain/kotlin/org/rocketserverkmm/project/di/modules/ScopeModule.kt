@@ -8,9 +8,9 @@ import org.rocketserverkmm.project.presentation.states.UserAuthState
 val scopeModule = module {
     single { ScopeManager() }
 
-//    scope(named("FirstLoadDataScope")) {
-//        scoped { FirstLoadInitialData() }
-//    }
+    scope(named("FirstLoadDataScope")) {
+        scoped { FirstLoadInitialData() }
+    }
     scope(named("LaunchListScope")) {
         scoped { LaunchListData() }
     }
@@ -20,7 +20,7 @@ data class LaunchListData(
     var launchId: String = ""
 )
 
-//data class FirstLoadInitialData(
-//    val isUserAuthorized: UserAuthState? = null,
-//    val isDarkThemeEnabled: Boolean = false
-//)
+data class FirstLoadInitialData(
+    var isUserAuthorized: UserAuthState? = null,
+    var isDarkThemeEnabled: Boolean = false
+)

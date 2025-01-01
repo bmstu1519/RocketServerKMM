@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.rocketserverkmm.project.di.modules.FirstLoadInitialData
 import org.rocketserverkmm.project.domain.usecases.GetAppBootstrapUseCase
 import org.rocketserverkmm.project.presentation.states.AppBootstrapAction
 import org.rocketserverkmm.project.presentation.states.AppBootstrapDestination
@@ -16,13 +17,17 @@ import org.rocketserverkmm.project.presentation.states.AppBootstrapState
 
 class AppBootstrapViewModel(
     private val getAppBootstrapUseCase: GetAppBootstrapUseCase,
-//    private val data: FirstLoadInitialData
+    private val data: FirstLoadInitialData
 ) : ViewModel() {
     private val _state = MutableStateFlow(AppBootstrapState(isLoading = true))
     val state: StateFlow<AppBootstrapState> = _state
 
     private val _destination = MutableSharedFlow<AppBootstrapDestination>()
     val destination: SharedFlow<AppBootstrapDestination> = _destination
+
+    fun initialize() {
+        actionToDestination(AppBootstrapAction.Load)
+    }
 
     fun actionToDestination(action: AppBootstrapAction) {
         when (action) {
@@ -61,7 +66,10 @@ class AppBootstrapViewModel(
             current.copy(
                 isUserAuthorized = appBootstrapState?.isUserAuthorized ?: current.isUserAuthorized,
                 isDarkThemeEnabled = appBootstrapState?.isDarkThemeEnabled ?: current.isDarkThemeEnabled,
-            )
+            ).also {
+                data.isUserAuthorized = appBootstrapState?.isUserAuthorized
+                data.isDarkThemeEnabled = appBootstrapState?.isDarkThemeEnabled ?: false
+            }
         }
     }
 }
