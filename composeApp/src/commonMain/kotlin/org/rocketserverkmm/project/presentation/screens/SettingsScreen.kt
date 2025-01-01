@@ -46,20 +46,22 @@ class SettingsScreen : Screen {
                 .fillMaxSize()
                 .padding(horizontal = 6.dp)
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    modifier = Modifier
-                        .padding(start = 10.dp),
-                    text = "Темная тема"
-                )
-                Switch(
-                    checked = state.isDarkTheme,
-                    onCheckedChange = { viewModel.actionToDestination(SettingsAction.ChangeTheme) }
-                )
+            state.isDarkTheme?.let { isDark ->
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .padding(start = 10.dp),
+                        text = "Темная тема"
+                    )
+                    Switch(
+                        checked = isDark,
+                        onCheckedChange = { viewModel.actionToDestination(SettingsAction.ChangeTheme) }
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(16.dp))

@@ -2,7 +2,7 @@ package org.rocketserverkmm.project.presentation.states
 
 data class SettingsState(
     val isLoading: Boolean = false,
-    val isDarkTheme: Boolean = false,
+    val isDarkTheme: Boolean? = null,
     val authButtonText: String? = null,
     val actionableAlert: ActionableAlert? = null,
     val error: String? = null
