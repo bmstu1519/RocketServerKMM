@@ -32,12 +32,14 @@ import cafe.adriel.voyager.navigator.CurrentScreen
 import cafe.adriel.voyager.navigator.Navigator
 import coil3.compose.setSingletonImageLoaderFactory
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.viewmodel.koinViewModel
 import org.rocketserverkmm.project.di.LocalScopeManager
 import org.rocketserverkmm.project.di.ScopeFlow
 import org.rocketserverkmm.project.di.ScopeManager
 import org.rocketserverkmm.project.platform.RocketReserverKMMTheme
 import org.rocketserverkmm.project.presentation.screens.LaunchListScreen
 import org.rocketserverkmm.project.presentation.screens.SettingsScreen
+import org.rocketserverkmm.project.presentation.viewmodels.AppBootstrapViewModel
 import org.rocketserverkmm.project.settings.local.AsyncImageLoaderSingleton
 import org.rocketserverkmm.project.settings.tabSetting.TabItem
 
@@ -47,7 +49,8 @@ import org.rocketserverkmm.project.settings.tabSetting.TabItem
 fun App() {
     val scopeManager = remember { ScopeManager() }
     var selectedTab by remember { mutableStateOf(TabItem.LAUNCHES) }
-    val scope = remember { scopeManager.getOrCreateScope(ScopeFlow.FIRST_LOAD_INITIAL_DATA) }
+    scopeManager.getOrCreateScope(ScopeFlow.FIRST_LOAD_INITIAL_DATA)
+    koinViewModel<AppBootstrapViewModel>()
 
     DisposableEffect(Unit) {
         onDispose {
