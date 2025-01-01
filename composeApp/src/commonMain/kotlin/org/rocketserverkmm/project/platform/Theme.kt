@@ -50,7 +50,7 @@ internal fun RocketReserverKMMTheme(
     val viewModel: SettingsViewModel = koinViewModel<SettingsViewModel>()
     val state by viewModel.state.collectAsState()
 
-    val isDarkState = mutableStateOf(state.isDarkTheme)
+    val isDarkState = mutableStateOf(state.isDarkTheme ?: false)
     CompositionLocalProvider(
         LocalThemeIsDark provides isDarkState
     ) {
