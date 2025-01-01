@@ -1,6 +1,7 @@
 package org.rocketserverkmm.project.di.modules
 
 import org.koin.core.module.dsl.singleOf
+import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -32,8 +33,22 @@ val viewModelsModule = module {
     viewModelOf(::LaunchListViewModel)
     viewModelOf(::LoginViewModel)
     viewModelOf(::LaunchDetailsViewModel)
-    viewModelOf(::SettingsViewModel)
-    viewModelOf(::AppBootstrapViewModel)
+
+    single {
+        AppBootstrapViewModel(
+            getAppBootstrapUseCase = get(),
+            data = getScope("FirstLoadDataScope").get()
+        ).apply {
+            initialize()
+        }
+    }
+
+    viewModel {
+        SettingsViewModel(
+            getSettingsUseCase = get(),
+            data = getScope("FirstLoadDataScope").get()
+        )
+    }
 
     factory {
         val launchRepository: LaunchRepository = get()
@@ -61,7 +76,3 @@ val viewModelsModule = module {
         GetAppBootstrapUseCase(appBootstrapRepository)
     }
 }
-
-data class LaunchListData(
-    var launchId: String = ""
-)
