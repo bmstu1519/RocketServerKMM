@@ -5,6 +5,7 @@ data class SettingsState(
     val isDarkTheme: Boolean? = null,
     val authButtonText: String? = null,
     val actionableAlert: ActionableAlert? = null,
+    val userAuthState: UserAuthState? = null,
     val error: String? = null
 )
 
