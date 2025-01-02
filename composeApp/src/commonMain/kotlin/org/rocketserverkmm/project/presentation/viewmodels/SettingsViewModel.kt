@@ -16,6 +16,7 @@ import org.rocketserverkmm.project.presentation.states.AuthResult
 import org.rocketserverkmm.project.presentation.states.SettingsAction
 import org.rocketserverkmm.project.presentation.states.SettingsDestination
 import org.rocketserverkmm.project.presentation.states.SettingsState
+import org.rocketserverkmm.project.presentation.states.UserAuthState
 
 class SettingsViewModel(
     private val getSettingsUseCase: GetSettingsUseCase,
@@ -23,7 +24,8 @@ class SettingsViewModel(
 ) : ViewModel() {
     private val _state = MutableStateFlow(
         SettingsState(
-            isDarkTheme = data.isDarkThemeEnabled
+            isDarkTheme = data.isDarkThemeEnabled,
+            userAuthState = data.isUserAuthorized
         )
     )
     val state: StateFlow<SettingsState> = _state
@@ -44,11 +46,11 @@ class SettingsViewModel(
     private fun handleLogOut() {
         viewModelScope.launch {
             getSettingsUseCase.logOut()
-//            updateState(
-//                settingsState = SettingsState(
-//                    authorizationState = NON_AUTHORIZED,
-//                )
-//            )
+            updateState(
+                settingsState = SettingsState(
+                    userAuthState = UserAuthState.NON_AUTHORIZED,
+                )
+            )
         }
     }
 
@@ -110,6 +112,7 @@ class SettingsViewModel(
                 isDarkTheme = settingsState?.isDarkTheme ?: current.isDarkTheme,
                 authButtonText = settingsState?.authButtonText ?: current.authButtonText,
                 actionableAlert = settingsState?.actionableAlert ?: current.actionableAlert,
+                userAuthState = settingsState?.userAuthState ?: current.userAuthState,
                 error = settingsState?.error ?: current.error,
             )
         }

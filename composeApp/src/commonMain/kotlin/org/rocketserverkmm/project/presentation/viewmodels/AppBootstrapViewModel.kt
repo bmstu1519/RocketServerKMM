@@ -60,12 +60,12 @@ class AppBootstrapViewModel(
 
 
     private fun updateState(
-        appBootstrapState: AppBootstrapState? = null,
+        appBootstrapState: AppBootstrapState,
     ) {
         _state.update { current ->
             current.copy(
-                isUserAuthorized = appBootstrapState?.isUserAuthorized ?: current.isUserAuthorized,
-                isDarkThemeEnabled = appBootstrapState?.isDarkThemeEnabled ?: current.isDarkThemeEnabled,
+                isUserAuthorized = appBootstrapState.isUserAuthorized ?: current.isUserAuthorized,
+                isDarkThemeEnabled = appBootstrapState.isDarkThemeEnabled ?: current.isDarkThemeEnabled,
             ).also {
                 data.isUserAuthorized = appBootstrapState?.isUserAuthorized
                 data.isDarkThemeEnabled = appBootstrapState?.isDarkThemeEnabled ?: false

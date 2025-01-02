@@ -162,13 +162,6 @@ private fun ErrorMessage(text: String) {
 }
 
 @Composable
-private fun Loading() {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        CircularProgressIndicator()
-    }
-}
-
-@Composable
 private fun SmallLoading() {
     CircularProgressIndicator(
         modifier = Modifier.size(24.dp),
