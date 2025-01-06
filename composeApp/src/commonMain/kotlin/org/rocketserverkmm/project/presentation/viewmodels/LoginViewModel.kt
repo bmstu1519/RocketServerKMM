@@ -2,11 +2,11 @@ package org.rocketserverkmm.project.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.rocketserverkmm.project.domain.models.login.LoginResult
@@ -15,13 +15,16 @@ import org.rocketserverkmm.project.presentation.states.ButtonState
 import org.rocketserverkmm.project.presentation.states.LoginAction
 import org.rocketserverkmm.project.presentation.states.LoginDestination
 import org.rocketserverkmm.project.presentation.states.LoginState
+import org.rocketserverkmm.project.presentation.states.UserAuthState
+import org.rocketserverkmm.project.settings.local.UserConfigHolder
 
 class LoginViewModel(
-    private val getLoginUseCase: GetLoginUseCase
+    private val getLoginUseCase: GetLoginUseCase,
+    private val userConfigHolder: UserConfigHolder
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(LoginState())
-    val state: StateFlow<LoginState> = _state
+    val state: StateFlow<LoginState> = _state.asStateFlow()
 
     private val _destination = MutableSharedFlow<LoginDestination>()
     val destination: SharedFlow<LoginDestination> = _destination
@@ -80,7 +83,8 @@ class LoginViewModel(
         when (result.buttonState) {
             ButtonState.Success -> {
                 result.token?.let { token ->
-                        getLoginUseCase.saveToken(token = token)
+                    getLoginUseCase.saveToken(token = token)
+                    userConfigHolder.updateUserAuthState(UserAuthState.AUTHORIZED)
                 }
                 handleResult(result)
                 ButtonState.Success.handleStateChange(
