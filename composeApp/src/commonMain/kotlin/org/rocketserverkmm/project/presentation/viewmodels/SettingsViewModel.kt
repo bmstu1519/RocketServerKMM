@@ -71,6 +71,7 @@ class SettingsViewModel(
                     isDarkTheme = isDark
                 )
             )
+            userConfigHolder.updateThemeState(isDark)
         }
     }
 

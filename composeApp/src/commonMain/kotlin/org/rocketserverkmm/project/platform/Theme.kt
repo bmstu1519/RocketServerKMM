@@ -10,8 +10,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import org.koin.compose.viewmodel.koinViewModel
-import org.rocketserverkmm.project.presentation.viewmodels.SettingsViewModel
+import kotlinx.coroutines.flow.map
+import org.koin.compose.getKoin
+import org.rocketserverkmm.project.settings.local.UserConfigHolder
 import org.rocketserverkmm.project.settings.theme.Pink40
 import org.rocketserverkmm.project.settings.theme.Pink80
 import org.rocketserverkmm.project.settings.theme.Purple40
@@ -47,10 +48,12 @@ internal val LocalThemeIsDark = compositionLocalOf { mutableStateOf(true) }
 internal fun RocketReserverKMMTheme(
     content: @Composable () -> Unit
 ) {
-    val viewModel: SettingsViewModel = koinViewModel<SettingsViewModel>()
-    val state by viewModel.state.collectAsState()
+    val userConfigHolder: UserConfigHolder = getKoin().get()
+    val isDarkThemeEnabled by userConfigHolder.state
+        .map { it.isDarkThemeEnabled }
+        .collectAsState(initial = false)
 
-    val isDarkState = mutableStateOf(state.isDarkTheme ?: false)
+    val isDarkState = mutableStateOf(isDarkThemeEnabled)
     CompositionLocalProvider(
         LocalThemeIsDark provides isDarkState
     ) {
