@@ -28,23 +28,24 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import org.koin.compose.viewmodel.koinViewModel
 import org.rocketserverkmm.project.platform.AlertDialog
-import org.rocketserverkmm.project.presentation.states.AppBootstrapAction
 import org.rocketserverkmm.project.presentation.states.SettingsAction
 import org.rocketserverkmm.project.presentation.states.SettingsDestination
 import org.rocketserverkmm.project.presentation.states.UserAuthState
-import org.rocketserverkmm.project.presentation.viewmodels.AppBootstrapViewModel
 import org.rocketserverkmm.project.presentation.viewmodels.SettingsViewModel
 
 class SettingsScreen : Screen {
     @Composable
     override fun Content() {
         val viewModel: SettingsViewModel = koinViewModel<SettingsViewModel>()
-        val viewModel2: AppBootstrapViewModel = koinViewModel<AppBootstrapViewModel>()
 
         val state by viewModel.state.collectAsState()
         val navigator = LocalNavigator.currentOrThrow
 
         var showAlert by remember { mutableStateOf(false) }
+
+        LaunchedEffect(Unit) {
+            viewModel.actionToDestination(SettingsAction.OpenScreen)
+        }
 
         Column(
             modifier = Modifier
@@ -52,7 +53,6 @@ class SettingsScreen : Screen {
                 .padding(horizontal = 6.dp)
         ) {
 
-            viewModel2.actionToDestination(AppBootstrapAction.Load)
             state.userAuthState?.let { authState ->
                 when (authState) {
                     UserAuthState.NON_AUTHORIZED -> {
@@ -117,9 +117,6 @@ class SettingsScreen : Screen {
                     UserAuthState.NO_IMPLEMENTATION -> LoadingCompose()
                 }
             }
-
-
-            println("UserAuthState " + state.userAuthState)
 
             LaunchedEffect(Unit) {
                 viewModel.destination.collect { destination ->

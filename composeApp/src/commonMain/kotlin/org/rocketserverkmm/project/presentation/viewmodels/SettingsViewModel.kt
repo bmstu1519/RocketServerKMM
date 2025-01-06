@@ -6,9 +6,9 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.rocketserverkmm.project.di.modules.FirstLoadInitialData
 import org.rocketserverkmm.project.domain.usecases.GetSettingsUseCase
 import org.rocketserverkmm.project.presentation.states.ActionableAlert
 import org.rocketserverkmm.project.presentation.states.ActionableButton
@@ -17,29 +17,37 @@ import org.rocketserverkmm.project.presentation.states.SettingsAction
 import org.rocketserverkmm.project.presentation.states.SettingsDestination
 import org.rocketserverkmm.project.presentation.states.SettingsState
 import org.rocketserverkmm.project.presentation.states.UserAuthState
+import org.rocketserverkmm.project.settings.local.UserConfigHolder
 
 class SettingsViewModel(
     private val getSettingsUseCase: GetSettingsUseCase,
-    private val data: FirstLoadInitialData
+    private val userConfigHolder: UserConfigHolder
 ) : ViewModel() {
-    private val _state = MutableStateFlow(
-        SettingsState(
-            isDarkTheme = data.isDarkThemeEnabled,
-            userAuthState = data.isUserAuthorized
-        )
-    )
-    val state: StateFlow<SettingsState> = _state
+    private val _state = MutableStateFlow(SettingsState())
+    val state: StateFlow<SettingsState> = _state.asStateFlow()
 
     private val _destination = MutableSharedFlow<SettingsDestination>()
     val destination: SharedFlow<SettingsDestination> = _destination
 
     fun actionToDestination(action: SettingsAction) {
         when (action) {
+            SettingsAction.OpenScreen -> getUserSettings()
             SettingsAction.ChangeTheme -> changeTheme()
             SettingsAction.ClickAuthButton -> handleAuthClick()
             SettingsAction.ShowAlert -> showAlert()
             SettingsAction.ClickAuthButton.LogIn -> TODO()
             SettingsAction.ClickAuthButton.LogOut -> handleLogOut()
+        }
+    }
+
+    private fun getUserSettings() {
+        viewModelScope.launch {
+            updateState(
+                settingsState = SettingsState(
+                    userAuthState = userConfigHolder.state.value.isUserAuthorized,
+                    isDarkTheme = userConfigHolder.state.value.isDarkThemeEnabled
+                )
+            )
         }
     }
 
@@ -51,6 +59,7 @@ class SettingsViewModel(
                     userAuthState = UserAuthState.NON_AUTHORIZED,
                 )
             )
+            userConfigHolder.updateUserAuthState(UserAuthState.NON_AUTHORIZED)
         }
     }
 
