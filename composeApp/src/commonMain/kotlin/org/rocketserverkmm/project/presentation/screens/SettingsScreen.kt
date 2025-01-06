@@ -30,72 +30,100 @@ import org.koin.compose.viewmodel.koinViewModel
 import org.rocketserverkmm.project.platform.AlertDialog
 import org.rocketserverkmm.project.presentation.states.SettingsAction
 import org.rocketserverkmm.project.presentation.states.SettingsDestination
+import org.rocketserverkmm.project.presentation.states.UserAuthState
 import org.rocketserverkmm.project.presentation.viewmodels.SettingsViewModel
 
 class SettingsScreen : Screen {
     @Composable
     override fun Content() {
         val viewModel: SettingsViewModel = koinViewModel<SettingsViewModel>()
+
         val state by viewModel.state.collectAsState()
         val navigator = LocalNavigator.currentOrThrow
 
         var showAlert by remember { mutableStateOf(false) }
+
+        LaunchedEffect(Unit) {
+            viewModel.actionToDestination(SettingsAction.OpenScreen)
+        }
 
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 6.dp)
         ) {
-            state.isDarkTheme?.let { isDark ->
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        modifier = Modifier
-                            .padding(start = 10.dp),
-                        text = "Темная тема"
-                    )
-                    Switch(
-                        checked = isDark,
-                        onCheckedChange = { viewModel.actionToDestination(SettingsAction.ChangeTheme) }
-                    )
-                }
-            }
 
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Button(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                onClick = { viewModel.actionToDestination(SettingsAction.ClickAuthButton) },
-                shape = RoundedCornerShape(8.dp)
-            ) {
-                Text(text = "Выйти из аккаунта")
-            }
-        }
-
-        state.actionableAlert?.let { actionableAlert ->
-            if(showAlert) {
-                Box(modifier = Modifier.fillMaxSize()) {
-                    AlertDialog(
-                        modifier = Modifier.fillMaxWidth().padding(4.dp).align(Alignment.Center),
-                        alert = actionableAlert,
-                    ) {
-                        println("onDismissRequest")
-//                                showDialog = false
-                        showAlert = false
+            state.userAuthState?.let { authState ->
+                when (authState) {
+                    UserAuthState.NON_AUTHORIZED -> {
+                        Button(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            onClick = { viewModel.actionToDestination(SettingsAction.ClickAuthButton) },
+                            shape = RoundedCornerShape(8.dp)
+                        ) {
+                            Text(text = "Log in")
+                        }
                     }
+
+                    UserAuthState.AUTHORIZED -> {
+                        state.isDarkTheme?.let { isDark ->
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    modifier = Modifier
+                                        .padding(start = 10.dp),
+                                    text = "Темная тема"
+                                )
+                                Switch(
+                                    checked = isDark,
+                                    onCheckedChange = { viewModel.actionToDestination(SettingsAction.ChangeTheme) }
+                                )
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        Button(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            onClick = { viewModel.actionToDestination(SettingsAction.ClickAuthButton) },
+                            shape = RoundedCornerShape(8.dp)
+                        ) {
+                            Text(text = "Log out")
+                        }
+
+                        state.actionableAlert?.let { actionableAlert ->
+                            if (showAlert) {
+                                Box(modifier = Modifier.fillMaxSize()) {
+                                    AlertDialog(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(4.dp)
+                                            .align(Alignment.Center),
+                                        alert = actionableAlert,
+                                    ) {
+                                        showAlert = false
+                                        println("onDismissRequest")
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    UserAuthState.NO_IMPLEMENTATION -> LoadingCompose()
                 }
             }
-        }
 
-        LaunchedEffect(Unit) {
-            viewModel.destination.collect { destination ->
-                when(destination) {
-                    SettingsDestination.GoToLogin -> navigator.push(LoginScreen())
-                    SettingsDestination.ShowAlert -> showAlert = true
+            LaunchedEffect(Unit) {
+                viewModel.destination.collect { destination ->
+                    when (destination) {
+                        SettingsDestination.ShowAlert -> showAlert = true
+                        SettingsDestination.GoToLogin -> navigator.push(LoginScreen())
+                    }
                 }
             }
         }

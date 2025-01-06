@@ -23,6 +23,7 @@ import org.rocketserverkmm.project.repositories.AppBootstrapRepositoryImpl
 import org.rocketserverkmm.project.repositories.KeyVaultRepositoryImpl
 import org.rocketserverkmm.project.repositories.LaunchRepositoryImpl
 import org.rocketserverkmm.project.repositories.SettingsRepositoryImpl
+import org.rocketserverkmm.project.settings.local.UserConfigHolder
 
 val viewModelsModule = module {
     singleOf(::LaunchRepositoryImpl).bind<LaunchRepository>()
@@ -31,22 +32,32 @@ val viewModelsModule = module {
     singleOf(::AppBootstrapRepositoryImpl).bind<AppBootstrapRepository>()
 
     viewModelOf(::LaunchListViewModel)
-    viewModelOf(::LoginViewModel)
     viewModelOf(::LaunchDetailsViewModel)
 
     single {
+        UserConfigHolder()
+    }
+
+    viewModel {
         AppBootstrapViewModel(
             getAppBootstrapUseCase = get(),
-            data = getScope("FirstLoadDataScope").get()
+            userConfigHolder = get()
         ).apply {
             initialize()
         }
     }
 
     viewModel {
+        LoginViewModel(
+            getLoginUseCase = get(),
+            userConfigHolder = get()
+        )
+    }
+
+    viewModel {
         SettingsViewModel(
             getSettingsUseCase = get(),
-            data = getScope("FirstLoadDataScope").get()
+            userConfigHolder = get()
         )
     }
 

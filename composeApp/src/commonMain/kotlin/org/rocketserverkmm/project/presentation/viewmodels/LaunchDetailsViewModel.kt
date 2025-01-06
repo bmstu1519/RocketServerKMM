@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.rocketserverkmm.project.TripsBookedSubscription
@@ -20,7 +21,7 @@ class LaunchDetailsViewModel(
     private val getLaunchDetailsUseCase: GetLaunchDetailsUseCase
 ) : ViewModel() {
     private val _state = MutableStateFlow(LaunchDetailsState())
-    val state: StateFlow<LaunchDetailsState> = _state
+    val state: StateFlow<LaunchDetailsState> = _state.asStateFlow()
 
     private val _destination = MutableSharedFlow<LaunchDetailsDestination>()
     val destination: SharedFlow<LaunchDetailsDestination> = _destination

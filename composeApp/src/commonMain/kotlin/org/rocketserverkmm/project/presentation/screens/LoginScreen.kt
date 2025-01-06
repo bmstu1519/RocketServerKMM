@@ -93,7 +93,7 @@ class LoginScreen : Screen {
                 )
             ) {
                 when(state.buttonState){
-                    ButtonState.Loading -> Loading()
+                    ButtonState.Loading -> LoadingCompose()
                     ButtonState.Success -> Icon(
                         imageVector = Icons.Default.Check,
                         contentDescription = "Success",
@@ -122,9 +122,10 @@ class LoginScreen : Screen {
 
 
 @Composable
-private fun Loading() {
+fun LoadingCompose() {
     CircularProgressIndicator(
-        modifier = Modifier.size(24.dp),
+        modifier = Modifier
+            .size(24.dp),
         color = LocalContentColor.current,
         strokeWidth = 2.dp,
     )

@@ -5,10 +5,12 @@ data class SettingsState(
     val isDarkTheme: Boolean? = null,
     val authButtonText: String? = null,
     val actionableAlert: ActionableAlert? = null,
+    val userAuthState: UserAuthState? = null,
     val error: String? = null
 )
 
 sealed class SettingsAction {
+    data object OpenScreen : SettingsAction()
     data object ClickAuthButton : SettingsAction() {
         data object LogIn : SettingsAction()
         data object LogOut : SettingsAction()

@@ -3,42 +3,30 @@ package org.rocketserverkmm.project.presentation.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import org.rocketserverkmm.project.di.modules.FirstLoadInitialData
 import org.rocketserverkmm.project.domain.usecases.GetAppBootstrapUseCase
 import org.rocketserverkmm.project.presentation.states.AppBootstrapAction
-import org.rocketserverkmm.project.presentation.states.AppBootstrapDestination
 import org.rocketserverkmm.project.presentation.states.AppBootstrapState
+import org.rocketserverkmm.project.presentation.states.UserAuthState
+import org.rocketserverkmm.project.settings.local.UserConfigHolder
 
 class AppBootstrapViewModel(
     private val getAppBootstrapUseCase: GetAppBootstrapUseCase,
-    private val data: FirstLoadInitialData
+    private val userConfigHolder: UserConfigHolder
 ) : ViewModel() {
-    private val _state = MutableStateFlow(AppBootstrapState(isLoading = true))
-    val state: StateFlow<AppBootstrapState> = _state
-
-    private val _destination = MutableSharedFlow<AppBootstrapDestination>()
-    val destination: SharedFlow<AppBootstrapDestination> = _destination
+    private val _state = MutableStateFlow(AppBootstrapState(isUserAuthorized = UserAuthState.NO_IMPLEMENTATION))
+    val state: StateFlow<AppBootstrapState> = _state.asStateFlow()
 
     fun initialize() {
         actionToDestination(AppBootstrapAction.Load)
     }
 
-    fun actionToDestination(action: AppBootstrapAction) {
+    private fun actionToDestination(action: AppBootstrapAction) {
         when (action) {
             AppBootstrapAction.Load -> handleFirstLoad()
-            AppBootstrapAction.LaunchScreen -> launchScreen()
-        }
-    }
-
-    private fun launchScreen() {
-        viewModelScope.launch {
-            _destination.emit(AppBootstrapDestination.LaunchScreen)
         }
     }
 
@@ -48,28 +36,20 @@ class AppBootstrapViewModel(
             val themeDeferred = async { getAppBootstrapUseCase.getCurrentTheme() }
             val (authState, theme) = Pair(authDeferred.await(), themeDeferred.await())
 
-            updateState(
+            unitUserConfig(
                 AppBootstrapState(
-                    isLoading = false,
                     isUserAuthorized = authState,
-                    isDarkThemeEnabled = theme ,
+                    isDarkThemeEnabled = theme,
                 )
             )
         }
     }
 
 
-    private fun updateState(
-        appBootstrapState: AppBootstrapState? = null,
+    private fun unitUserConfig(
+        appBootstrapState: AppBootstrapState,
     ) {
-        _state.update { current ->
-            current.copy(
-                isUserAuthorized = appBootstrapState?.isUserAuthorized ?: current.isUserAuthorized,
-                isDarkThemeEnabled = appBootstrapState?.isDarkThemeEnabled ?: current.isDarkThemeEnabled,
-            ).also {
-                data.isUserAuthorized = appBootstrapState?.isUserAuthorized
-                data.isDarkThemeEnabled = appBootstrapState?.isDarkThemeEnabled ?: false
-            }
-        }
+        userConfigHolder.updateUserAuthState(appBootstrapState.isUserAuthorized)
+        userConfigHolder.updateThemeState(appBootstrapState.isDarkThemeEnabled)
     }
 }
