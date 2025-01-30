@@ -33,6 +33,7 @@ ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "kto
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", name = "voyager-navigator", version.ref = "voyager" }
 voyager-transitions = { module = "cafe.adriel.voyager:voyager-transitions", name = "voyager-transitions", version.ref = "voyager" }
+voyager-navigator-tab = { group = "cafe.adriel.voyager", name = "voyager-tab-navigator", version.ref = "voyager" }
 kvault = { module = "com.liftric:kvault", version.ref = "kVault" }
 #koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koin-bom" }
 #koin-core = { module = "io.insert-koin:koin-core" }
