@@ -61,6 +61,7 @@ kotlin {
 
             implementation(libs.voyager.navigator)
             implementation(libs.voyager.transitions)
+            implementation(libs.voyager.navigator.tab)
 
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.serialization)
