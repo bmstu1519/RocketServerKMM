@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.rocketserverkmm.project.domain.models.login.LoginResult
+import org.rocketserverkmm.project.domain.model.login.LoginResult
 import org.rocketserverkmm.project.domain.usecases.GetLoginUseCase
 import org.rocketserverkmm.project.presentation.states.ButtonState
 import org.rocketserverkmm.project.presentation.states.LoginAction

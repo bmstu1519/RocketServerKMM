@@ -1,6 +1,6 @@
 package org.rocketserverkmm.project.domain.usecases
 
-import org.rocketserverkmm.project.domain.models.launchList.LaunchesResult
+import org.rocketserverkmm.project.domain.model.launchList.LaunchesResult
 import org.rocketserverkmm.project.domain.repositories.LaunchRepository
 
 class GetLaunchesUseCase(private val repository: LaunchRepository) {

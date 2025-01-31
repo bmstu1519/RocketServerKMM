@@ -9,8 +9,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.rocketserverkmm.project.domain.models.launchList.LaunchDTO
-import org.rocketserverkmm.project.domain.models.launchList.LaunchesResult
+import org.rocketserverkmm.project.domain.model.launchList.Launch
+import org.rocketserverkmm.project.domain.model.launchList.LaunchesResult
 import org.rocketserverkmm.project.domain.usecases.GetLaunchesUseCase
 import org.rocketserverkmm.project.presentation.states.LaunchListAction
 import org.rocketserverkmm.project.presentation.states.LaunchListDestination
@@ -62,7 +62,7 @@ class LaunchListViewModel(
     }
 
     private suspend fun updateState(
-        launches: List<LaunchDTO>? = null,
+        launches: List<Launch>? = null,
         hasMore: Boolean? = null,
         isLoading: Boolean? = null,
         error: String? = null

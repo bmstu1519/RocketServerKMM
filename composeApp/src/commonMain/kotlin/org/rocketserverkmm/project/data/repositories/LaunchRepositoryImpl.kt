@@ -1,4 +1,4 @@
-package org.rocketserverkmm.project.repositories
+package org.rocketserverkmm.project.data.repositories
 
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Optional
@@ -10,12 +10,10 @@ import org.rocketserverkmm.project.LaunchDetailsQuery
 import org.rocketserverkmm.project.LaunchListQuery
 import org.rocketserverkmm.project.LoginMutation
 import org.rocketserverkmm.project.TripsBookedSubscription
-import org.rocketserverkmm.project.domain.models.launchDetails.LaunchDetailsResult
-import org.rocketserverkmm.project.domain.models.launchDetails.MissionDTO
-import org.rocketserverkmm.project.domain.models.launchDetails.RocketDTO
-import org.rocketserverkmm.project.domain.models.launchList.LaunchesResult
-import org.rocketserverkmm.project.domain.models.launchList.toDomain
-import org.rocketserverkmm.project.domain.models.login.LoginResult
+import org.rocketserverkmm.project.data.toDomain
+import org.rocketserverkmm.project.domain.model.launchDetails.LaunchDetailsResult
+import org.rocketserverkmm.project.domain.model.launchList.LaunchesResult
+import org.rocketserverkmm.project.domain.model.login.LoginResult
 import org.rocketserverkmm.project.domain.repositories.LaunchRepository
 import org.rocketserverkmm.project.presentation.states.ButtonState
 
@@ -65,8 +63,8 @@ class LaunchRepositoryImpl(
             LaunchDetailsResult(
                 id = response.data?.launch?.id,
                 site = response.data?.launch?.site,
-                mission = MissionDTO(response.data?.launch?.mission),
-                rocket = RocketDTO(response.data?.launch?.rocket),
+                mission = response.data?.launch?.mission?.toDomain(),
+                rocket = response.data?.launch?.rocket?.toDomain(),
                 isBooked = response.data?.launch?.isBooked,
             )
         }

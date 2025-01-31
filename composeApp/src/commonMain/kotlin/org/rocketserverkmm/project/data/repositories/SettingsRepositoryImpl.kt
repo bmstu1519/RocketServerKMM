@@ -1,4 +1,4 @@
-package org.rocketserverkmm.project.repositories
+package org.rocketserverkmm.project.data.repositories
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.rocketserverkmm.project.domain.repositories.KeyVaultRepository

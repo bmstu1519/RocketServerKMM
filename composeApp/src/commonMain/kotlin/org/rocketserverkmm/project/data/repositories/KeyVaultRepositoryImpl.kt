@@ -1,4 +1,4 @@
-package org.rocketserverkmm.project.repositories
+package org.rocketserverkmm.project.data.repositories
 
 import com.liftric.kvault.KVault
 import org.rocketserverkmm.project.domain.repositories.KeyVaultRepository

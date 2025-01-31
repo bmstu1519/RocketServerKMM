@@ -1,4 +1,4 @@
-package org.rocketserverkmm.project.repositories
+package org.rocketserverkmm.project.data.repositories
 
 import org.rocketserverkmm.project.domain.repositories.AppBootstrapRepository
 import org.rocketserverkmm.project.domain.repositories.KeyVaultRepository

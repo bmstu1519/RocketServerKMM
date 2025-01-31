@@ -19,10 +19,10 @@ import org.rocketserverkmm.project.presentation.viewmodels.LaunchDetailsViewMode
 import org.rocketserverkmm.project.presentation.viewmodels.LaunchListViewModel
 import org.rocketserverkmm.project.presentation.viewmodels.LoginViewModel
 import org.rocketserverkmm.project.presentation.viewmodels.SettingsViewModel
-import org.rocketserverkmm.project.repositories.AppBootstrapRepositoryImpl
-import org.rocketserverkmm.project.repositories.KeyVaultRepositoryImpl
-import org.rocketserverkmm.project.repositories.LaunchRepositoryImpl
-import org.rocketserverkmm.project.repositories.SettingsRepositoryImpl
+import org.rocketserverkmm.project.data.repositories.AppBootstrapRepositoryImpl
+import org.rocketserverkmm.project.data.repositories.KeyVaultRepositoryImpl
+import org.rocketserverkmm.project.data.repositories.LaunchRepositoryImpl
+import org.rocketserverkmm.project.data.repositories.SettingsRepositoryImpl
 import org.rocketserverkmm.project.settings.local.UserConfigHolder
 
 val viewModelsModule = module {

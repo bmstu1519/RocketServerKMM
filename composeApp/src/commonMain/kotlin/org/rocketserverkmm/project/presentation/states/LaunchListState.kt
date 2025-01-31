@@ -1,9 +1,9 @@
 package org.rocketserverkmm.project.presentation.states
 
-import org.rocketserverkmm.project.domain.models.launchList.LaunchDTO
+import org.rocketserverkmm.project.domain.model.launchList.Launch
 
 data class LaunchListState(
-    val launches: List<LaunchDTO> = emptyList(),
+    val launches: List<Launch> = emptyList(),
     val isLoading: Boolean = false,
     val hasMore: Boolean = false,
     val error: String? = null
