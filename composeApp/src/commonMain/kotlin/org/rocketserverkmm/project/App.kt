@@ -65,17 +65,6 @@ fun App() {
                                     navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
                                     actionIconContentColor = MaterialTheme.colorScheme.primary,
                                 ),
-                                navigationIcon = {
-//                                    if (navigator.canPop) {
-//                                        IconButton(onClick = { navigator.current.}) {
-//                                            Icon(
-//                                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-//                                                contentDescription = "Назад",
-//                                                tint = MaterialTheme.colorScheme.onPrimary
-//                                            )
-//                                        }
-//                                    }
-                                }
                             )
                         }
                     },
