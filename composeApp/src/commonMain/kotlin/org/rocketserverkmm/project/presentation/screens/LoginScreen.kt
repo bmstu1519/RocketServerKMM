@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package org.rocketserverkmm.project.presentation.screens
 
 import androidx.compose.foundation.layout.Column
@@ -15,13 +13,13 @@ import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -40,6 +38,10 @@ import org.koin.compose.viewmodel.koinViewModel
 import org.rocketserverkmm.project.presentation.states.ButtonState
 import org.rocketserverkmm.project.presentation.states.LoginAction
 import org.rocketserverkmm.project.presentation.states.LoginDestination
+import org.rocketserverkmm.project.presentation.utils.appBar.AppBarState
+import org.rocketserverkmm.project.presentation.utils.appBar.LocalAppBarState
+import org.rocketserverkmm.project.presentation.utils.bottomBar.BottomBarState
+import org.rocketserverkmm.project.presentation.utils.bottomBar.LocalBottomBarState
 import org.rocketserverkmm.project.presentation.viewmodels.LoginViewModel
 
 class LoginScreen : Screen {
@@ -51,18 +53,30 @@ class LoginScreen : Screen {
         val navigator = LocalNavigator.currentOrThrow
         var email by remember { mutableStateOf("") }
 
+        val appBarState = LocalAppBarState.current
+        val bottomBarState = LocalBottomBarState.current
+
+        DisposableEffect(Unit) {
+            appBarState.value = AppBarState(
+                title = state.titleText,
+                showBackButton = true,
+                onBackClick = { navigator.pop() }
+            )
+            bottomBarState.value = BottomBarState(
+                visible = false
+            )
+
+            onDispose {
+                appBarState.value = AppBarState()
+                bottomBarState.value = BottomBarState()
+            }
+        }
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(6.dp)
         ) {
-
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.headlineMedium,
-                text = state.titleText
-            )
 
             OutlinedTextField(
                 modifier = Modifier
@@ -118,8 +132,6 @@ class LoginScreen : Screen {
         }
     }
 }
-
-
 
 @Composable
 fun LoadingCompose() {

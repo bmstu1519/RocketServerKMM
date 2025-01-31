@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -22,6 +23,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -43,10 +45,11 @@ import org.rocketserverkmm.project.presentation.states.ButtonState
 import org.rocketserverkmm.project.presentation.states.LaunchDetailsAction
 import org.rocketserverkmm.project.presentation.states.LaunchDetailsDestination
 import org.rocketserverkmm.project.presentation.viewmodels.LaunchDetailsViewModel
+import org.rocketserverkmm.project.presentation.utils.appBar.AppBarState
+import org.rocketserverkmm.project.presentation.utils.appBar.LocalAppBarState
 import rocketserverkmm.composeapp.generated.resources.Res
 import rocketserverkmm.composeapp.generated.resources.baseline_error_24
 import rocketserverkmm.composeapp.generated.resources.ic_placeholder
-
 
 class LaunchDetailsScreen : Screen {
 
@@ -55,6 +58,7 @@ class LaunchDetailsScreen : Screen {
         val scopeManager = LocalScopeManager.current
         val scope = remember { scopeManager.getScope(ScopeFlow.LAUNCH_FLOW) }
         val launchListData = remember { scope.get<LaunchListData>() }
+        val appBarState = LocalAppBarState.current
 
         val viewModel: LaunchDetailsViewModel = koinViewModel<LaunchDetailsViewModel>()
 
@@ -66,6 +70,19 @@ class LaunchDetailsScreen : Screen {
             viewModel.actionToDestination(LaunchDetailsAction.Load(launchListData.launchId))
         }
 
+        DisposableEffect(Unit) {
+            appBarState.value = AppBarState(
+                title = "Launch Details",
+                showBackButton = true,
+                iconAction = Icons.AutoMirrored.Filled.ArrowBack,
+                onBackClick = { navigator.pop() } ,
+            )
+
+            onDispose {
+                appBarState.value = AppBarState()
+            }
+        }
+
         LaunchedEffect(Unit) {
             viewModel.destination.collect { destination ->
                 when (destination) {
@@ -75,7 +92,7 @@ class LaunchDetailsScreen : Screen {
         }
 
         Scaffold(
-            snackbarHost = { SnackbarHost(snackbarHostState) }
+            snackbarHost = { SnackbarHost(snackbarHostState) },
         ) {
             LaunchedEffect(Unit) {
                 viewModel.snackbarMessage.collect { subscribeMessage ->
@@ -169,9 +186,3 @@ private fun SmallLoading() {
         strokeWidth = 2.dp,
     )
 }
-
-//@Preview(showBackground = true)
-//@Composable
-//private fun LaunchDetailsPreview() {
-//    LaunchDetails(launchId = "42")
-//}
