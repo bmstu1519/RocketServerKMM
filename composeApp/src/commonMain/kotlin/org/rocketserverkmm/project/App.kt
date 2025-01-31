@@ -1,5 +1,8 @@
 package org.rocketserverkmm.project
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.NavigationBar
@@ -20,6 +23,8 @@ import org.rocketserverkmm.project.platform.RocketReserverKMMTheme
 import org.rocketserverkmm.project.presentation.utils.appBar.AppBar
 import org.rocketserverkmm.project.presentation.utils.appBar.AppBarState
 import org.rocketserverkmm.project.presentation.utils.appBar.LocalAppBarState
+import org.rocketserverkmm.project.presentation.utils.bottomBar.BottomBarState
+import org.rocketserverkmm.project.presentation.utils.bottomBar.LocalBottomBarState
 import org.rocketserverkmm.project.presentation.utils.bottomBar.TabItem
 import org.rocketserverkmm.project.presentation.utils.bottomBar.TabNavigationItem
 import org.rocketserverkmm.project.presentation.viewmodels.AppBootstrapViewModel
@@ -30,6 +35,7 @@ import org.rocketserverkmm.project.settings.local.AsyncImageLoaderSingleton
 fun App() {
     val scopeManager = remember { ScopeManager() }
     val topBarState = remember { mutableStateOf(AppBarState()) }
+    val bottomBarState = remember { mutableStateOf(BottomBarState()) }
 
     koinViewModel<AppBootstrapViewModel>()
 
@@ -42,6 +48,7 @@ fun App() {
     CompositionLocalProvider(
         LocalScopeManager provides scopeManager,
         LocalAppBarState provides topBarState,
+        LocalBottomBarState provides bottomBarState
     ) {
         RocketReserverKMMTheme {
             setSingletonImageLoaderFactory { context ->
@@ -56,11 +63,18 @@ fun App() {
                         )
                     },
                     bottomBar = {
-                        NavigationBar {
-                            TabNavigationItem(TabItem.LaunchesTab)
-                            TabNavigationItem(TabItem.SettingsTab)
+                        AnimatedVisibility(
+                            visible = bottomBarState.value.visible,
+                            enter = slideInVertically(initialOffsetY = { it }),
+                            exit = slideOutVertically(targetOffsetY = { it })
+                        ) {
+                            NavigationBar {
+                                TabNavigationItem(TabItem.LaunchesTab)
+                                TabNavigationItem(TabItem.SettingsTab)
+                            }
                         }
                     }
+
                 ) { paddingValues ->
                     Box(Modifier.padding(paddingValues)) {
                         tabNavigator.current.Content()
