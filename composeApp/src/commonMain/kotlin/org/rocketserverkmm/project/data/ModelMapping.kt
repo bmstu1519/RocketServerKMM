@@ -2,9 +2,9 @@ package org.rocketserverkmm.project.data
 
 import org.rocketserverkmm.project.LaunchDetailsQuery
 import org.rocketserverkmm.project.LaunchListQuery
-import org.rocketserverkmm.project.domain.models.launchDetails.Mission
-import org.rocketserverkmm.project.domain.models.launchDetails.Rocket
-import org.rocketserverkmm.project.domain.models.launchList.Launch
+import org.rocketserverkmm.project.domain.model.launchDetails.Mission
+import org.rocketserverkmm.project.domain.model.launchDetails.Rocket
+import org.rocketserverkmm.project.domain.model.launchList.Launch
 
 fun LaunchListQuery.Launch.toDomain(): Launch {
     return Launch(

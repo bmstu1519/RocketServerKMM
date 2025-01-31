@@ -1,6 +1,6 @@
 package org.rocketserverkmm.project.presentation.states
 
-import org.rocketserverkmm.project.domain.models.launchList.Launch
+import org.rocketserverkmm.project.domain.model.launchList.Launch
 
 data class LaunchListState(
     val launches: List<Launch> = emptyList(),

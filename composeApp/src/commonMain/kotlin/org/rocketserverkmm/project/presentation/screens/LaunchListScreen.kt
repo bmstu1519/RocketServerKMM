@@ -27,7 +27,7 @@ import org.koin.compose.viewmodel.koinViewModel
 import org.rocketserverkmm.project.di.LocalScopeManager
 import org.rocketserverkmm.project.di.ScopeFlow
 import org.rocketserverkmm.project.di.modules.LaunchListData
-import org.rocketserverkmm.project.domain.models.launchList.Launch
+import org.rocketserverkmm.project.domain.model.launchList.Launch
 import org.rocketserverkmm.project.presentation.states.LaunchListAction
 import org.rocketserverkmm.project.presentation.states.LaunchListDestination
 import org.rocketserverkmm.project.presentation.viewmodels.LaunchListViewModel

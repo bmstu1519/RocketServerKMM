@@ -1,7 +1,7 @@
 package org.rocketserverkmm.project.presentation.states
 
-import org.rocketserverkmm.project.domain.models.launchDetails.Mission
-import org.rocketserverkmm.project.domain.models.launchDetails.Rocket
+import org.rocketserverkmm.project.domain.model.launchDetails.Mission
+import org.rocketserverkmm.project.domain.model.launchDetails.Rocket
 
 data class LaunchDetailsState(
     val isLoading: Boolean? = null,

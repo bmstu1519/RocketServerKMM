@@ -1,4 +1,4 @@
-package org.rocketserverkmm.project.domain.models.launchList
+package org.rocketserverkmm.project.domain.model.launchList
 
 data class LaunchesResult(
     val launches: List<Launch>,

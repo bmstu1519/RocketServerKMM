@@ -3,7 +3,7 @@ package org.rocketserverkmm.project.domain.usecases
 import kotlinx.coroutines.flow.Flow
 import org.rocketserverkmm.project.platform.KEY_TOKEN
 import org.rocketserverkmm.project.TripsBookedSubscription
-import org.rocketserverkmm.project.domain.models.launchDetails.LaunchDetailsResult
+import org.rocketserverkmm.project.domain.model.launchDetails.LaunchDetailsResult
 import org.rocketserverkmm.project.domain.repositories.KeyVaultRepository
 import org.rocketserverkmm.project.domain.repositories.LaunchRepository
 

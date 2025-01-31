@@ -1,4 +1,4 @@
-package org.rocketserverkmm.project.domain.models.login
+package org.rocketserverkmm.project.domain.model.login
 
 import org.rocketserverkmm.project.presentation.states.ButtonState
 

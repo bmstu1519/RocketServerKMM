@@ -1,4 +1,4 @@
-package org.rocketserverkmm.project.domain.models.launchDetails
+package org.rocketserverkmm.project.domain.model.launchDetails
 
 data class Mission(
     val name: String?,
