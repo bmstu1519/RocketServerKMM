@@ -58,6 +58,7 @@ class LoginScreen : Screen {
 
         DisposableEffect(Unit) {
             appBarState.value = AppBarState(
+                title = state.titleText,
                 showBackButton = true,
                 onBackClick = { navigator.pop() }
             )
@@ -76,13 +77,6 @@ class LoginScreen : Screen {
                 .fillMaxSize()
                 .padding(6.dp)
         ) {
-
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.headlineMedium,
-                text = state.titleText
-            )
 
             OutlinedTextField(
                 modifier = Modifier
