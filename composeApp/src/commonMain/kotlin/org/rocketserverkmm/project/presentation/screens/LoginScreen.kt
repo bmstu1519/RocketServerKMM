@@ -40,6 +40,8 @@ import org.rocketserverkmm.project.presentation.states.LoginAction
 import org.rocketserverkmm.project.presentation.states.LoginDestination
 import org.rocketserverkmm.project.presentation.utils.appBar.AppBarState
 import org.rocketserverkmm.project.presentation.utils.appBar.LocalAppBarState
+import org.rocketserverkmm.project.presentation.utils.bottomBar.BottomBarState
+import org.rocketserverkmm.project.presentation.utils.bottomBar.LocalBottomBarState
 import org.rocketserverkmm.project.presentation.viewmodels.LoginViewModel
 
 class LoginScreen : Screen {
@@ -50,16 +52,22 @@ class LoginScreen : Screen {
         val state by viewModel.state.collectAsState()
         val navigator = LocalNavigator.currentOrThrow
         var email by remember { mutableStateOf("") }
+
         val appBarState = LocalAppBarState.current
+        val bottomBarState = LocalBottomBarState.current
 
         DisposableEffect(Unit) {
             appBarState.value = AppBarState(
                 showBackButton = true,
                 onBackClick = { navigator.pop() }
             )
+            bottomBarState.value = BottomBarState(
+                visible = false
+            )
 
             onDispose {
                 appBarState.value = AppBarState()
+                bottomBarState.value = BottomBarState()
             }
         }
 
