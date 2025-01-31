@@ -62,7 +62,7 @@ class SettingsScreen : Screen {
                             onClick = { viewModel.actionToDestination(SettingsAction.ClickAuthButton) },
                             shape = RoundedCornerShape(8.dp)
                         ) {
-                            Text(text = "Log in")
+                            Text(text = "Login")
                         }
                     }
 
