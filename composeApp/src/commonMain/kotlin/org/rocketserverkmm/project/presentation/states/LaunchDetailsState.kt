@@ -1,14 +1,14 @@
 package org.rocketserverkmm.project.presentation.states
 
-import org.rocketserverkmm.project.domain.models.launchDetails.MissionDTO
-import org.rocketserverkmm.project.domain.models.launchDetails.RocketDTO
+import org.rocketserverkmm.project.domain.models.launchDetails.Mission
+import org.rocketserverkmm.project.domain.models.launchDetails.Rocket
 
 data class LaunchDetailsState(
     val isLoading: Boolean? = null,
     val buttonState: ButtonState? = null,
     val isBooked: Boolean? = null,
-    val mission: MissionDTO? = null,
-    val rocket: RocketDTO? = null,
+    val mission: Mission? = null,
+    val rocket: Rocket? = null,
     val site: String? = null,
     val errorMessage: String? = null,
 )
