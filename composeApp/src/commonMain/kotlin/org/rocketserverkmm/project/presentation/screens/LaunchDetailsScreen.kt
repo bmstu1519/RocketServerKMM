@@ -48,8 +48,8 @@ import org.rocketserverkmm.project.presentation.viewmodels.LaunchDetailsViewMode
 import org.rocketserverkmm.project.presentation.utils.appBar.AppBarState
 import org.rocketserverkmm.project.presentation.utils.appBar.LocalAppBarState
 import rocketserverkmm.composeapp.generated.resources.Res
-import rocketserverkmm.composeapp.generated.resources.baseline_error_24
 import rocketserverkmm.composeapp.generated.resources.ic_placeholder
+import rocketserverkmm.composeapp.generated.resources.rocket_image_stub
 
 class LaunchDetailsScreen : Screen {
 
@@ -113,8 +113,7 @@ class LaunchDetailsScreen : Screen {
                 AsyncImage(
                     modifier = Modifier.size(160.dp, 160.dp),
                     model = state.mission?.missionPatch,
-                    placeholder = painterResource(Res.drawable.ic_placeholder),
-                    error = painterResource(Res.drawable.baseline_error_24),
+                    error = painterResource(Res.drawable.rocket_image_stub),
                     contentDescription = "Mission patch"
                 )
 

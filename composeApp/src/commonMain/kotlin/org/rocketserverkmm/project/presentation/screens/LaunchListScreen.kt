@@ -34,6 +34,7 @@ import org.rocketserverkmm.project.presentation.viewmodels.LaunchListViewModel
 import rocketserverkmm.composeapp.generated.resources.Res
 import rocketserverkmm.composeapp.generated.resources.baseline_error_24
 import rocketserverkmm.composeapp.generated.resources.ic_placeholder
+import rocketserverkmm.composeapp.generated.resources.rocket_image_stub
 
 class LaunchListScreen : Screen {
 
@@ -97,8 +98,7 @@ private fun LaunchItems(
             AsyncImage(
                 modifier = Modifier.size(68.dp),
                 model = launch.missionPatchUrl,
-                placeholder = painterResource(Res.drawable.ic_placeholder),
-                error = painterResource(Res.drawable.baseline_error_24),
+                error = painterResource(Res.drawable.rocket_image_stub),
                 contentDescription = "Mission patch"
             )
         }
