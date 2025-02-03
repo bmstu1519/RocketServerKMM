@@ -16,7 +16,7 @@ import org.rocketserverkmm.project.presentation.states.LoginAction
 import org.rocketserverkmm.project.presentation.states.LoginDestination
 import org.rocketserverkmm.project.presentation.states.LoginState
 import org.rocketserverkmm.project.presentation.states.UserAuthState
-import org.rocketserverkmm.project.settings.local.UserConfigHolder
+import org.rocketserverkmm.project.data.local.UserConfigHolder
 
 class LoginViewModel(
     private val getLoginUseCase: GetLoginUseCase,

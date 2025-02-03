@@ -1,4 +1,4 @@
-package org.rocketserverkmm.project.settings.local
+package org.rocketserverkmm.project.data.local
 
 import coil3.ImageLoader
 import coil3.PlatformContext
