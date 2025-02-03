@@ -12,13 +12,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import kotlinx.coroutines.flow.map
 import org.koin.compose.getKoin
-import org.rocketserverkmm.project.settings.local.UserConfigHolder
-import org.rocketserverkmm.project.settings.theme.Pink40
-import org.rocketserverkmm.project.settings.theme.Pink80
-import org.rocketserverkmm.project.settings.theme.Purple40
-import org.rocketserverkmm.project.settings.theme.Purple80
-import org.rocketserverkmm.project.settings.theme.PurpleGrey40
-import org.rocketserverkmm.project.settings.theme.PurpleGrey80
+import org.rocketserverkmm.project.data.local.UserConfigHolder
+import org.rocketserverkmm.project.presentation.utils.theme.Pink40
+import org.rocketserverkmm.project.presentation.utils.theme.Pink80
+import org.rocketserverkmm.project.presentation.utils.theme.Purple40
+import org.rocketserverkmm.project.presentation.utils.theme.Purple80
+import org.rocketserverkmm.project.presentation.utils.theme.PurpleGrey40
+import org.rocketserverkmm.project.presentation.utils.theme.PurpleGrey80
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
