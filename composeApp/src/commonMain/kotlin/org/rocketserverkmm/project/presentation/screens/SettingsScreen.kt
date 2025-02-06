@@ -76,7 +76,7 @@ class SettingsScreen : Screen {
                                 Text(
                                     modifier = Modifier
                                         .padding(start = 10.dp),
-                                    text = "Темная тема"
+                                    text = "Dark Theme"
                                 )
                                 Switch(
                                     checked = isDark,

@@ -102,13 +102,13 @@ class SettingsViewModel(
     }
 
     private fun prepareAlert() : ActionableAlert = ActionableAlert(
-        text = "Вы действительно хотите выйти?",
+        text = "Want to log out?",
         submitButton = ActionableButton(
-            buttonText = "Выйти из аккаунта",
+            buttonText = "Log Out",
             action = { actionToDestination(SettingsAction.ClickAuthButton.LogOut) },
         ),
         cancelButton = ActionableButton(
-            buttonText = "Остаться",
+            buttonText = "Stay",
             action = { },
         ),
     )
