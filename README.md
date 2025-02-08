@@ -34,9 +34,15 @@
 </div>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/bmstu1519/RocketServerKMM/main/.github/assets/screenshots/android_ios_preview.gif"
-       alt="Preview"
-       width="100%"/>
+  <div style="position: relative; display: inline-block; width: 100%;">
+    <img src="https://raw.githubusercontent.com/bmstu1519/RocketServerKMM/main/.github/assets/screenshots/android_ios_preview.gif"
+         alt="Preview"
+         width="100%"
+         style="display: block; background: url('https://raw.githubusercontent.com/bmstu1519/RocketServerKMM/main/.github/assets/screenshots/preview_placeholder.001.png') center center no-repeat; background-size: 100%;"/>
+    <p align="center">
+      <i>Preview of Android and iOS applications</i>
+    </p>
+  </div>
 </p>
 
 ## Features ✨
