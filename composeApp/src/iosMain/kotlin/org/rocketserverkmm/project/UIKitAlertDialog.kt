@@ -28,7 +28,7 @@ fun UIKitAlertDialog(
 
             val alert = UIAlertController.alertControllerWithTitle(
                 title = alertDialog.text,
-                message = alertDialog.text,
+                message = null,
                 preferredStyle = UIAlertControllerStyleAlert
             )
 

@@ -1,4 +1,4 @@
-package org.rocketserverkmm.project.settings.remote
+package org.rocketserverkmm.project.data.remote
 
 import com.apollographql.apollo.api.http.HttpHeader
 import com.apollographql.apollo.api.http.HttpMethod

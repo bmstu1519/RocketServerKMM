@@ -28,7 +28,7 @@ import org.rocketserverkmm.project.presentation.utils.bottomBar.LocalBottomBarSt
 import org.rocketserverkmm.project.presentation.utils.bottomBar.TabItem
 import org.rocketserverkmm.project.presentation.utils.bottomBar.TabNavigationItem
 import org.rocketserverkmm.project.presentation.viewmodels.AppBootstrapViewModel
-import org.rocketserverkmm.project.settings.local.AsyncImageLoaderSingleton
+import org.rocketserverkmm.project.data.local.AsyncImageLoaderSingleton
 
 @Composable
 @Preview

@@ -1,4 +1,4 @@
-package org.rocketserverkmm.project.settings.local
+package org.rocketserverkmm.project.data.local
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
