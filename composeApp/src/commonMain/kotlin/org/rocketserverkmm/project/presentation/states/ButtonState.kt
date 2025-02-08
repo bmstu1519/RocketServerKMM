@@ -17,6 +17,7 @@ sealed class ButtonState {
             timer.takeIf { it > 0L }?.let {
                 delay(it)
             }
+            resetButtonState()
         }
     }
 
