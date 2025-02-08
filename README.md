@@ -33,8 +33,18 @@
 
 </div>
 
-
-<img src="https://github.com/bmstu1519/RocketServerKMM/blob/main/.github/assets/screenshots/android_ios_preview.gif" width="100%" height="100%"/>
+<p align="center">
+  <div style="position: relative; display: inline-block;">
+    <img src="https://github.com/bmstu1519/RocketServerKMM/blob/main/.github/assets/screenshots/preview_placeholder.001.png"
+         alt="Preview"
+         width="100%"/>
+    <img src="https://github.com/bmstu1519/RocketServerKMM/blob/main/.github/assets/screenshots/android_ios_preview.gif"
+         alt="Preview"
+         width="100%"
+         style="position: absolute; top: 0; left: 0; opacity: 0; transition: opacity 0.3s;"
+         onload="this.style.opacity='1'"/>
+  </div>
+</p>
 
 ## Features ✨
 
@@ -68,9 +78,9 @@ The diagram illustrates the application's clean architecture implementation with
 1. **Presentation Layer**
 - **Screens**: Compose Multiplatform UI components with Coil3 for efficient image loading
 - **ViewModel**: Implements MVI pattern with:
-    - Reducer: Handles state mutations
-    - State: Maintains UI state
-    - Actions: Processes user interactions
+  - Reducer: Handles state mutations
+  - State: Maintains UI state
+  - Actions: Processes user interactions
 
 2. **Domain Layer**
 - **UseCase**: Contains business logic
@@ -80,15 +90,15 @@ The diagram illustrates the application's clean architecture implementation with
 
 3. **Data Layer**
 - **Network**:
-    - Ktor client implementation with GraphQL
-    - Apollo Kotlin for type-safe GraphQL operations with auto-generated models
-    - Integrated logging for network operations
+  - Ktor client implementation with GraphQL
+  - Apollo Kotlin for type-safe GraphQL operations with auto-generated models
+  - Integrated logging for network operations
 
 - **Local Cache**:
-    - Implements KeyVault for secure cross-platform data storage
-    - Platform-specific native implementations:
-        - Android: SharedPreferences with encryption
-        - iOS: Keychain Services
+  - Implements KeyVault for secure cross-platform data storage
+  - Platform-specific native implementations:
+    - Android: SharedPreferences with encryption
+    - iOS: Keychain Services
 
 **Key Technical Features:**
 - GraphQL client eliminates need for manual DTO creation
@@ -116,9 +126,9 @@ This diagram showcases the overall application architecture, highlighting the in
 **1. composeApp (Cross-platform Module)**
 
 - **commonMain**: Contains the core application logic, including:
-    - App.kt: The main Compose application entry point, used by both Android and iOS modules.
-    - platform/expect declarations for platform-specific functionalities.
-    - See the [mvi+clean] section for details.
+  - App.kt: The main Compose application entry point, used by both Android and iOS modules.
+  - platform/expect declarations for platform-specific functionalities.
+  - See the [mvi+clean] section for details.
 
 - **iosMain**: See the [ios] section for details.
 
@@ -134,10 +144,10 @@ The following modules are used for DI configuration:
 
 ```kotlin
 fun initKoin(config: KoinAppDeclaration? = {}) =
-    startKoin {
-        config?.invoke(this)
-        modules(clientsModule, appModule, scopeModule)
-    }
+  startKoin {
+    config?.invoke(this)
+    modules(clientsModule, appModule, scopeModule)
+  }
 ```
 
 **3. Expect/Actual Mechanism**
@@ -168,15 +178,15 @@ The diagram shows the androidMain module structure, which consists of three main
 
 2. **Application**
 - Features two key initialization functions:
-    - `initKoin()` for Dependency Injection setup
-    - `initKVault()` for secure storage initialization
+  - `initKoin()` for Dependency Injection setup
+  - `initKVault()` for secure storage initialization
 
 3. **platform/actual**
 - Contains platform-specific Android implementations:
-    - `AlertDialog.android.kt` - native dialog windows implementation
-    - `Engine.android.kt` - Android network client powered by OkHttp
-    - `KVault.android.kt` - Android secure storage implementation that combines SharedPreferences with encryption for secure data persistence
-    - `Theme.android.kt` - Android theme settings
+  - `AlertDialog.android.kt` - native dialog windows implementation
+  - `Engine.android.kt` - Android network client powered by OkHttp
+  - `KVault.android.kt` - Android secure storage implementation that combines SharedPreferences with encryption for secure data persistence
+  - `Theme.android.kt` - Android theme settings
 
 ### 2. iOS module + iOS (Native)
 <div align="center">
@@ -199,15 +209,15 @@ The diagram illustrates two main parts and their interaction:
 
 2. **iosMain module**
 - Contains `MainViewController.kt` with three key functions:
-    - `initKoin()` for dependency injection setup
-    - `initKVault()` for secure storage initialization
-    - `setContent { App() }` for Compose UI initialization
+  - `initKoin()` for dependency injection setup
+  - `initKVault()` for secure storage initialization
+  - `setContent { App() }` for Compose UI initialization
 
 - **platform/actual** includes iOS-specific implementations:
-    - `AlertDialog.ios.kt` - dialog windows implementation
-    - `Engine.ios.kt` - iOS network client using URLSession
-    - `KVault.ios.kt` - iOS secure storage using Keychain
-    - `Theme.ios.kt` - iOS theme settings
+  - `AlertDialog.ios.kt` - dialog windows implementation
+  - `Engine.ios.kt` - iOS network client using URLSession
+  - `KVault.ios.kt` - iOS secure storage using Keychain
+  - `Theme.ios.kt` - iOS theme settings
 
 3. **Integration Bridge**
 - `MainViewController(KMainViewController)` serves as a bridge between native iOS and Compose Multiplatform
@@ -221,13 +231,13 @@ Voyager is used for navigation within the Compose Multiplatform UI.
 Tab navigation is implemented using a sealed class `TabItem` as an enum, defining each tab as an object within the sealed class.
 ```kotlin
 sealed class TabItem : Tab {
-    object LaunchesTab : TabItem() {
-        // ...
-    }
+  object LaunchesTab : TabItem() {
+    // ...
+  }
 
-    object SettingsTab : TabItem() {
-        // ...
-    }
+  object SettingsTab : TabItem() {
+    // ...
+  }
 }
 ```
 This approach provides type safety and clarity when working with tabs.  
@@ -238,27 +248,27 @@ This is facilitated by the use of LocalTabNavigator.current within the TabNaviga
 ```kotlin
 @Composable
 fun RowScope.TabNavigationItem(tab: TabItem) {
-    val tabNavigator = LocalTabNavigator.current
+  val tabNavigator = LocalTabNavigator.current
 
-    NavigationBarItem(
-        selected = tabNavigator.current == tab,
-        onClick = { tabNavigator.current = tab },
-        // ...
-    )
+  NavigationBarItem(
+    selected = tabNavigator.current == tab,
+    onClick = { tabNavigator.current = tab },
+    // ...
+  )
 }
 ```
 Finally, the NavigationBar composable uses the TabNavigationItem to display the tabs in App.kt:
 ```kotlin
 TabNavigator(TabItem.LaunchesTab) { tabNavigator ->
-    Scaffold(
-      topBar = { ... },
-      bottomBar = {
-        NavigationBar {
-          TabNavigationItem(TabItem.LaunchesTab)
-          TabNavigationItem(TabItem.SettingsTab)
+  Scaffold(
+    topBar = { ... },
+    bottomBar = {
+      NavigationBar {
+        TabNavigationItem(TabItem.LaunchesTab)
+        TabNavigationItem(TabItem.SettingsTab)
+      }
     }
-  }
-) { ... }
+  ) { ... }
 ```
 
 **expect/actual fun:**
@@ -290,25 +300,25 @@ iosMain/org.rocketserverkmm.project/platform
 
 ### Dependency Injection
 - Koin:
-    - Dependency injection
-    - Screen parameters passing between screens
+  - Dependency injection
+  - Screen parameters passing between screens
 
 ### Navigation
 - Voyager
 
 ### Network
 - Ktor:
-    - Android: OkHttp engine
-    - iOS: Darwin engine
+  - Android: OkHttp engine
+  - iOS: Darwin engine
 - Apollo GraphQL:
-    - Type-safe GraphQL client
-    - Code generation for GraphQL queries
-    - Automatic schema validation
+  - Type-safe GraphQL client
+  - Code generation for GraphQL queries
+  - Automatic schema validation
 
 ### Storage
 - KVault - secure key-value storage:
-    - Android: EncryptedSharedPreferences (encrypted version of SharedPreferences)
-    - iOS: Keychain (secure system-level storage)
+  - Android: EncryptedSharedPreferences (encrypted version of SharedPreferences)
+  - iOS: Keychain (secure system-level storage)
 
 ### Image Loading
 - Coil3
