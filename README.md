@@ -34,20 +34,7 @@
 </div>
 
 <p align="center">
-  <div style="position: relative; display: inline-block; width: 100%;">
-    <div style="position: relative; width: 100%; padding-bottom: 56.25%;">
-      <div style="position: absolute; 
-        inset: 0; 
-        background-image: url('https://raw.githubusercontent.com/bmstu1519/RocketServerKMM/main/.github/assets/screenshots/preview_placeholder.001.png'); 
-        background-size: cover;">
-        <img src="https://raw.githubusercontent.com/bmstu1519/RocketServerKMM/main/.github/assets/screenshots/android_ios_preview.gif"
-             alt="Preview"
-             width="100%"
-             height="100%"
-             style="object-fit: cover;"/>
-      </div>
-    </div>
-  </div>
+  <img alt='Preview' src='https://github.com/bmstu1519/RocketServerKMM/blob/main/.github/assets/screenshots/preview_low.gif' height=100%/>
   <p align="center">
     <i>Preview of Android and iOS applications</i>
   </p>
