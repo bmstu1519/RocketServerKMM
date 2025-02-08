@@ -33,8 +33,9 @@
 
 </div>
 
+
+![preview_low](https://github.com/user-attachments/assets/41ab9844-bc31-4c4c-844c-26231f36cfc8)
 <p align="center">
-  <img alt='Preview' src='https://github.com/bmstu1519/RocketServerKMM/blob/main/.github/assets/screenshots/preview_low.gif' height=100%/>
   <p align="center">
     <i>Preview of Android and iOS applications</i>
   </p>
