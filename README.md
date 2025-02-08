@@ -34,16 +34,9 @@
 </div>
 
 <p align="center">
-  <div style="position: relative; display: inline-block;">
-    <img src="https://github.com/bmstu1519/RocketServerKMM/blob/main/.github/assets/screenshots/preview_placeholder.001.png"
-         alt="Preview"
-         width="100%"/>
-    <img src="https://github.com/bmstu1519/RocketServerKMM/blob/main/.github/assets/screenshots/android_ios_preview.gif"
-         alt="Preview"
-         width="100%"
-         style="position: absolute; top: 0; left: 0; opacity: 0; transition: opacity 0.3s;"
-         onload="this.style.opacity='1'"/>
-  </div>
+  <img src="https://raw.githubusercontent.com/bmstu1519/RocketServerKMM/main/.github/assets/screenshots/android_ios_preview.gif"
+       alt="Preview"
+       width="100%"/>
 </p>
 
 ## Features ✨
