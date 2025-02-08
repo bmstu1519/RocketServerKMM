@@ -22,18 +22,19 @@
 
 
 <p align="center"> 
-  <a href=''>
+  <a href='https://github.com/bmstu1519/RocketServerKMM/releases/download/1.0.0/android.zip'>
     <img alt='Download APK' src='https://github.com/bmstu1519/RocketServerKMM/blob/main/.github/assets/icons/android_apk.png' height=75/>
   </a>
-  <a href=''>
+  <a href='https://github.com/bmstu1519/RocketServerKMM/releases/download/1.0.0/ios.zip'>
     <img alt='Download APP' src='https://github.com/bmstu1519/RocketServerKMM/blob/main/.github/assets/icons/apple_app_black_white.png' height="75"/>
   </a>
 </p>
 
 
 </div>
- 
-----
+
+
+<img src="https://github.com/bmstu1519/RocketServerKMM/blob/main/.github/assets/screenshots/android_ios_preview.gif" width="100%" height="100%"/>
 
 ## Features ✨
 
@@ -43,14 +44,6 @@
 - **Theme Customization:** Switch between light and dark modes for optimal viewing.
 
 <br>
-
-<p float="center">
-<!--   <img src="https://github.com/bmstu1519/MVVMNewsApp/blob/master/.github/assets/screenshots/breaking_news.png" width="30%" /> -->
-<!--   <img src="https://github.com/bmstu1519/MVVMNewsApp/blob/master/.github/assets/screenshots/saved_news.png" width="30%" /> -->
-<!--   <img src="https://github.com/bmstu1519/MVVMNewsApp/blob/master/.github/assets/screenshots/search_news.png" width="30%" /> -->
-<!--   <img src="https://github.com/bmstu1519/MVVMNewsApp/blob/master/app/src/main/res/drawable/no_content.png" width="23%" /> -->
-</p>
-
 
 # Architecture 🏗️
 
@@ -73,29 +66,29 @@ MVI facilitates a unidirectional data flow and clear separation of concerns, whi
 The diagram illustrates the application's clean architecture implementation with MVI pattern, divided into three main layers:
 
 1. **Presentation Layer**
-  - **Screens**: Compose Multiplatform UI components with Coil3 for efficient image loading
-  - **ViewModel**: Implements MVI pattern with:
+- **Screens**: Compose Multiplatform UI components with Coil3 for efficient image loading
+- **ViewModel**: Implements MVI pattern with:
     - Reducer: Handles state mutations
     - State: Maintains UI state
     - Actions: Processes user interactions
 
 2. **Domain Layer**
-  - **UseCase**: Contains business logic
-  - **Repository**: Defines data operations contract
-  - **Model**: Core business entities
-  - **ModelMapping.kt**: Handles conversion between domain models and DTOs
+- **UseCase**: Contains business logic
+- **Repository**: Defines data operations contract
+- **Model**: Core business entities
+- **ModelMapping.kt**: Handles conversion between domain models and DTOs
 
 3. **Data Layer**
-  - **Network**:
+- **Network**:
     - Ktor client implementation with GraphQL
     - Apollo Kotlin for type-safe GraphQL operations with auto-generated models
     - Integrated logging for network operations
 
-  - **Local Cache**:
+- **Local Cache**:
     - Implements KeyVault for secure cross-platform data storage
     - Platform-specific native implementations:
-      - Android: SharedPreferences with encryption
-      - iOS: Keychain Services
+        - Android: SharedPreferences with encryption
+        - iOS: Keychain Services
 
 **Key Technical Features:**
 - GraphQL client eliminates need for manual DTO creation
@@ -123,9 +116,9 @@ This diagram showcases the overall application architecture, highlighting the in
 **1. composeApp (Cross-platform Module)**
 
 - **commonMain**: Contains the core application logic, including:
-  - App.kt: The main Compose application entry point, used by both Android and iOS modules.
-  - platform/expect declarations for platform-specific functionalities.
-  - See the [mvi+clean] section for details.
+    - App.kt: The main Compose application entry point, used by both Android and iOS modules.
+    - platform/expect declarations for platform-specific functionalities.
+    - See the [mvi+clean] section for details.
 
 - **iosMain**: See the [ios] section for details.
 
@@ -171,15 +164,15 @@ This section provides a deeper dive into the architecture of each platform, show
 The diagram shows the androidMain module structure, which consists of three main components:
 
 1. **MainActivity.kt**
-  - Contains `setContent { App() }` function responsible for initializing and displaying the main UI using Compose
+- Contains `setContent { App() }` function responsible for initializing and displaying the main UI using Compose
 
 2. **Application**
-  - Features two key initialization functions:
+- Features two key initialization functions:
     - `initKoin()` for Dependency Injection setup
     - `initKVault()` for secure storage initialization
 
 3. **platform/actual**
-  - Contains platform-specific Android implementations:
+- Contains platform-specific Android implementations:
     - `AlertDialog.android.kt` - native dialog windows implementation
     - `Engine.android.kt` - Android network client powered by OkHttp
     - `KVault.android.kt` - Android secure storage implementation that combines SharedPreferences with encryption for secure data persistence
@@ -199,26 +192,26 @@ The diagram shows the androidMain module structure, which consists of three main
 The diagram illustrates two main parts and their interaction:
 
 1. **iosApp (Native Part)**
-  - Built with SwiftUI
-  - Contains `ContentView.swift` as the main UI container
-  - Includes `iOSApp.swift` as the application entry point
-  - Uses Swift and SwiftUI for native iOS implementation
+- Built with SwiftUI
+- Contains `ContentView.swift` as the main UI container
+- Includes `iOSApp.swift` as the application entry point
+- Uses Swift and SwiftUI for native iOS implementation
 
 2. **iosMain module**
-  - Contains `MainViewController.kt` with three key functions:
+- Contains `MainViewController.kt` with three key functions:
     - `initKoin()` for dependency injection setup
     - `initKVault()` for secure storage initialization
     - `setContent { App() }` for Compose UI initialization
 
-  - **platform/actual** includes iOS-specific implementations:
+- **platform/actual** includes iOS-specific implementations:
     - `AlertDialog.ios.kt` - dialog windows implementation
     - `Engine.ios.kt` - iOS network client using URLSession
     - `KVault.ios.kt` - iOS secure storage using Keychain
     - `Theme.ios.kt` - iOS theme settings
 
 3. **Integration Bridge**
-  - `MainViewController(KMainViewController)` serves as a bridge between native iOS and Compose Multiplatform
-  - Enables seamless communication between SwiftUI and Compose UI components
+- `MainViewController(KMainViewController)` serves as a bridge between native iOS and Compose Multiplatform
+- Enables seamless communication between SwiftUI and Compose UI components
 
 ### Cross-Platform Considerations
 
@@ -297,25 +290,25 @@ iosMain/org.rocketserverkmm.project/platform
 
 ### Dependency Injection
 - Koin:
-  - Dependency injection
-  - Screen parameters passing between screens
+    - Dependency injection
+    - Screen parameters passing between screens
 
 ### Navigation
 - Voyager
 
 ### Network
 - Ktor:
-  - Android: OkHttp engine
-  - iOS: Darwin engine
+    - Android: OkHttp engine
+    - iOS: Darwin engine
 - Apollo GraphQL:
-  - Type-safe GraphQL client
-  - Code generation for GraphQL queries
-  - Automatic schema validation
+    - Type-safe GraphQL client
+    - Code generation for GraphQL queries
+    - Automatic schema validation
 
 ### Storage
 - KVault - secure key-value storage:
-  - Android: EncryptedSharedPreferences (encrypted version of SharedPreferences)
-  - iOS: Keychain (secure system-level storage)
+    - Android: EncryptedSharedPreferences (encrypted version of SharedPreferences)
+    - iOS: Keychain (secure system-level storage)
 
 ### Image Loading
 - Coil3
