@@ -33,12 +33,10 @@
 
 </div>
 
-
-![preview_low](https://github.com/user-attachments/assets/41ab9844-bc31-4c4c-844c-26231f36cfc8)
 <p align="center">
+  <img src="https://github.com/bmstu1519/RocketServerKMM/blob/main/.github/assets/screenshots/preview_bg_720p.gif" alt="Preview of Android and iOS applications">
   <p align="center">
     <i>Preview of Android and iOS applications</i>
-  </p>
 </p>
 
 ## Features ✨
@@ -247,23 +245,24 @@ fun RowScope.TabNavigationItem(tab: TabItem) {
 
   NavigationBarItem(
     selected = tabNavigator.current == tab,
-    onClick = { tabNavigator.current = tab },
+    onClick = { },
     // ...
   )
 }
 ```
 Finally, the NavigationBar composable uses the TabNavigationItem to display the tabs in App.kt:
 ```kotlin
-TabNavigator(TabItem.LaunchesTab) { tabNavigator ->
+TabNavigator(TabItem.LaunchesTab) { 
   Scaffold(
-    topBar = { ... },
+    topBar = { },
     bottomBar = {
       NavigationBar {
         TabNavigationItem(TabItem.LaunchesTab)
         TabNavigationItem(TabItem.SettingsTab)
       }
     }
-  ) { ... }
+  ) { } 
+}
 ```
 
 **expect/actual fun:**
