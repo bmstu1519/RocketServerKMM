@@ -17,7 +17,7 @@ import org.rocketserverkmm.project.presentation.states.SettingsAction
 import org.rocketserverkmm.project.presentation.states.SettingsDestination
 import org.rocketserverkmm.project.presentation.states.SettingsState
 import org.rocketserverkmm.project.presentation.states.UserAuthState
-import org.rocketserverkmm.project.settings.local.UserConfigHolder
+import org.rocketserverkmm.project.data.local.UserConfigHolder
 
 class SettingsViewModel(
     private val getSettingsUseCase: GetSettingsUseCase,
@@ -102,13 +102,13 @@ class SettingsViewModel(
     }
 
     private fun prepareAlert() : ActionableAlert = ActionableAlert(
-        text = "Вы действительно хотите выйти?",
+        text = "Want to log out?",
         submitButton = ActionableButton(
-            buttonText = "Выйти из аккаунта",
+            buttonText = "Log Out",
             action = { actionToDestination(SettingsAction.ClickAuthButton.LogOut) },
         ),
         cancelButton = ActionableButton(
-            buttonText = "Остаться",
+            buttonText = "Stay",
             action = { },
         ),
     )

@@ -11,7 +11,7 @@ import org.rocketserverkmm.project.domain.usecases.GetAppBootstrapUseCase
 import org.rocketserverkmm.project.presentation.states.AppBootstrapAction
 import org.rocketserverkmm.project.presentation.states.AppBootstrapState
 import org.rocketserverkmm.project.presentation.states.UserAuthState
-import org.rocketserverkmm.project.settings.local.UserConfigHolder
+import org.rocketserverkmm.project.data.local.UserConfigHolder
 
 class AppBootstrapViewModel(
     private val getAppBootstrapUseCase: GetAppBootstrapUseCase,

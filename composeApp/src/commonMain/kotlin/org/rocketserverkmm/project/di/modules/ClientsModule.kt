@@ -20,7 +20,7 @@ import org.rocketserverkmm.project.domain.repositories.KeyVaultRepository
 import org.rocketserverkmm.project.platform.KEY_TOKEN
 import org.rocketserverkmm.project.platform.getEngine
 import org.rocketserverkmm.project.platform.getKVaultInstance
-import org.rocketserverkmm.project.settings.remote.HttpKtorClientEngine
+import org.rocketserverkmm.project.data.remote.HttpKtorClientEngine
 
 val clientsModule = module {
     single<HttpEngine> {

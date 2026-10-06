@@ -48,8 +48,6 @@ fun ComposeAlertDialog(modifier: Modifier, alert: ActionableAlert, onDismissRequ
         title = {
             Text(text = alert.text)
         },
-        text = {
-            Text(text = alert.text)
-        },
+        text = null,
     )
 }
